@@ -231,7 +231,7 @@ Most input elements share some common attributes. These include the following.
 
 The following shows what the inputs look like when rendered. Don't worry about how clunky they look right out of the box. We will fix that when we start styling things with CSS.
 
-![HTML Input](./images/htmlInput.jpg)
+![HTML Input](./sam_notes_imgs/htmlInput.jpg)
 
 ### Assignment
 
@@ -267,7 +267,7 @@ In order to support accessibility, you should also include an `alt` attribute th
 <img alt="mountain landscape" src="https://images.pexels.com/photos/164170/pexels-photo-164170.jpeg" />
 ```
 
-![mountain landscape](./images/landscape.png)
+![mountain landscape](./sam_notes_imgs/landscape.png)
 
 ### Audio
 
@@ -279,7 +279,7 @@ To include an audio file in your content you use the `audio` element and specify
 <audio controls src="testAudio.mp3"></audio>
 ```
 
-![Html Audio](./images/audio.png)
+![Html Audio](./sam_notes_imgs/audio.png)
 
 ### Video
 
@@ -293,7 +293,7 @@ To include a video in your content you use the `video` element and specify the `
 </video>
 ```
 
-![HTML video](./images/video.png)
+![HTML video](./sam_notes_imgs/video.png)
 
 ## Internal media
 
@@ -309,7 +309,7 @@ SVG is an extremely powerful and widely supported way to render graphics inline 
 </svg>
 ```
 
-![SVG demo](./images/svg.png)
+![SVG demo](./sam_notes_imgs/svg.png)
 
 When combined with JavaScript and CSS you can produce some amazing visualizations. Checkout this [CodePen](https://codepen.io/leesjensen/pen/mdKjMLY) for an example.
 
@@ -340,7 +340,7 @@ https://codepen.io/Cyb3rDr4g0n/pen/zYVWWoG
 
 Functionally, CSS is primarily concerned with defining `rulesets`, or simply `rules`. A rule is comprised of a `selector` that selects the elements to apply the rule to, and one or more `declarations` that represent the `property` to style with the given `property value`.
 
-![CSS definitions](./images/cssDefinitions.jpg)
+![CSS definitions](./sam_notes_imgs/cssDefinitions.jpg)
 
 For example, consider the following rule.
 
@@ -355,7 +355,7 @@ p {
 
 The selector `p` selects all paragraph elements in the HTML document. The four specified declarations then: 1) change the font to use a sans-serif font, 2) increase the font size to be twice as big as the default font, 3) change the text color to be navy, and 4) create a gray shadow for the text. The result looks like this.
 
-![CSS simple rule](./images/cssSimpleRule.jpg)
+![CSS simple rule](./sam_notes_imgs/cssSimpleRule.jpg)
 
 ### Associating CSS with HTML
 
@@ -420,13 +420,13 @@ span {
 
 In this case, the rules cascade down from the highest nodes in the DOM tree to the lowest level. Any declaration property defined at a lower level will override the higher declaration. You can see this happening if you use the browser's debugger. In Chrome right click on the element and select `inspect`. You can then click on each element in the debugger and see what the value of the color property is. For the case defined above you will see that each of the higher level declarations is crossed out until you get to the style explicitly defined on the element.
 
-![CSS cascade](./images/cssCascading.jpg)
+![CSS cascade](./sam_notes_imgs/cssCascading.jpg)
 
 ### The box model
 
 CSS defines everything as boxes. When you apply styles, you are applying them to a region of the display that is a rectangular box. Within an element's box there are several internal boxes. The innermost box holds the element's content. This is where things like the text or image of an element is displayed. Next comes the padding. The padding will inherit things like the background color. After padding is the border, which has properties like color, thickness and line style. The final box is the margin. The margin is considered external to the actual styling of the box and therefore only represents whitespace. It is important to understand each of these boxes so that you can achieve the desired visual result by applying the proper CSS declaration.
 
-![CSS box model](./images/cssBoxModel.jpg)
+![CSS box model](./sam_notes_imgs/cssBoxModel.jpg)
 
 By default, the width and height of an element is defined by the width and height of the content box. You can change the `box-sizing` CSS property from the default value of `content-box` to `border-box` in order to redefine the width and height to also include the padding and the border. This often makes it easier to style elements when their visual size matches their actual size.
 
@@ -455,11 +455,11 @@ The first step in understanding CSS is mastering how to select the elements that
 
 By default every browser defines a base set of styles that it applies to all HTML. This varies slightly from browser to browser, but for the most part our document would render like this using the base browser styles.
 
-![CSS selectors base](./images/cssSelectorBase.jpg)
+![CSS selectors base](./sam_notes_imgs/cssSelectorBase.jpg)
 
 We would like to style our document so that it looks like this when we are done.
 
-![CSS selectors final](./images/cssSelectorFinal.jpg)
+![CSS selectors final](./sam_notes_imgs/cssSelectorFinal.jpg)
 
 ### Element type selector
 
@@ -742,13 +742,13 @@ That's everything we need to do. However, let's make one more addition. It would
 }
 ```
 
-![CSS animation](./images/cssAnimation.gif)
+![CSS animation](./sam_notes_imgs/cssAnimation.gif)
 
 You can see this animation working with this [CodePen](https://codepen.io/leesjensen/pen/LYrJEwX).
 
 Animation is not just for pushing buttons or making text float around. Here is an example of [animating a watch](https://codepen.io/leesjensen/pen/MWBjXNq) using only HTML and CSS.
 
-![Watch animation](./images/cssAnimationWatch.gif)
+![Watch animation](./sam_notes_imgs/cssAnimationWatch.gif)
 
 CodePen has a lot of CSS animation examples that you can experiment with. Here is a simple one with [floating clouds](https://codepen.io/leesjensen/pen/wvXEaRq) that I found interesting. If you find an interesting one share it with us on Discord.
 
@@ -843,7 +843,7 @@ We can demonstrate the different CSS display property values with the following 
 
 With the default of `block` this HTML would render like this.
 
-![CSS default div display](./images/cssDisplayDefault.jpg)
+![CSS default div display](./sam_notes_imgs/cssDisplayDefault.jpg)
 
 If we modify the display property associated with each element with the following CSS, then we get a totally different rendering.
 
@@ -871,7 +871,7 @@ If we modify the display property associated with each element with the followin
 }
 ```
 
-![CSS display](./images/cssDisplay.jpg)
+![CSS display](./sam_notes_imgs/cssDisplay.jpg)
 
 You can experiment with different display property values with this [CodePen](https://codepen.io/leesjensen/pen/RwBOPjv).
 
@@ -896,7 +896,7 @@ aside {
 }
 ```
 
-![CSS float](./images/cssFloat.gif)
+![CSS float](./sam_notes_imgs/cssFloat.gif)
 
 When the browser resizes, the text will flow around the floating element. You can use this [CodePen](https://codepen.io/leesjensen/pen/MWBRWPP) to experiment with `float`. Try changing the descriptor value to `none` or `left` and see what happens.
 
@@ -916,7 +916,7 @@ We can use the `@media` selector to tell us which side of the screen (technicall
 
 We can demonstrate the result of applying the media selector by using the browser's debugger and switching into phone and responsive mode. You can also use this [CodePen](https://codepen.io/leesjensen/pen/rNKZOva) and play with it yourself by simply resizing the browser's window.
 
-![CSS Media orientation](./images/cssMediaOrientation.gif)
+![CSS Media orientation](./sam_notes_imgs/cssMediaOrientation.gif)
 
 You can also use media queries to make entire pieces of your application disappear, or move to a different location. For example, if we had an aside that was helpful when the screen is wide, but took up too much room when the screen got narrow, we could use the following media query to make it disappear.
 
@@ -928,7 +928,7 @@ You can also use media queries to make entire pieces of your application disappe
 }
 ```
 
-![CSS Media orientation](./images/cssMediaDisappear.gif)
+![CSS Media orientation](./sam_notes_imgs/cssMediaDisappear.gif)
 
 Here is the [CodePen](https://codepen.io/leesjensen/pen/NWzLGmJ) for this example.
 
@@ -968,7 +968,7 @@ We turn this into a responsive grid by including a CSS `display` property with t
 
 Here is what the finished product looks like.
 
-![CSS grid](./images/cssGrid.gif)
+![CSS grid](./sam_notes_imgs/cssGrid.gif)
 
 You can experiment with the source on [CodePen](https://codepen.io/leesjensen/pen/GRGXoWP).
 
@@ -984,7 +984,7 @@ The `flex` display layout is useful when you want to partition your application 
 
 So we can visualize our design by quickly sketching it out.
 
-![CSS App mock](./images/cssAppMock.jpg)
+![CSS App mock](./sam_notes_imgs/cssAppMock.jpg)
 
 Next we build our structural HTML to match our design.
 
@@ -1082,7 +1082,7 @@ To handle making our header and footer disappear when the screen is to short to 
 
 Here is what the finished application looks like.
 
-![CSS flex](./images/cssFlex.gif)
+![CSS flex](./sam_notes_imgs/cssFlex.gif)
 
 You can experiment with this on [CodePen](https://codepen.io/leesjensen/pen/MWOVYpZ).
 
