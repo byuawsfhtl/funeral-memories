@@ -1,1 +1,1 @@
-# funeral-memories
+# Startup Specs
