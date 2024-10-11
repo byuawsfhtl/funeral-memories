@@ -36,22 +36,30 @@
       <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
     </header>
 
-    <main class="container my-4 flex-grow-1 d-flex flex-column">
-      <h1 class="d-flex justify-content-center">Welcome to Funeral Memories</h1>
-      <button class="btn btn-primary mt"> <a href="instructions.html" class="text-white text-decoration-none">Click here if you're new! (instructions)</a></button>
-      <br><br>
-      <form method="get" action="./wall.html">
-        <div class="mb-3">
-          <label for="name" class="form-label">Name:</label>
-          <input type="text" id="name" class="form-control" placeholder="Name" required/>
-        </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" placeholder="XXXX" required/>
-          <button type="submit" class="btn btn-primary mt-2">Join</button>
-        </div>
-      </form>
-      <button type="submit" class="btn btn-secondary"><a href="./instructions.html" class="text-white text-decoration-none">Host</a></button>
+    <main class="container d-flex justify-content-center align-items-center flex-grow-1">
+      <div class="text-center">
+        <h1>Welcome to Funeral Memories</h1>
+        <button class="btn btn-primary mt-3">
+          <a href="instructions.html" class="text-white text-decoration-none">Click here if you're new! (instructions)</a>
+        </button>
+        <br><br>
+        <form method="get" action="./wall.html">
+          <div class="mb-3 d-flex flex-row">
+            <label for="name" class="form-label mx-2">Name:</label>
+            <input type="text" id="name" class="form-control" placeholder="Name" required />
+          </div>
+          <div class="mb-3 d-flex flex-row">
+            <label for="name" class="form-label mx-2">Code:</label>
+            <input type="text" class="form-control" placeholder="XXXX" required />
+            <button type="submit" class="btn btn-primary mx-2">Join</button>
+          </div>
+        </form>
+        <button type="submit" class="btn btn-secondary mt-2">
+          <a href="./instructions.html" class="text-white text-decoration-none">Host</a>
+        </button>
+      </div>
     </main>
+
 
     <footer class="container-fluid text-white mt-auto d-none d-md-block" style="background-color: rgb(13 106 95);">
       <div class="row">
