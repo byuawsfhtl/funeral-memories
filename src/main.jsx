@@ -14,7 +14,7 @@ import AddMem from './AddMem.jsx';
 import Footer from './Footer.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <React.StrictMode class="d-flex flex-column min-vh-100">
+  <React.StrictMode className="d-flex flex-column min-vh-100">
     <Router>
       <Header />
       <Routes>
