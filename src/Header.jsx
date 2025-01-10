@@ -41,6 +41,16 @@ export default function Header(){
                     Add Memory
                 </Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/quote" className="nav-link text-white">
+                <Nav.Link active={location.pathname === "/quote"}>
+                    Quote
+                </Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/chat" className="nav-link text-white">
+                <Nav.Link active={location.pathname === "/chat"}>
+                    Chat
+                </Nav.Link>
+            </LinkContainer>
           </ul>
         </div>
       </Nav>
