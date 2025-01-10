@@ -12,6 +12,8 @@ import Confirmation from './Confirmation.jsx';
 import Wall from './Wall.jsx';
 import AddMem from './AddMem.jsx';
 import Footer from './Footer.jsx';
+import Quote from './Quote.jsx';
+import { WebSocketChat } from './Chat.jsx';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode className="d-flex flex-column min-vh-100">
@@ -24,6 +26,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/confirmation" Component={Confirmation} />
         <Route path="/wall" Component={Wall} />
         <Route path="/addmem" Component={AddMem} />
+        <Route path="/quote" Component={Quote} />
+        <Route path="/chat" Component={WebSocketChat} />
       </Routes>
       <Footer />
     </Router>
