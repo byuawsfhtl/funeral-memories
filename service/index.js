@@ -3,6 +3,7 @@ const uuid = require('uuid');
 const app = express();
 const http = require('http');
 const cors = require('cors');
+const db = require('./database');
 const { WebSocketServer } = require('ws');
 app.use(express.static('public'));
 
@@ -29,6 +30,27 @@ apiRouter.get('/group', async (req, res) => {
   res.send({ test: 'test' });
 });
 
+apiRouter.post('/memory', async (req, res) => {
+  const memory = req.body;
+  try{
+    const result = await db.addMemory(memory);
+    res.status(201).send(result);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
+apiRouter.get('/memories', async (req, res) => {
+  try{
+    const result = await db.getMemories();
+    res.status(201).send(result);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
+
+//WEBSOCKET
 const server = http.createServer(app);  // Create the HTTP server
 
 const wss = new WebSocketServer({ noServer: true });
