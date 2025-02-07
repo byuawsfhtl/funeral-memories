@@ -51,6 +51,11 @@ export default function Header(){
                     Chat
                 </Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/find-relative" className="nav-link text-white">
+                <Nav.Link active={location.pathname === "/find-relative"}>
+                    Find Relative
+                </Nav.Link>
+            </LinkContainer>
           </ul>
         </div>
       </Nav>

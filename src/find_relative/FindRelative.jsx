@@ -1,7 +1,7 @@
 import React, {useState, useContext} from "react";
 import "./FindRelative.css";
 import axios from "axios";
-import FsService from "../services/FsService";
+import FsService from "./FsService";
 
 export default function FindRelative(){
 
