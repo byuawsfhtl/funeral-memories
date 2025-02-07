@@ -1,9 +1,29 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddMem(){
     const navigate = useNavigate();
+    const [memory, setMemory] = useState("");
+
+    const handleClick = () => {
+      if(memory !== ""){
+        fetch('/api/memory', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({memory})
+        }).then((res) => {
+            if(res.status === 201){
+                navigate('/wall');
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+      }
+    }
+
     return(
     <main className="container d-flex flex-column justify-content-center align-items-center flex-grow-1 py-5" >
       <h1 className="mb-4">What is your memory of John Smith?</h1>
@@ -16,11 +36,11 @@ export default function AddMem(){
         </button>
       </div> */}
       
-      <div className="mb-3 w-100" style={{maxWidth: "500px"}}>
-        <input type="text" className="form-control" placeholder="Type memory here" />
-      </div>
+      <form className="mb-3 w-100" style={{maxWidth: "500px"}} onSubmit={handleClick}>
+        <input type="text" className="form-control" value={memory} placeholder="Type memory here" onChange={(e) => setMemory(e.target.value)}/>
+      </form>
       
-      <button className="btn btn-primary" onClick={() => navigate('/wall')}>Pin to Memory Wall</button>
+      <button className="btn btn-primary" onClick={handleClick}>Pin to Memory Wall</button>
     </main>
     );
 }
