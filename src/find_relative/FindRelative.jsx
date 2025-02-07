@@ -28,7 +28,7 @@ export default function FindRelative(){
         deathYear: ''
     });
 
-    const [ancestors, setAncestors] = useState<any>([]);
+    const [ancestors, setAncestors] = useState([]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
