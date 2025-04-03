@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./Wall.css";
 
 export default function Wall() {
 	const [memoryList, setMemoryList] = useState([]);
@@ -33,8 +34,14 @@ export default function Wall() {
 			const receivedMemory = JSON.parse(event.data);
 			if (receivedMemory.system) {
 				console.log(receivedMemory.system);
+			} // } else {
+			// 	setMemoryList((prev) => [...prev, receivedMemory]);
+			// }
+
+			if (receivedMemory.pastMemories) {
+				setMemoryList(receivedMemory.pastMemories); // Set full history on first join
 			} else {
-				setMemoryList((prev) => [...prev, receivedMemory]);
+				setMemoryList((prev) => [...prev, receivedMemory]); // Append new memories
 			}
 		};
 
@@ -63,9 +70,11 @@ export default function Wall() {
 	return (
 		<div>
 			<h2>Memory Wall for Group {groupId}</h2>
-			<ul>
+			<ul className="memory-wall">
 				{memoryList.map((mem, index) => (
-					<li key={index}>{mem.memory}</li>
+					<li className="memory" key={index}>
+						{mem.memory}
+					</li>
 				))}
 			</ul>
 			<form

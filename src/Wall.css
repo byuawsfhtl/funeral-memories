@@ -1,0 +1,16 @@
+.memory-wall {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 0;
+	gap: 10px;
+}
+
+.memory {
+	background-color: #c7c7c7;
+	list-style-type: none;
+	padding: 10px;
+	border-radius: 5px;
+	min-width: 150px;
+	text-align: center;
+}

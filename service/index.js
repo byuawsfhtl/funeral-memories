@@ -188,6 +188,12 @@ wss.on("connection", (ws) => {
 			return;
 		}
 
+		// TODO::Implement
+
+		// if (action === "delete") {
+		// }
+
+		//FIXME:: might need to make this into a seperate action ["add"]
 		if (ws.groupId && rooms[ws.groupId]) {
 			const newMemory = { groupId, memory, createdAt: new Date() };
 			await db.addMemory(newMemory);
