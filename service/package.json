@@ -11,8 +11,9 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "http": "^0.0.1-security",
-    "ws": "^8.18.0"
+    "uuid": "^11.1.0",
+    "ws": "^8.18.1"
   }
 }

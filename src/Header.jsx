@@ -3,11 +3,22 @@ import React from 'react';
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
+import logo from '../placeholder_img/NewFuneralMemoriesLogo.png';
+
 
 export default function Header(){
     return(
     <header className="container-fluid text-white d-none d-md-block" style={{backgroundColor: 'rgb(13 106 95)'}}>
-      <h1 className="text-center pt-3">Funeral Memories</h1>
+    <div className="d-flex align-items-center justify-content-center pt-3">
+    <img
+      src={logo}
+      alt="Funeral Memories Logo"
+      style={{ height: '70px', marginRight: '5px' }}
+    />
+    <h1 className="m-0" style={{ fontFamily: '"Bodoni Moda SC", serif' }}>
+  Funeral Memories
+</h1>
+  </div>
       <Nav className="navbar navbar-expand">
         <div className="container-fluid d-flex justify-content-center">
           <ul className="navbar-nav">
@@ -41,16 +52,16 @@ export default function Header(){
                     Add Memory
                 </Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/quote" className="nav-link text-white">
+            {/* <LinkContainer to="/quote" className="nav-link text-white">
                 <Nav.Link active={location.pathname === "/quote"}>
                     Quote
                 </Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/chat" className="nav-link text-white">
+            </LinkContainer> */}
+            {/* <LinkContainer to="/chat" className="nav-link text-white">
                 <Nav.Link active={location.pathname === "/chat"}>
                     Chat
                 </Nav.Link>
-            </LinkContainer>
+            </LinkContainer> */}
             <LinkContainer to="/find-relative" className="nav-link text-white">
                 <Nav.Link active={location.pathname === "/find-relative"}>
                     Find Relative

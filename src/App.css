@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+body, button, input, textarea, select, a, p, span, div, li {
+  font-family: 'Quicksand', sans-serif;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
