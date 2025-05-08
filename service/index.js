@@ -4,7 +4,7 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const db = require("./database");
-const { WebSocketServer } = require("ws");
+const { WebSocketServer, WebSocket } = require("ws");
 app.use(express.static("public"));
 
 // Use the CORS middleware with the updated options
@@ -195,7 +195,16 @@ wss.on("connection", (ws) => {
 
 		//FIXME:: might need to make this into a seperate action ["add"]
 		if (ws.groupId && rooms[ws.groupId]) {
-			const newMemory = { groupId, memory, createdAt: new Date() };
+			const newMemory = {
+				groupId,
+				title: message.title,
+				memory: message.memory,
+				place: message.place,
+				date: message.date,
+				image: message.image,
+				author: message.author,
+				createdAt: new Date()
+			  };			
 			await db.addMemory(newMemory);
 
 			rooms[ws.groupId].forEach((client) => {

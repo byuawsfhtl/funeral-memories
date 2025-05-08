@@ -28,7 +28,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/wall" Component={Wall} />
         <Route path="/addmem" Component={AddMem} />
         <Route path="/quote" Component={Quote} />
-        <Route path="/chat" Component={WebSocketChat} />
+/*        <Route path="/chat" Component={WebSocketChat} /> */
         <Route path="/find-relative" Component={FindRelative} />
         <Route path="*" Component={Home} />
       </Routes>
