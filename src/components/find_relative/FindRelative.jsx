@@ -2,8 +2,26 @@ import React, { useState, useContext } from "react";
 import "./FindRelative.css";
 import axios from "axios";
 import FsService from "./FsService";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function FindRelative() {
+	const location = useLocation();
+	useEffect(() => {
+		if (location.state?.formData) {
+			setFormData(location.state.formData);
+		}
+		if (location.state?.ancestors) {
+			setAncestors(location.state.ancestors);
+		}
+	}, [location.state]);
+
+	const navigate = useNavigate();
+	const handleAncestorClick = (personData) => {
+		navigate("/confirmation", {state: {person: personData, formData: formData, ancestors: ancestors,}})
+		console.log("Clicked person:", personData);
+	};
 	async function auth() {
 		const authTokenUrl = "https://auth.fhtl.org/get_token";
 		axios
@@ -161,7 +179,7 @@ export default function FindRelative() {
 		}
 
 		return (
-			<li className="search-result">
+			<li className="search-result" onClick={() => handleAncestorClick(p)} style={{cursor: "pointer"}}>
 				<div style={{ margin: "auto", width: "fit-content" }}>
 					<img className="portrait" src={portrait} />
 				</div>

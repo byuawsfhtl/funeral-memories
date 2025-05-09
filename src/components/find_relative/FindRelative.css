@@ -105,3 +105,11 @@
 .birth, .spouse, .parent {
     margin-top: 10px;
 }
+
+.search-result {
+  transition: background-color 0.2s ease;
+}
+
+.search-result:hover {
+  background-color: #f2f2f2;
+}
