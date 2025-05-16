@@ -1,56 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Tell browsers not to scale the viewport automatically -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Funeral Memories</title>
-    <link rel="icon" href="favicon.ico" />
-  </head>
-  <body>
-    <!-- Use header, main, and footer elements to give semantic structure -->
-    <header>
-      <h1>Funeral Memories</h1>
+	<head>
+		<meta charset="UTF-8" />
+		<!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC&family=Quicksand:wght@300..700&display=swap"
+			rel="stylesheet"
+		/>
 
-      <!-- Navigation elements -->
-      <nav>
-        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
-        <menu>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="login.html">Family Search Login</a></li>
-          <li><a href="instructions.html">Instructions</a></li>
-          <li><a href="confirmation.html">Family Confirmation</a></li>
-          <li><a href="wall.html">Memory Wall</a></li>
-          <li><a href="addmem.html">Add Memory</a></li>
-        </menu>
-      </nav>
-
-      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
-      <hr />
-    </header>
-
-    <main>
-      <h1>Welcome to Funeral Memories</h1>
-      <button> <a href="instructions.html">Click here if you're new! (instructions)</a></button>
-      <br></br>
-      <form method="get" action="./wall.html">
-        <div>
-          <span>Name:</span>
-          <input type="text" placeholder="Name" required/>
-        </div>
-        <div>
-          <input type="text" placeholder="XXXX" required/>
-          <button type="submit">Join</button>
-        </div>
-      </form>
-      <button type="submit"><a href="./instructions.html">Host</a></button>
-    </main>
-
-    <footer>
-      <hr />
-      <span class="text-reset">Samuel Ampuero and Allan Evans</span>
-      <br />
-      <a href="https://github.com/byuawsfhtl/funeral-memories">GitHub</a>
-    </footer>
-  </body>
+		<title>Funeral Memories</title>
+	</head>
+	<body>
+		<div id="root" class="d-flex flex-column min-vh-100"></div>
+		<script type="module" src="/src/components/main.jsx"></script>
+	</body>
 </html>
