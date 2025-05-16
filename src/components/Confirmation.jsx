@@ -31,7 +31,7 @@ export default function Confirmation() {
           <p>Born {birthYear} - {person.birthPlace}</p>
         </div>
         <p>This information was found using FamilySearch records. If this looks like the correct person, click "Yes" to continue or "No" to go back.</p>
-        <button className="btn btn-primary me-2" onClick={() => navigate('/wall', {state: {person: location.state?.person, formData: location.state?.formData, ancestors: location.state?.ancestors,},})}>Yes</button>
+        <button className="btn btn-primary me-2" onClick={() => navigate('/wall', {state: {groupId: location.state?.groupId, username: location.state?.username, password: location.state?.password, person: location.state?.person,},})}>Yes</button>
         <button className="btn btn-secondary" onClick={() => navigate('/find-relative', {state: { formData: location.state?.formData, ancestors: location.state?.ancestors}})}>No</button>
       </div>
     </main>

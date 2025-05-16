@@ -13,6 +13,8 @@ import Wall from './Wall.jsx';
 import AddMem from './AddMem.jsx';
 import Footer from './Footer.jsx';
 import Quote from './Quote.jsx';
+import Join from './Join.jsx';
+import Host from './Host.jsx';
 import FindRelative from './find_relative/FindRelative.jsx';
 import { WebSocketChat } from './Chat.jsx';
 
@@ -28,8 +30,10 @@ createRoot(document.getElementById('root')).render(
         <Route path="/wall" Component={Wall} />
         <Route path="/addmem" Component={AddMem} />
         <Route path="/quote" Component={Quote} />
-/*        <Route path="/chat" Component={WebSocketChat} /> */
+/*      <Route path="/chat" Component={WebSocketChat} /> */
         <Route path="/find-relative" Component={FindRelative} />
+        <Route path="/join" element={<Join />} />    
+        <Route path="/host" element={<Host />} />
         <Route path="*" Component={Home} />
       </Routes>
       <Footer />

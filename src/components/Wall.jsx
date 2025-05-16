@@ -21,6 +21,14 @@ export default function Wall() {
 	const location = useLocation();
 	const socketRef = useRef(null);
 	const service = new FuneralMemoryService();
+  const username = location.state?.username;
+  const password = location.state?.password;
+  const person = location.state?.person;
+  //const queryParams = new URLSearchParams(location.search);
+  //const groupId = location.state?.groupId;
+
+
+console.log("Wall loaded with:", { groupId, username, password, person });
 	//const [refreshKey, setRefreshKey] = useState(0);
 
 	const queryParams = new URLSearchParams(location.search);
