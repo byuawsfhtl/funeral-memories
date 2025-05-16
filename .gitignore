@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /mongoTest/dbConfig.json
-/service/dbConfig.json
+/src/service/dbConfig.json
+/src/dao/dbConfig.json
+.vercel
