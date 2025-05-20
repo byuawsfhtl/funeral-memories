@@ -1,23 +1,34 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export default function Host() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const service = new FuneralMemoryService();
 
-  const handleHost = (e) => {
+  const handleHost = async (e) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       alert("Username and password are required.");
       return;
     }
 
-    const newGroupId = Math.random().toString(36).substring(2, 8);
-    const storedHosts = JSON.parse(localStorage.getItem("hostCredentials")) || {};
-    storedHosts[newGroupId] = { username, password };
-    localStorage.setItem("hostCredentials", JSON.stringify(storedHosts));
+    const group = {}; // any metadata you want to include
+    const admin = { username, password };
+
+    let groupResponse;
+    try {
+      console.log("Sending admin:", admin);
+      groupResponse = await service.addGroup(group, admin); // returns full group data
+    } catch (err) {
+      alert("Failed to create group: " + err.message);
+      return;
+    }
+
+    const newGroupId = groupResponse.groupId;
 
     console.log("Created new group:", newGroupId);
     navigate("/find-relative", {
@@ -43,7 +54,8 @@ export default function Host() {
         </h1>
 
         <p className="text-muted text-center mb-4">
-          Enter a username and password to create a group and continue to select a relative.
+          Enter a username and password to create a group and continue to select
+          a relative.
         </p>
 
         <form onSubmit={handleHost}>
