@@ -1,9 +1,9 @@
-const {
+import {
 	postGroup,
 	getGroup,
 	updateGroup,
 	deleteGroup,
-} = require("../lib/GroupDAO");
+} from "../lib/GroupDAO.js";
 
 module.exports = async (req, res) => {
 	try {
