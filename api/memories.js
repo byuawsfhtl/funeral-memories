@@ -1,9 +1,9 @@
-const {
+import {
 	postMemory,
 	getMemories,
 	updateMemory,
 	deleteMemory,
-} = require("../lib/MemoriesDAO");
+} from "../lib/MemoriesDAO.js";
 
 module.exports = async (req, res) => {
 	try {

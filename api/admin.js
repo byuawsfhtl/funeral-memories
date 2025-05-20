@@ -1,4 +1,4 @@
-const { postAdmin, getAdmin, deleteAdmin } = require("../lib/AdminDAO");
+import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO.js";
 
 module.exports = async (req, res) => {
 	try {
