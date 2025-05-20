@@ -11,14 +11,15 @@
 			"destination": "/"
 		}
 	],
-	"routes": [
+	"headers": [
 		{
-			"src": "/api/(.*)",
-			"methods": ["GET", "POST", "PUT", "DELETE"],
-			"dest": "/api/$1",
-			"headers": {
-				"x-vercel-protection-bypass": "1"
-			}
+			"source": "/api/(.*)",
+			"headers": [
+				{
+					"key": "x-vercel-protection-bypass",
+					"value": "1"
+				}
+			]
 		}
 	]
 }
