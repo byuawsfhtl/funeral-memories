@@ -5,7 +5,7 @@ import {
 	deleteGroup,
 } from "../lib/GroupDAO.js";
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
 	try {
 		if (req.method === "GET") {
 			const { groupId } = req.query;
@@ -49,4 +49,4 @@ module.exports = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
-};
+}
