@@ -133,7 +133,13 @@ export class FuneralMemoryService {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(admin),
 			});
-			if (!res.ok) throw new Error("Failed to add admin");
+			if (!res.ok) {
+				 
+				 const text = await res.text();
+				 console.error("Server error:", text);
+				 throw new Error("Failed to add admin");
+
+			}
 			return await res.json();
 		} catch (err) {
 			console.error("Error adding admin:", err.message);

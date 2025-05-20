@@ -3,10 +3,12 @@ import "./FindRelative.css";
 import axios from "axios";
 import FsService from "./FsService";
 import { useNavigate, useLocation } from "react-router-dom";
+import { FuneralMemoryService } from "../../service/FuneralMemoryService";
 
 export default function FindRelative() {
   const location = useLocation();
   const navigate = useNavigate();
+  const service = new FuneralMemoryService();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -26,29 +28,26 @@ export default function FindRelative() {
     // Fill in passed-in state if available
     console.log("Received location.state:", location.state);
 
-  if (location.state?.formData) {
-    console.log("Restoring formData:", location.state.formData);
-    setFormData(location.state.formData);
-  }
-  if (location.state?.ancestors) {
-    console.log("Restoring ancestors:", location.state.ancestors);
-    setAncestors(location.state.ancestors);
-  }
-  if (location.state?.groupId) {
-    console.log("Received groupId:", location.state.groupId);
-    setGroupId(location.state.groupId);
-  }
-  if (location.state?.username) {
-    console.log("Received username:", location.state.username);
-    setUsername(location.state.username);
-  }
-  if (location.state?.password) {
-    console.log("Received password:", location.state.password);
-    setPassword(location.state.password);
-  }
-
-
-	
+    if (location.state?.formData) {
+      console.log("Restoring formData:", location.state.formData);
+      setFormData(location.state.formData);
+    }
+    if (location.state?.ancestors) {
+      console.log("Restoring ancestors:", location.state.ancestors);
+      setAncestors(location.state.ancestors);
+    }
+    if (location.state?.groupId) {
+      console.log("Received groupId:", location.state.groupId);
+      setGroupId(location.state.groupId);
+    }
+    if (location.state?.username) {
+      console.log("Received username:", location.state.username);
+      setUsername(location.state.username);
+    }
+    if (location.state?.password) {
+      console.log("Received password:", location.state.password);
+      setPassword(location.state.password);
+    }
 
     // Get token
     const authTokenUrl = "https://auth.fhtl.org/get_token";
@@ -86,17 +85,37 @@ export default function FindRelative() {
   };
 
   const handleAncestorClick = (personData) => {
-    navigate("/confirmation", {
-      state: {
-        person: personData,
-        formData,
-        ancestors,
-        groupId,
-        username,
-        password,
-		personId: personData.id,
-      },
-    });
+    const handleAncestorClick = async (personData) => {
+      try {
+        // Check if group exists
+        let group = null;
+        try {
+          group = await service.getGroup(groupId);
+          console.log("✅ Group already exists:", group);
+        } catch (err) {
+          console.log("ℹ️ Group not found. Creating...");
+          // If group doesn't exist, create it and the admin
+          await service.addGroup({}, { groupId, username, password });
+          console.log("✅ Group and admin created.");
+        }
+
+        // Navigate to confirmation with all needed state
+        navigate("/confirmation", {
+          state: {
+            person: personData,
+            formData,
+            ancestors,
+            groupId,
+            username,
+            password,
+            personId: personData.id,
+          },
+        });
+      } catch (err) {
+        console.error("❌ Error in handleAncestorClick:", err);
+        alert("Something went wrong trying to set up the group.");
+      }
+    };
   };
 
   function printAncestor(ancestor) {
@@ -106,10 +125,18 @@ export default function FindRelative() {
     const birthYear = p.birthDate ? new Date(p.birthDate).getUTCFullYear() : "";
     const deathYear = p.deathDate ? new Date(p.deathDate).getUTCFullYear() : "";
     const age = birthYear && deathYear ? `(Age ${deathYear - birthYear})` : "";
-    const portrait = `https://api.familysearch.org/platform/tree/persons/${p.id}/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem("yourKey")}`;
+    const portrait = `https://api.familysearch.org/platform/tree/persons/${
+      p.id
+    }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
+      "yourKey"
+    )}`;
 
     return (
-      <li className="search-result" onClick={() => handleAncestorClick(p)} style={{ cursor: "pointer" }}>
+      <li
+        className="search-result"
+        onClick={() => handleAncestorClick(p)}
+        style={{ cursor: "pointer" }}
+      >
         <div style={{ margin: "auto", width: "fit-content" }}>
           <img className="portrait" src={portrait} alt="Portrait" />
         </div>
@@ -121,13 +148,15 @@ export default function FindRelative() {
         </div>
         <div className="birth">
           <div className="overflow-div">
-            Birth<br />
+            Birth
+            <br />
             {p.birthPlace}
           </div>
         </div>
         <div className="death">
           <div className="overflow-div">
-            Death<br />
+            Death
+            <br />
             {p.deathPlace}
           </div>
         </div>
