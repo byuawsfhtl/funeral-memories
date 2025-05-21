@@ -44,7 +44,16 @@ export default function Confirmation() {
 
       // ✅ Check admin matches
       const admin = await service.getAdmin(groupId);
-      console.log("username: ", admin.username, "password: ", admin.password);
+      console.log(
+        "username: ",
+        admin.username,
+        "password: ",
+        admin.password,
+        "logged username: ",
+        username,
+        "Logged password: ",
+        password
+      );
       if (admin.username !== username || admin.password !== password) {
         alert("❌ Admin credentials invalid.");
         return;
