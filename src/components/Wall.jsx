@@ -22,8 +22,9 @@ export default function Wall() {
   const socketRef = useRef(null);
   const service = new FuneralMemoryService();
   //const username = location.state?.username;
-  const password = location.state?.password;
-  const person = location.state?.person;
+  //
+  const group = location.state?.madeGroup;
+  console.log(group);
   //const queryParams = new URLSearchParams(location.search);
   // const groupId = location.state?.groupId;
   //   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
