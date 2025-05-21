@@ -25,6 +25,7 @@ export default function Wall() {
   //
   const group = location.state?.madeGroup;
   console.log(group);
+
   //const queryParams = new URLSearchParams(location.search);
   // const groupId = location.state?.groupId;
   //   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
@@ -35,8 +36,7 @@ export default function Wall() {
 
   //const [refreshKey, setRefreshKey] = useState(0);
 
-  const queryParams = new URLSearchParams(location.search);
-  const groupId = queryParams.get("groupId");
+  const groupId = madeGroup.groupId;
   //console.log("Wall loaded with:", { groupId, username, password, person });
 
   useEffect(() => {
