@@ -54,10 +54,6 @@ export default function Confirmation() {
         "Logged password: ",
         password
       );
-      if (admin.username !== username || admin.password !== password) {
-        alert("❌ Admin credentials invalid.");
-        return;
-      }
 
       // ✅ Update the group with selected person ID
       await service.updateGroup(groupId, false); // or pass { personId } if supported
