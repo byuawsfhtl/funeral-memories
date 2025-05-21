@@ -7,7 +7,7 @@ export default function Confirmation() {
   const navigate = useNavigate();
   const location = useLocation();
   const person = location.state?.person;
-  const groupId = location.state?.groupId;
+  //const groupId = location.state?.groupId;
   const username = location.state?.username;
   const password = location.state?.password;
   const formData = location.state?.formData;
@@ -40,23 +40,15 @@ export default function Confirmation() {
   const handleConfirm = async () => {
     try {
       // ✅ Ensure the group exists (this will error if not found)
-      await service.getGroup(groupId);
+      //await service.getGroup(groupId);
 
       // ✅ Check admin matches
-      const admin = await service.getAdmin(groupId);
-      console.log(
-        "username: ",
-        admin.username,
-        "password: ",
-        admin.password,
-        "logged username: ",
-        username,
-        "Logged password: ",
-        password
-      );
+      //const admin = await service.getAdmin(groupId);
+      const group = { ancestor: person, closed: false, timestamp: Date.now() };
+      const admin = { usermane, password };
 
       // ✅ Update the group with selected person ID
-      await service.updateGroup(groupId, false); // or pass { personId } if supported
+      await service.addGroup(group, admin); // or pass { personId } if supported
 
       // ✅ Navigate to the memory wall
       navigate("/wall", {

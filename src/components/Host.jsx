@@ -9,31 +9,16 @@ export default function Host() {
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
 
-  const handleHost = async (e) => {
+  const handleHost = (e) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
       alert("Username and password are required.");
       return;
     }
 
-    const group = {}; // any metadata you want to include
-    const admin = { username, password };
-
-    let groupResponse;
-    try {
-      console.log("Sending admin:", admin);
-      groupResponse = await service.addGroup(group, admin); // returns full group data
-    } catch (err) {
-      alert("Failed to create group: " + err.message);
-      return;
-    }
-
-    const newGroupId = groupResponse.groupId;
-
-    console.log("Created new group:", newGroupId);
+    // Just navigate, no group created here
     navigate("/find-relative", {
       state: {
-        groupId: newGroupId,
         username,
         password,
       },

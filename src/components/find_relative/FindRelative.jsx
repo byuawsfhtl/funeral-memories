@@ -105,7 +105,6 @@ export default function FindRelative() {
           person: personData,
           formData,
           ancestors,
-          groupId,
           username,
           password,
           personId: personData.id,
