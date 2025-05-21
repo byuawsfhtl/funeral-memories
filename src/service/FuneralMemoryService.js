@@ -62,12 +62,14 @@ export class FuneralMemoryService {
 		try {
 			let existing;
 			do {
+				console.log("got to before fetch")
 				const res = await fetch(`/api/group?groupId=${newGroupId}`);
 				existing = res.ok ? await res.json() : null;
 				if (existing) {
 					newGroupId = Math.random().toString(36).substring(2, 8);
 				}
 			} while (existing);
+			console.log("got after fetch")
 
 			await this.addAdmin({ groupId: newGroupId, ...admin });
 

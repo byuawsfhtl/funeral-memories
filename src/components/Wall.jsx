@@ -39,7 +39,7 @@ export default function Wall() {
   //console.log("Wall loaded with:", { groupId, username, password, person });
 
   useEffect(() => {
-    console.log("check for group ID");
+    console.log("check for group ID", groupId);
     if (!groupId) {
       navigate("/");
       return;

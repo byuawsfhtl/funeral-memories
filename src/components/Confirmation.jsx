@@ -49,11 +49,11 @@ export default function Confirmation() {
       console.log(group, admin);
 
       // ✅ Update the group with selected person ID
-      await service.addGroup(group, admin); // or pass { personId } if supported
+      madeGroup = service.addGroup(group, admin); // or pass { personId } if supported
       console.log("added group");
 
       // ✅ Navigate to the memory wall
-      navigate("/wall", {});
+      navigate("/wall", madeGroup.groupId);
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");
