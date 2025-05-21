@@ -86,34 +86,17 @@ export default function FindRelative() {
 
   //const handleAncestorClick = (personData) => {
   const handleAncestorClick = async (personData) => {
-    try {
-      // Check if group exists
-      let group = null;
-      try {
-        group = await service.getGroup(groupId);
-        console.log("✅ Group already exists:", group);
-      } catch (err) {
-        console.log("ℹ️ Group not found. Creating...");
-        // If group doesn't exist, create it and the admin
-        await service.addGroup({}, { groupId, username, password });
-        console.log("✅ Group and admin created.");
-      }
-
-      // Navigate to confirmation with all needed state
-      navigate("/confirmation", {
-        state: {
-          person: personData,
-          formData,
-          ancestors,
-          username,
-          password,
-          personId: personData.id,
-        },
-      });
-    } catch (err) {
-      console.error("❌ Error in handleAncestorClick:", err);
-      alert("Something went wrong trying to set up the group.");
-    }
+    // Navigate to confirmation with all needed state
+    navigate("/confirmation", {
+      state: {
+        person: personData,
+        formData,
+        ancestors,
+        username,
+        password,
+        personId: personData.id,
+      },
+    });
   };
   // };
 
