@@ -45,20 +45,14 @@ export default function Confirmation() {
       // ✅ Check admin matches
       //const admin = await service.getAdmin(groupId);
       const group = { ancestor: person, closed: false, timestamp: Date.now() };
-      const admin = { admin: username, adminPassword: password };
+      const admin = { admin: username, password: password };
+      console.log(group, admin);
 
       // ✅ Update the group with selected person ID
       await service.addGroup(group, admin); // or pass { personId } if supported
 
       // ✅ Navigate to the memory wall
-      navigate("/wall", {
-        state: {
-          groupId,
-          username,
-          password,
-          person,
-        },
-      });
+      navigate("/wall", {});
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");

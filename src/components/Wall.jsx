@@ -21,16 +21,16 @@ export default function Wall() {
   const location = useLocation();
   const socketRef = useRef(null);
   const service = new FuneralMemoryService();
-  const username = location.state?.username;
+  //const username = location.state?.username;
   const password = location.state?.password;
   const person = location.state?.person;
   //const queryParams = new URLSearchParams(location.search);
   const groupId = location.state?.groupId;
-//   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
-//     person.id
-//   }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
-//     "yourKey"
-//   )}`;
+  //   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
+  //     person.id
+  //   }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
+  //     "yourKey"
+  //   )}`;
 
   //const [refreshKey, setRefreshKey] = useState(0);
 
@@ -149,8 +149,8 @@ export default function Wall() {
           className="text-center"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
         >
-         Memory Wall for 
-		 {/*{person.name}*/}
+          Memory Wall for
+          {/*{person.name}*/}
         </h2>
 
         {/* Show portrait image with rounded corners */}
