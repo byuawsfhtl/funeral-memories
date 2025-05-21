@@ -45,7 +45,7 @@ export default function Confirmation() {
       // ✅ Check admin matches
       //const admin = await service.getAdmin(groupId);
       const group = { ancestor: person, closed: false, timestamp: Date.now() };
-      const admin = { usermane, password };
+      const admin = { admin: username, adminPassword: password };
 
       // ✅ Update the group with selected person ID
       await service.addGroup(group, admin); // or pass { personId } if supported
