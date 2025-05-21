@@ -44,6 +44,7 @@ export default function Wall() {
       navigate("/");
       return;
     }
+    console.log("got groupID", groupId);
 
     const fetchMemories = async () => {
       try {

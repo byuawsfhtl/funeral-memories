@@ -50,6 +50,7 @@ export default function Confirmation() {
 
       // ✅ Update the group with selected person ID
       await service.addGroup(group, admin); // or pass { personId } if supported
+      console.log("added group");
 
       // ✅ Navigate to the memory wall
       navigate("/wall", {});
