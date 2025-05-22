@@ -51,9 +51,10 @@ export default function Confirmation() {
       // ✅ Update the group with selected person ID
       madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
       console.log("added group");
+      console.log(madeGroup);
 
       // ✅ Navigate to the memory wall
-      navigate("/wall", { state: { madeGroup } });
+      //navigate("/wall", { state: { madeGroup } });
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");
