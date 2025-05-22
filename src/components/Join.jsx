@@ -1,26 +1,48 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export default function Join() {
 	const [groupId, setGroupId] = useState("");
 	const navigate = useNavigate();
+	const service = new FuneralMemoryService();
 
-	const handleJoin = (event) => {
+	const handleJoin = async (event) => {
 		event.preventDefault();
-		if (groupId.trim()) {
-			navigate(`/wall`, {
-				state: {groupId, isGuest: true}
-			});
-		} else {
+		// if (groupId.trim()) {
+		// 	navigate(`/wall`, {
+		// 		state: { groupId, isGuest: true },
+		// 	});
+		// } else {
+		// 	alert("That group doesn't exist yet, check for typos");
+		// }
+
+		try {
+			group = await service.getGroup(groupId);
+			if (group) {
+				navigate(`/wall`, {
+					state: { group },
+				});
+			} else {
+				alert("That group doesn't exist yet, check for typos");
+			}
+		} catch (err) {
+			console.error("Error fetching group:", err.message);
 			alert("That group doesn't exist yet, check for typos");
 		}
 	};
 
 	return (
-		<main className="d-flex justify-content-center flex-grow-1 container my-4 flex-grow-1 d-flex flex-column align-items-center" style={{ minHeight: "80vh" }}>
+		<main
+			className="d-flex justify-content-center flex-grow-1 container my-4 flex-grow-1 d-flex flex-column align-items-center"
+			style={{ minHeight: "80vh" }}
+		>
 			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h1 className="text-center mb-4" style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}>
+				<h1
+					className="text-center mb-4"
+					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
+				>
 					Join Group
 				</h1>
 
