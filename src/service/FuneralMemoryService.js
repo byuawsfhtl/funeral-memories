@@ -18,6 +18,9 @@ export class FuneralMemoryService {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(memory),
 			});
+			if (errorData?.error?.includes("closed")) {
+				throw new Error("This group is closed and cannot accept new memories.");
+			}
 			if (!res.ok) throw new Error("Failed to add memory");
 			return await res.json();
 		} catch (err) {
