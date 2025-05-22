@@ -29,23 +29,18 @@ export default function FindRelative() {
     console.log("Received location.state:", location.state);
 
     if (location.state?.formData) {
-      console.log("Restoring formData:", location.state.formData);
       setFormData(location.state.formData);
     }
     if (location.state?.ancestors) {
-      console.log("Restoring ancestors:", location.state.ancestors);
       setAncestors(location.state.ancestors);
     }
     if (location.state?.groupId) {
-      console.log("Received groupId:", location.state.groupId);
       setGroupId(location.state.groupId);
     }
     if (location.state?.username) {
-      console.log("Received username:", location.state.username);
       setUsername(location.state.username);
     }
     if (location.state?.password) {
-      console.log("Received password:", location.state.password);
       setPassword(location.state.password);
     }
 
