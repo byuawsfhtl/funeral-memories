@@ -24,7 +24,6 @@ export default function Wall() {
   const person = madeGroup?.ancestor;
   const groupId = madeGroup?.groupId;
   const portraitUrl = madeGroup?.portrait;
-  console.log(sessionStarage.getItem("yourKey"));
 
   useEffect(() => {
     if (!groupId) {
