@@ -19,10 +19,7 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const socketRef = useRef(null);
   const service = new FuneralMemoryService();
-  //const username = location.state?.username;
-  //
   const madeGroup = location.state?.madeGroup;
   const person = madeGroup?.ancestor;
   const groupId = madeGroup?.groupId;
@@ -114,12 +111,12 @@ export default function Wall() {
       const reader = new FileReader();
       reader.onloadend = () => {
         memoryData.image = reader.result;
-        socketRef.current.send(JSON.stringify(memoryData));
+        service.addMemory(memoryData);
         resetFormFields();
       };
       reader.readAsDataURL(imageFile);
     } else {
-      socketRef.current.send(JSON.stringify(memoryData));
+      service.addMemory(memoryData);
       resetFormFields();
     }
   };
