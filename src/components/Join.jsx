@@ -19,7 +19,7 @@ export default function Join() {
 		// }
 
 		try {
-			group = await service.getGroup(groupId);
+			const group = await service.getGroup(groupId);
 			if (group) {
 				navigate(`/wall`, {
 					state: { group },
