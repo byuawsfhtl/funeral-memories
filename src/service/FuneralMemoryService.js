@@ -72,6 +72,7 @@ export class FuneralMemoryService {
 			console.log("got after fetch")
 
 			await this.addAdmin({ groupId: newGroupId, ...admin });
+			console.log("added admin")
 
 			const res = await fetch("/api/group", {
 				method: "POST",
