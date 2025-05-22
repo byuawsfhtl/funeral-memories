@@ -39,7 +39,12 @@ export default function Confirmation() {
 
   const handleConfirm = async () => {
     try {
-      const group = { ancestor: person, closed: false, timestamp: Date.now() };
+      const group = {
+        ancestor: person,
+        portrait: portraitUrl,
+        closed: false,
+        timestamp: Date.now(),
+      };
       const admin = { admin: username, password: password };
 
       // ✅ Update the group with selected person ID
