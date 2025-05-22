@@ -28,11 +28,11 @@ export default function Wall() {
 
   //const queryParams = new URLSearchParams(location.search);
   // const groupId = location.state?.groupId;
-  //   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
-  //     person.id
-  //   }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
-  //     "yourKey"
-  //   )}`;
+  const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
+    person.id
+  }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
+    "yourKey"
+  )}`;
 
   //const [refreshKey, setRefreshKey] = useState(0);
 
