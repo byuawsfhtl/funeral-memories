@@ -23,7 +23,7 @@ export default function Wall() {
   const service = new FuneralMemoryService();
   //const username = location.state?.username;
   //
-  const group = location.state?.madeGroup;
+  const madeGroup = location.state?.madeGroup;
   console.log(group);
 
   //const queryParams = new URLSearchParams(location.search);
@@ -36,7 +36,7 @@ export default function Wall() {
 
   //const [refreshKey, setRefreshKey] = useState(0);
 
-  const groupId = madeGroup.groupId;
+  const groupId = madeGroup?.groupId;
   //console.log("Wall loaded with:", { groupId, username, password, person });
 
   useEffect(() => {
