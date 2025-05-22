@@ -54,7 +54,7 @@ export default function Confirmation() {
       console.log(madeGroup);
 
       // ✅ Navigate to the memory wall
-      navigate("/wall", { state: { madeGroup } });
+      navigate("/wall", { state: { madeGroup: madeGroup } });
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");
