@@ -24,7 +24,6 @@ export default function Wall() {
   //const username = location.state?.username;
   //
   const madeGroup = location.state?.madeGroup;
-  console.log(group);
 
   //const queryParams = new URLSearchParams(location.search);
   // const groupId = location.state?.groupId;
