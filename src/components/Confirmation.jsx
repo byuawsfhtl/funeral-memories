@@ -49,7 +49,7 @@ export default function Confirmation() {
       console.log(group, admin);
 
       // ✅ Update the group with selected person ID
-      madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
+      const madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
       console.log("added group");
       console.log(madeGroup);
 
