@@ -39,19 +39,11 @@ export default function Confirmation() {
 
   const handleConfirm = async () => {
     try {
-      // ✅ Ensure the group exists (this will error if not found)
-      //await service.getGroup(groupId);
-
-      // ✅ Check admin matches
-      //const admin = await service.getAdmin(groupId);
       const group = { ancestor: person, closed: false, timestamp: Date.now() };
       const admin = { admin: username, password: password };
-      console.log(group, admin);
 
       // ✅ Update the group with selected person ID
       const madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
-      console.log("added group");
-      console.log(madeGroup);
 
       // ✅ Navigate to the memory wall
       navigate("/wall", { state: { madeGroup: madeGroup } });

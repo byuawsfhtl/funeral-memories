@@ -25,28 +25,18 @@ export default function Wall() {
   //
   const madeGroup = location.state?.madeGroup;
   const person = madeGroup?.ancestor;
-
-  //const queryParams = new URLSearchParams(location.search);
-  // const groupId = location.state?.groupId;
+  const groupId = madeGroup?.groupId;
   const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${
     person.id
   }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
     "yourKey"
   )}`;
 
-  //const [refreshKey, setRefreshKey] = useState(0);
-
-  const groupId = madeGroup?.groupId;
-  //console.log("Wall loaded with:", { groupId, username, password, person });
-
   useEffect(() => {
-    console.log("check for group ID", groupId);
     if (!groupId) {
       navigate("/");
       return;
     }
-    console.log("got groupID", groupId);
-
     const fetchMemories = async () => {
       try {
         const data = await service.getMemories(groupId);
