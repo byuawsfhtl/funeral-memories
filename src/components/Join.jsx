@@ -20,9 +20,10 @@ export default function Join() {
 
 		try {
 			const group = await service.getGroup(groupId);
+			console.log("Group fetched:", group);
 			if (group) {
 				navigate(`/wall`, {
-					state: { group },
+					state: { madeGroup: group },
 				});
 			} else {
 				alert("That group doesn't exist yet, check for typos");
