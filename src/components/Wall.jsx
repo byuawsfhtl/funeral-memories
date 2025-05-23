@@ -44,41 +44,6 @@ export default function Wall() {
     const intervalId = setInterval(fetchMemories, 10000);
 
     return () => clearInterval(intervalId);
-
-    // const protocol = window.location.protocol === "http:" ? "ws" : "wss";
-    // const socketUrl = `${protocol}://${window.location.host}/ws`;
-    // console.log("🛰️ Connecting to WebSocket at:", socketUrl);
-
-    // const socket = new WebSocket(socketUrl);
-    // socketRef.current = socket;
-
-    // socket.onopen = () => {
-    //   console.log("✅ WebSocket connected");
-    //   socket.send(JSON.stringify({ action: "join", groupId }));
-    // };
-
-    // socket.onmessage = (event) => {
-    //   console.log("📨 Message received:", event.data);
-    //   const receivedMemory = JSON.parse(event.data);
-    //   if (receivedMemory.pastMemories) {
-    //     setMemoryList(receivedMemory.pastMemories);
-    //   } else {
-    //     setMemoryList((prev) => [...prev, receivedMemory]);
-    //   }
-    // };
-
-    // socket.onerror = (err) => {
-    //   console.error("❌ WebSocket error:", err);
-    // };
-
-    // socket.onclose = (event) => {
-    //   console.log("🛑 WebSocket closed:", event.code, event.reason);
-    // };
-
-    // return () => {
-    //   console.log("🔌 Cleaning up WebSocket connection");
-    //   socket.close();
-    // };
   }, [groupId, navigate]);
 
   const handleSubmit = async (e) => {
