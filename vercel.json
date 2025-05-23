@@ -1,31 +1,25 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "x-vercel-protection-bypass",
-          "value": "1"
-        }
-      ]
-    }
-  ],
-  "functions": {
-    "api/**.js": {
-      "maxDuration": 10,
-      "memory": 512
-    }
-  }
+	"buildCommand": "npm run build",
+	"outputDirectory": "dist",
+	"rewrites": [
+		{
+			"source": "/api/(.*)",
+			"destination": "/api/$1.js"
+		},
+		{
+			"source": "/(.*)",
+			"destination": "/"
+		}
+	],
+	"headers": [
+		{
+			"source": "/api/(.*)",
+			"headers": [
+				{
+					"key": "x-vercel-protection-bypass",
+					"value": "1"
+				}
+			]
+		}
+	]
 }
