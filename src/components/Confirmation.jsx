@@ -38,21 +38,42 @@ export default function Confirmation() {
   )}`;
 
   const handleConfirm = async () => {
-    try {
-      // ✅ Ensure the group exists (this will error if not found)
-      //await service.getGroup(groupId);
+    // Generate the portrait URL
+    const accessToken = sessionStorage.getItem("yourKey");
+    const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${person.id}/portrait?access_token=${accessToken}`;
 
-      // ✅ Check admin matches
-      //const admin = await service.getAdmin(groupId);
-      const group = { ancestor: person, closed: false, timestamp: Date.now() };
+    let portraitBase64 = null;
+    try {
+      const res = await fetch(portraitUrl);
+      const blob = await res.blob();
+
+      // Convert blob to base64
+      const reader = new FileReader();
+      const base64Promise = new Promise((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+      });
+      reader.readAsDataURL(blob);
+      portraitBase64 = await base64Promise;
+    } catch (err) {
+      console.warn("Could not fetch portrait. Using fallback image.");
+      portraitBase64 = null; // or a fallback image as base64 if you want
+    }
+
+    try {
+      const group = {
+        ancestor: person,
+        portrait: portraitBase64,
+        closed: false,
+        timestamp: Date.now(),
+      };
       const admin = { admin: username, password: password };
-      console.log(group, admin);
 
       // ✅ Update the group with selected person ID
-      await service.addGroup(group, admin); // or pass { personId } if supported
+      const madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
 
       // ✅ Navigate to the memory wall
-      navigate("/wall", {});
+      navigate("/wall", { state: { madeGroup: madeGroup } });
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");

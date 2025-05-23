@@ -18,6 +18,9 @@ export class FuneralMemoryService {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(memory),
 			});
+			if (errorData?.error?.includes("closed")) {
+				throw new Error("This group is closed and cannot accept new memories.");
+			}
 			if (!res.ok) throw new Error("Failed to add memory");
 			return await res.json();
 		} catch (err) {
@@ -62,14 +65,17 @@ export class FuneralMemoryService {
 		try {
 			let existing;
 			do {
+				console.log("got to before fetch")
 				const res = await fetch(`/api/group?groupId=${newGroupId}`);
 				existing = res.ok ? await res.json() : null;
 				if (existing) {
 					newGroupId = Math.random().toString(36).substring(2, 8);
 				}
 			} while (existing);
+			console.log("got after fetch")
 
 			await this.addAdmin({ groupId: newGroupId, ...admin });
+			console.log("added admin")
 
 			const res = await fetch("/api/group", {
 				method: "POST",
