@@ -1,5 +1,4 @@
 import formidable from "formidable";
-import fs from "fs";
 import {
   postMemory,
   getMemories,
@@ -9,7 +8,7 @@ import {
 
 export const config = {
   api: {
-    bodyParser: false, // Necessary for formidable to work
+    bodyParser: false,
   },
 };
 
@@ -27,48 +26,24 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST") {
-      const form = new formidable.IncomingForm();
-
-      form.parse(req, async (err, fields, files) => {
-        if (err) {
-          console.error("Form parse error:", err);
-          return res.status(400).json({ message: "Error parsing form data" });
-        }
-
-        const memory = {
-          groupId: fields.groupId,
-          title: fields.title,
-          story: fields.memory,
-          location: fields.location,
-          date: fields.date,
-          author: fields.author,
-          createdAt: new Date(),
-        };
-
-        if (files.image) {
-          const fileData = await fs.promises.readFile(files.image.filepath);
-          memory.image = fileData.toString("base64"); // store as base64 string
-        }
-
-        const result = await postMemory(memory);
-        if (!result) {
-          return res.status(400).json({ message: "Failed to add memory" });
-        }
-        return res.status(201).json(result);
-      });
-      return;
+      const memory = req.body;
+      const result = await postMemory(memory);
+      if (!result) {
+        return res.status(400).json({ message: "Failed to add memory" });
+      }
+      return res.status(201).json(result);
     }
 
     if (req.method === "PUT") {
-      // To keep it simple, this assumes updates use JSON not multipart
-      const buffers = [];
-      for await (const chunk of req) {
-        buffers.push(chunk);
-      }
-      const body = JSON.parse(Buffer.concat(buffers).toString());
-
-      const { memoryId, title, story, location, date, image } = body;
-      const result = await updateMemory(memoryId, title, story, location, date, image);
+      const { memoryId, title, story, location, date, image } = req.body;
+      const result = await updateMemory(
+        memoryId,
+        title,
+        story,
+        location,
+        date,
+        image
+      );
       if (!result) {
         return res.status(400).json({ message: "Failed to update memory" });
       }
@@ -76,13 +51,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "DELETE") {
-      const buffers = [];
-      for await (const chunk of req) {
-        buffers.push(chunk);
-      }
-      const body = JSON.parse(Buffer.concat(buffers).toString());
-
-      const { memoryId } = body;
+      const { memoryId } = req.body;
       const result = await deleteMemory(memoryId);
       if (!result) {
         return res.status(404).json({ message: "Failed to delete memory" });
@@ -92,7 +61,6 @@ export default async function handler(req, res) {
 
     res.status(405).end();
   } catch (error) {
-    console.error("API error:", error);
     res.status(500).json({ error: error.message });
   }
 }
