@@ -83,6 +83,7 @@ export default function Wall() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     let newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required.";
     if (!memory.trim()) newErrors.memory = "Story is required.";
@@ -90,30 +91,26 @@ export default function Wall() {
       setErrors(newErrors);
       return;
     }
+
     setErrors({});
 
-    const memoryData = {
-      groupId,
-      title,
-      memory,
-      place,
-      date,
-      image: null,
-      author,
-      createdAt: new Date(),
-    };
-
+    const formData = new FormData();
+    formData.append("groupId", groupId);
+    formData.append("title", title);
+    formData.append("memory", memory);
+    formData.append("location", place || "");
+    formData.append("date", date || "");
+    formData.append("author", author || "");
     if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        memoryData.image = reader.result;
-        service.addMemory(memoryData);
-        resetFormFields();
-      };
-      reader.readAsDataURL(imageFile);
-    } else {
-      service.addMemory(memoryData);
+      formData.append("image", imageFile); // <-- actual File object
+    }
+
+    try {
+      await service.addMemory(formData); // pass FormData directly
       resetFormFields();
+    } catch (err) {
+      console.error("Error submitting memory:", err.message);
+      alert(err.message);
     }
   };
 
