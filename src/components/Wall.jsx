@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
+import imageCompression from "browser-image-compression";
 
 export default function Wall() {
   const [memoryList, setMemoryList] = useState([]);
@@ -199,12 +200,25 @@ export default function Wall() {
                   type="file"
                   className="form-control"
                   accept="image/*"
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     const file = e.target.files[0];
-                    setImageFile(file);
-                    const reader = new FileReader();
-                    reader.onloadend = () => setImagePreview(reader.result);
-                    if (file) reader.readAsDataURL(file);
+                    if (!file) return;
+
+                    try {
+                      const compressedFile = await imageCompression(file, {
+                        maxSizeMB: 1.5, // You can lower to ~1MB if you hit limits
+                        maxWidthOrHeight: 1024, // Optional resizing
+                        useWebWorker: true,
+                      });
+
+                      setImageFile(compressedFile);
+
+                      const reader = new FileReader();
+                      reader.onloadend = () => setImagePreview(reader.result);
+                      reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                      console.error("Image compression failed:", error);
+                    }
                   }}
                 />
                 {imagePreview && (
