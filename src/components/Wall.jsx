@@ -213,7 +213,7 @@ export default function Wall() {
                       });
 
                       setImageFile(compressedFile); // Save for submission
-
+                      console.log("compressed photo");
                       // Set preview image
                       const reader = new FileReader();
                       reader.onloadend = () => setImagePreview(reader.result);
