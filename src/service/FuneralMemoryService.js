@@ -11,18 +11,14 @@ export class FuneralMemoryService {
     }
   }
 
-  async addMemory(formData) {
+  async addMemory(memory) {
     try {
       const res = await fetch("/api/memories", {
         method: "POST",
-        body: formData, // No need for JSON.stringify or headers here
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(memory),
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error("Failed to add memory: " + errorText);
-      }
-
+      if (!res.ok) throw new Error("Failed to add memory");
       return await res.json();
     } catch (err) {
       console.error("Error adding memory:", err.message);
