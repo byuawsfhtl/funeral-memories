@@ -207,8 +207,8 @@ export default function Wall() {
                     try {
                       // Compress the image before upload
                       const compressedFile = await imageCompression(file, {
-                        maxSizeMB: 1.5, // adjust this to stay under Vercel's 4.5MB base64 limit
-                        maxWidthOrHeight: 1024, // optional resizing
+                        maxSizeMB: 0.8, // adjust this to stay under Vercel's 4.5MB base64 limit
+                        maxWidthOrHeight: 800, // optional resizing
                         useWebWorker: true,
                       });
 
