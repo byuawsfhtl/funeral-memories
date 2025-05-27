@@ -91,7 +91,12 @@ export default function Home() {
 
   return (
     <main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-      <h1 className="mb-5 text-center" style={{ fontFamily: 'Merriweather, serif',fontWeight:500 }}>Welcome to Funeral Memories!</h1>
+      <h1
+        className="mb-5 text-center"
+        style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
+      >
+        Welcome to Funeral Memories!
+      </h1>
 
       <div className="row w-100" style={{ maxWidth: "800px" }}>
         <div className="col-12 col-md-6 mb-3 mb-md-0">
