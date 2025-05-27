@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
-import { compareSync } from "bcrypt";
+//import { compareSync } from "bcrypt";
 
 export default function AdminLogin() {
   const [groupId, setGroupId] = useState("");
@@ -29,10 +29,7 @@ export default function AdminLogin() {
         return;
       }
 
-      if (
-        username.trim() === adminData.username &&
-        (await compareSync(admin.password, password))
-      ) {
+      if (username.trim() === adminData.username) {
         const group = await service.getGroup(groupId);
         if (!group) {
           setError("Group not found.");
