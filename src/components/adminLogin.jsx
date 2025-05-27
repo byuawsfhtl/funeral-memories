@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import { compareSync } from "bcrypt";
 
 export default function AdminLogin() {
   const [groupId, setGroupId] = useState("");
@@ -10,7 +11,6 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
-  const bcrypt = require("bcrypt");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ export default function AdminLogin() {
 
       if (
         username.trim() === adminData.username &&
-        (await bcrypt.compare(admin.password, password))
+        (await compareSync(admin.password, password))
       ) {
         const group = await service.getGroup(groupId);
         if (!group) {
