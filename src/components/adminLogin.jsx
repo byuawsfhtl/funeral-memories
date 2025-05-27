@@ -10,6 +10,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
+  const bcrypt = require("bcrypt");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,14 +24,14 @@ export default function AdminLogin() {
     try {
       const adminData = await service.getAdmin(groupId);
       console.log(adminData);
-      if (!adminData || !adminData.username || !adminData.password) {
+      if (!adminData || !adminData.admin || !adminData.password) {
         setError("Admin credentials not found for this group.");
         return;
       }
 
       if (
         username.trim() === adminData.username &&
-        password === adminData.password
+        (await bcrypt.compare(admin.password, password))
       ) {
         const group = await service.getGroup(groupId);
         if (!group) {
