@@ -103,7 +103,7 @@ export default function Home() {
           <button
             className="btn btn-primary w-100"
             style={{ height: "200px", fontSize: "1.5rem" }}
-            onClick={() => navigate("/join")}
+            onClick={() => navigate("/roleSelect")}
           >
             Join a Group
           </button>
