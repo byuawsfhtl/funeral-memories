@@ -76,7 +76,7 @@ export default function Host() {
 
           <div className="d-grid">
             <button type="submit" className="btn btn-secondary btn-lg">
-              Host and Continue to Select Relative
+              Continue to Select Relative
             </button>
           </div>
         </form>
