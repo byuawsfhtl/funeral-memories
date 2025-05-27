@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
-//import { compareSync } from "bcrypt";
+import { compareSync } from "bcrypt";
 
 export default function AdminLogin() {
   const [groupId, setGroupId] = useState("");
