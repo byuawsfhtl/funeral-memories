@@ -37,7 +37,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/join" element={<Join />} />
         <Route path="/host" element={<Host />} />
         <Route path="/roleSelect" element={RoleSelect}></Route>
-        <Route path="/admin" element={Admin}></Route>
+        <Route path="/admin" element={AdminLogin}></Route>
         <Route path="*" Component={Home} />
       </Routes>
       <Footer />
