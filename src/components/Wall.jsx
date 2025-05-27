@@ -4,8 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
+import Memory from "./Memory";
 
 export default function Wall() {
+  const [myMemories, setMyMemories] = useState([]);
   const [memoryList, setMemoryList] = useState([]);
   const [memory, setMemory] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -18,6 +20,7 @@ export default function Wall() {
   const [showDetail, setShowDetail] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
   const service = new FuneralMemoryService();
@@ -71,14 +74,17 @@ export default function Wall() {
 
     if (imageFile) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         memoryData.image = reader.result;
-        service.addMemory(memoryData);
+        const result = await service.addMemory(memoryData);
+        setMyMemories((prev) => [...prev, result]);
         resetFormFields();
       };
       reader.readAsDataURL(imageFile);
     } else {
-      service.addMemory(memoryData);
+      const result = await service.addMemory(memoryData);
+      setMyMemories((prev) => [...prev, result]);
+
       resetFormFields();
     }
   };
@@ -122,61 +128,12 @@ export default function Wall() {
 
       <ul className="memory-wall d-flex flex-wrap justify-content-center">
         {memoryList.map((mem, index) => (
-          <li
-            className="memory border rounded m-2 d-flex align-items-center justify-content-center text-center"
+          <Memory
             key={index}
-            onClick={() => {
-              setSelectedMemory(mem);
-              setShowDetail(true);
-            }}
-            style={{
-              cursor: "pointer",
-              height: "250px",
-              width: "300px",
-              padding: "1rem",
-              backgroundColor: "#f0f0f0",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <h5 className="fw-bold">{mem.title || "Untitled"}</h5>
-              {mem.author && (
-                <p className="fst-italic mb-1 text-secondary">
-                  Shared by: {mem.author}
-                </p>
-              )}
-              {mem.image && (
-                <img
-                  src={mem.image}
-                  alt="Memory"
-                  className="img-fluid mb-2"
-                  style={{
-                    height: "100px",
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                  }}
-                />
-              )}
-              {mem.memory && (
-                <p
-                  className="memory-preview mb-0"
-                  style={{
-                    maxHeight: "3.6em",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {mem.memory}
-                </p>
-              )}
-            </div>
-          </li>
+            mem={mem}
+            setSelectedMemory={setSelectedMemory}
+            setShowDetail={setShowDetail}
+          />
         ))}
       </ul>
 
@@ -205,16 +162,14 @@ export default function Wall() {
                     if (!file) return;
 
                     try {
-                      // Compress the image before upload
                       const compressedFile = await imageCompression(file, {
-                        maxSizeMB: 0.8, // adjust this to stay under Vercel's 4.5MB base64 limit
-                        maxWidthOrHeight: 800, // optional resizing
+                        maxSizeMB: 1.5, // You can lower to ~1MB if you hit limits
+                        maxWidthOrHeight: 1024, // Optional resizing
                         useWebWorker: true,
                       });
 
-                      setImageFile(compressedFile); // Save for submission
-                      console.log("compressed photo");
-                      // Set preview image
+                      setImageFile(compressedFile);
+
                       const reader = new FileReader();
                       reader.onloadend = () => setImagePreview(reader.result);
                       reader.readAsDataURL(compressedFile);
