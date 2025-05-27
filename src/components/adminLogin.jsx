@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
-import { compareSync } from "bcrypt";
+//import { compareSync } from "bcrypt";
 
 export default function AdminLogin() {
   const [groupId, setGroupId] = useState("");
@@ -22,29 +22,31 @@ export default function AdminLogin() {
     }
 
     try {
-      const adminData = await service.getAdmin(groupId);
-      console.log("adminData: ", adminData);
-      if (!adminData || !adminData.admin || !adminData.password) {
-        setError("Admin credentials not found for this group.");
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ groupId, username, password }),
+      });
+
+      if (!res.ok) {
+        const message = await res.text();
+        setError(message || "Invalid login credentials.");
         return;
       }
 
-      if (username.trim() === adminData.username) {
-        const group = await service.getGroup(groupId);
-        if (!group) {
-          setError("Group not found.");
-          return;
-        }
-
-        navigate("/wall", {
-          state: { madeGroup: group, isAdmin: true },
-        });
-      } else {
-        setError("Invalid username or password.");
+      // ✅ Login succeeded, now fetch group data
+      const group = await service.getGroup(groupId);
+      if (!group) {
+        setError("Group not found after login.");
+        return;
       }
+
+      navigate("/wall", {
+        state: { madeGroup: group, isAdmin: true },
+      });
     } catch (err) {
       console.error("Login error:", err.message);
-      setError("Failed to log in. Please check your inputs.");
+      setError("Something went wrong. Please try again.");
     }
   };
 
