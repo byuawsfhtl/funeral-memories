@@ -1,7 +1,7 @@
 // api/admin/login.js
 
 import { getAdmin } from "../../data/admindao.js"; // adjust path if needed
-import { compare } from "bcryptjs";
+import { compareSync } from "bcryptjs";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
       return res.status(401).send("Invalid username or group ID");
     }
 
-    const isMatch = await compare(password, admin.password);
+    const isMatch = await compareSync(password, admin.password);
     if (!isMatch) {
       return res.status(401).send("Invalid password");
     }
