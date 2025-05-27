@@ -23,7 +23,7 @@ export default function AdminLogin() {
 
     try {
       const adminData = await service.getAdmin(groupId);
-      console.log(adminData);
+      console.log("adminData: ", adminData);
       if (!adminData || !adminData.admin || !adminData.password) {
         setError("Admin credentials not found for this group.");
         return;
