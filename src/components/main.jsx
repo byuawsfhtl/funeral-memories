@@ -36,8 +36,8 @@ createRoot(document.getElementById("root")).render(
         <Route path="/find-relative" Component={FindRelative} />
         <Route path="/join" element={<Join />} />
         <Route path="/host" element={<Host />} />
-        <Route path="/roleSelect" element={RoleSelect}></Route>
-        <Route path="/admin" element={AdminLogin}></Route>
+        <Route path="/roleSelect" Component={RoleSelect}></Route>
+        <Route path="/admin" Component={AdminLogin}></Route>
         <Route path="*" Component={Home} />
       </Routes>
       <Footer />
