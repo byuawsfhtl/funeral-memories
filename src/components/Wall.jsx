@@ -21,7 +21,6 @@ export default function Wall() {
   const [showDetail, setShowDetail] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-
   const navigate = useNavigate();
   const location = useLocation();
   const service = new FuneralMemoryService();
@@ -29,7 +28,6 @@ export default function Wall() {
   const person = madeGroup?.ancestor;
   const groupId = madeGroup?.groupId;
   const portraitUrl = madeGroup?.portrait;
-  console.log(groupId);
 
   useEffect(() => {
     if (!groupId) {
