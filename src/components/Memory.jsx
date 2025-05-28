@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function Memory({ mem, setSelectedMemory, setShowDetail }) {
   return (
     <li
