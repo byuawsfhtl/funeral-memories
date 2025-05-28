@@ -44,20 +44,14 @@ export default function Confirmation() {
 
     let portraitBase64 = null;
     try {
-      const res = await fetch(portraitUrl);
-      const blob = await res.blob();
-
-      // Convert blob to base64
-      const reader = new FileReader();
-      const base64Promise = new Promise((resolve, reject) => {
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-      });
-      reader.readAsDataURL(blob);
-      portraitBase64 = await base64Promise;
+      const response = await fetch(
+        `/api/fetchPortrait?portraitUrl=${encodeURIComponent(portraitUrl)}`
+      );
+      const data = await response.json();
+      portraitBase64 = data.base64;
     } catch (err) {
-      console.warn("Could not fetch portrait. Using fallback image.");
-      portraitBase64 = null; // or a fallback image as base64 if you want
+      console.warn("Failed to fetch portrait:", err);
+      portraitBase64 = null;
     }
 
     try {
