@@ -4,7 +4,6 @@ export default function Memory({ mem, setSelectedMemory, setShowDetail }) {
   return (
     <li
       className="memory border rounded m-2 d-flex align-items-center justify-content-center text-center"
-      key={index}
       onClick={() => {
         setSelectedMemory(mem);
         setShowDetail(true);
