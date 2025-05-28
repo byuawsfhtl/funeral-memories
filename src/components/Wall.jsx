@@ -109,7 +109,7 @@ export default function Wall() {
           className="text-center"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
         >
-          Memory Wall for {person.name}
+          {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
         </h2>
 
         {/* Show portrait image with rounded corners */}
