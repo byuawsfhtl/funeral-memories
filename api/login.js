@@ -20,7 +20,9 @@ export default async function handler(req, res) {
       return res.status(401).send("Invalid username or group ID");
     }
 
-    const isMatch = await compareSync(password, admin.password);
+    const isMatch = await bcrypt.compareSync(password, admin.password);
+
+    console.log("isMatch: ", isMatch);
     if (!isMatch) {
       return res.status(401).send("Invalid password");
     }
