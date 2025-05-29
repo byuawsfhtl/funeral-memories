@@ -4,6 +4,7 @@ import { getAdmin } from "../lib/AdminDAO.js";
 import { compareSync } from "bcryptjs";
 
 export default async function handler(req, res) {
+  console.log("got to login.js");
   if (req.method !== "POST") {
     return res.status(405).send("Method not allowed");
   }
