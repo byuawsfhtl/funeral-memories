@@ -1,6 +1,7 @@
 // api/admin/login.js
 
 import { getAdmin } from "../lib/AdminDAO.js";
+import bcrypt from "bcryptjs";
 import { compareSync } from "bcryptjs";
 
 export default async function handler(req, res) {
