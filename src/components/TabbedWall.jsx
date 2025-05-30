@@ -26,7 +26,7 @@ export default function TabbedMemoryWall({
             className={`nav-link ${activeTab === "others" ? "active" : ""}`}
             onClick={() => setActiveTab("others")}
           >
-            Other Memories
+            Memory Wall
           </button>
         </li>
       </ul>
