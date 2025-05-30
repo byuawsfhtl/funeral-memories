@@ -28,6 +28,13 @@ export default function Wall() {
   const person = madeGroup?.ancestor;
   const groupId = madeGroup?.groupId;
   const portraitUrl = madeGroup?.portrait;
+  const sessionId = useRef(
+    localStorage.getItem("sessionId") || crypto.randomUUID()
+  );
+
+  useEffect(() => {
+    localStorage.setItem("sessionId", sessionId.current);
+  }, []);
 
   useEffect(() => {
     if (!groupId) {
@@ -47,14 +54,6 @@ export default function Wall() {
         console.error("Error fetching memories:", error);
       }
     };
-
-    const sessionId = useRef(
-      localStorage.getItem("sessionId") || crypto.randomUUID()
-    );
-
-    useEffect(() => {
-      localStorage.setItem("sessionId", sessionId.current);
-    }, []);
 
     fetchMemories();
 
