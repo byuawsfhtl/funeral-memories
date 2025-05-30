@@ -38,10 +38,23 @@ export default function Wall() {
       try {
         const data = await service.getMemories(groupId);
         setMemoryList(data);
+        const mine = data.filter((m) => m.sessionId === sessionId.current);
+        const others = data.filter((m) => m.sessionId !== sessionId.current);
+
+        setMyMemories(mine); // you'll display this separately
+        setMemoryList(others);
       } catch (error) {
         console.error("Error fetching memories:", error);
       }
     };
+
+    const sessionId = useRef(
+      localStorage.getItem("sessionId") || crypto.randomUUID()
+    );
+
+    useEffect(() => {
+      localStorage.setItem("sessionId", sessionId.current);
+    }, []);
 
     fetchMemories();
 
@@ -70,6 +83,7 @@ export default function Wall() {
       image: null,
       author,
       createdAt: new Date(),
+      sessionId: sessionId.current,
     };
 
     if (imageFile) {
@@ -126,10 +140,23 @@ export default function Wall() {
         </p>
       </div>
 
+      <h4 className="text-center mt-4">My Memories</h4>
+      <ul className="memory-wall d-flex flex-wrap justify-content-center">
+        {myMemories.map((mem, index) => (
+          <Memory
+            key={`mine-${index}`}
+            mem={mem}
+            setSelectedMemory={setSelectedMemory}
+            setShowDetail={setShowDetail}
+          />
+        ))}
+      </ul>
+
+      <h4 className="text-center mt-4">Other Memories</h4>
       <ul className="memory-wall d-flex flex-wrap justify-content-center">
         {memoryList.map((mem, index) => (
           <Memory
-            key={index}
+            key={`others-${index}`}
             mem={mem}
             setSelectedMemory={setSelectedMemory}
             setShowDetail={setShowDetail}
