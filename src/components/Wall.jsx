@@ -6,6 +6,7 @@ import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
 import Memory from "./Memory";
+import TabbedMemoryWall from "./TabbedWall";
 
 export default function Wall() {
   const [myMemories, setMyMemories] = useState([]);
@@ -139,29 +140,12 @@ export default function Wall() {
         </p>
       </div>
 
-      <h4 className="text-center mt-4">My Memories</h4>
-      <ul className="memory-wall d-flex flex-wrap justify-content-center">
-        {myMemories.map((mem, index) => (
-          <Memory
-            key={`mine-${index}`}
-            mem={mem}
-            setSelectedMemory={setSelectedMemory}
-            setShowDetail={setShowDetail}
-          />
-        ))}
-      </ul>
-
-      <h4 className="text-center mt-4">Other Memories</h4>
-      <ul className="memory-wall d-flex flex-wrap justify-content-center">
-        {memoryList.map((mem, index) => (
-          <Memory
-            key={`others-${index}`}
-            mem={mem}
-            setSelectedMemory={setSelectedMemory}
-            setShowDetail={setShowDetail}
-          />
-        ))}
-      </ul>
+      <TabbedMemoryWall
+        myMemories={myMemories}
+        otherMemories={memoryList}
+        setSelectedMemory={setSelectedMemory}
+        setShowDetail={setShowDetail}
+      />
 
       <div className="pt-3 pb-3 px-3">
         <button className="btn btn-primary" onClick={() => setShowPopup(true)}>

@@ -1,0 +1,72 @@
+import React, { useState } from "react";
+import Memory from "./Memory";
+
+export default function TabbedMemoryWall({
+  myMemories,
+  otherMemories,
+  setSelectedMemory,
+  setShowDetail,
+}) {
+  const [activeTab, setActiveTab] = useState("mine");
+
+  return (
+    <div className="container">
+      {/* Tab Buttons */}
+      <ul className="nav nav-tabs justify-content-center">
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "mine" ? "active" : ""}`}
+            onClick={() => setActiveTab("mine")}
+          >
+            My Memories
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "others" ? "active" : ""}`}
+            onClick={() => setActiveTab("others")}
+          >
+            Other Memories
+          </button>
+        </li>
+      </ul>
+
+      {/* Tab Content */}
+      <div className="tab-content pt-3">
+        {activeTab === "mine" && (
+          <ul className="memory-wall d-flex flex-wrap justify-content-center">
+            {myMemories.length > 0 ? (
+              myMemories.map((mem, index) => (
+                <Memory
+                  key={`mine-${index}`}
+                  mem={mem}
+                  setSelectedMemory={setSelectedMemory}
+                  setShowDetail={setShowDetail}
+                />
+              ))
+            ) : (
+              <p className="text-muted text-center">No memories added yet.</p>
+            )}
+          </ul>
+        )}
+
+        {activeTab === "others" && (
+          <ul className="memory-wall d-flex flex-wrap justify-content-center">
+            {otherMemories.length > 0 ? (
+              otherMemories.map((mem, index) => (
+                <Memory
+                  key={`others-${index}`}
+                  mem={mem}
+                  setSelectedMemory={setSelectedMemory}
+                  setShowDetail={setShowDetail}
+                />
+              ))
+            ) : (
+              <p className="text-muted text-center">No other memories yet.</p>
+            )}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
