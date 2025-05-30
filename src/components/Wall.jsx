@@ -38,6 +38,19 @@ export default function Wall() {
   }, []);
 
   useEffect(() => {
+    if (showPopup) {
+      document.body.classList.add("popup-open");
+    } else {
+      document.body.classList.remove("popup-open");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("popup-open");
+    };
+  }, [showPopup]);
+
+  useEffect(() => {
     if (!groupId) {
       navigate("/");
       return;
