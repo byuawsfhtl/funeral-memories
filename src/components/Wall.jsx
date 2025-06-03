@@ -60,7 +60,7 @@ export default function Wall() {
         const data = await service.getMemories(groupId);
         setMemoryList(data);
         const mine = data.filter((m) => m.sessionId === sessionId.current);
-        const others = data.filter((m) => m.sessionId);
+        const others = data.filter((m) => m.sessionId !== sessionId.current);
 
         setMyMemories(mine); // you'll display this separately
         setMemoryList(others);
