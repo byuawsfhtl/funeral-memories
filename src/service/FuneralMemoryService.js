@@ -173,4 +173,16 @@ export class FuneralMemoryService {
       throw new Error("Unable to delete admin");
     }
   }
+
+  async getAdminSessions(groupId) {
+    try {
+      const response = await fetch(`/api/admin-sessions?groupId=${groupId}`);
+      if (!response.ok) throw new Error("Failed to fetch admin sessions");
+      const data = await response.json();
+      return data.sessions || [];
+    } catch (err) {
+      console.error("Error fetching admin sessions:", err);
+      return [];
+    }
+  }
 }
