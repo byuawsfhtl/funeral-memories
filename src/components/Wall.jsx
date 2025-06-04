@@ -65,12 +65,7 @@ export default function Wall() {
       return;
     }
 
-    // Admin checker effect (add this at the bottom of your useEffects)
-    useEffect(() => {
-      if (groupId && sessionId.current) {
-        checkAdmin();
-      }
-    }, [groupId, sessionId.current]);
+    // Admin checker effect (add this at the bottom of your useEffects
 
     const fetchMemories = async () => {
       try {
@@ -91,6 +86,12 @@ export default function Wall() {
 
     return () => clearInterval(intervalId);
   }, [groupId, navigate]);
+
+  useEffect(() => {
+    if (groupId && sessionId.current) {
+      checkAdmin();
+    }
+  }, [groupId, sessionId.current]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
