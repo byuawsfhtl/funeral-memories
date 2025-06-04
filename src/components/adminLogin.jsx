@@ -21,11 +21,14 @@ export default function AdminLogin() {
       return;
     }
 
+    const sessionId = localStorage.getItem("sessionId") || crypto.randomUUID();
+    localStorage.setItem("sessionId", sessionId);
+
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ groupId, username, password }),
+        body: JSON.stringify({ groupId, username, password, sessionId }),
       });
 
       if (!res.ok) {

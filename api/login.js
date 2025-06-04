@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     return res.status(405).send("Method not allowed");
   }
 
-  const { groupId, username, password } = req.body;
+  const { groupId, username, password, sessionId } = req.body;
 
   if (!groupId || !username || !password) {
     return res.status(400).send("Missing groupId, username, or password");
@@ -28,6 +28,8 @@ export default async function handler(req, res) {
     if (!isMatch) {
       return res.status(401).send("Invalid password");
     }
+
+    await addAdminSession(groupId, sessionId);
 
     return res.status(200).json({ success: true });
   } catch (err) {

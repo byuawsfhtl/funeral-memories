@@ -32,6 +32,15 @@ export default function Wall() {
   const sessionId = useRef(
     localStorage.getItem("sessionId") || crypto.randomUUID()
   );
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const checkAdmin = async () => {
+    const sessions = await service.getAdminSessions(groupId);
+    console.log(sessions);
+    if (sessions.includes(sessionId.current)) {
+      setIsAdmin(true);
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem("sessionId", sessionId.current);
@@ -55,6 +64,14 @@ export default function Wall() {
       navigate("/");
       return;
     }
+
+    // Admin checker effect (add this at the bottom of your useEffects)
+    useEffect(() => {
+      if (groupId && sessionId.current) {
+        checkAdmin();
+      }
+    }, [groupId, sessionId.current]);
+
     const fetchMemories = async () => {
       try {
         const data = await service.getMemories(groupId);
