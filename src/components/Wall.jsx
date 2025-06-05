@@ -175,6 +175,7 @@ export default function Wall() {
         otherMemories={memoryList}
         setSelectedMemory={setSelectedMemory}
         setShowDetail={setShowDetail}
+        isAdmin={isAdmin}
       />
 
       <div className="pt-3 pb-3 px-3">

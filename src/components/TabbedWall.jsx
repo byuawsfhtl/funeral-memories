@@ -6,6 +6,7 @@ export default function TabbedMemoryWall({
   otherMemories,
   setSelectedMemory,
   setShowDetail,
+  isAdmin,
 }) {
   const [activeTab, setActiveTab] = useState("others");
 
@@ -42,6 +43,7 @@ export default function TabbedMemoryWall({
                   mem={mem}
                   setSelectedMemory={setSelectedMemory}
                   setShowDetail={setShowDetail}
+                  canDelete={isAdmin}
                 />
               ))
             ) : (
@@ -59,6 +61,7 @@ export default function TabbedMemoryWall({
                   mem={mem}
                   setSelectedMemory={setSelectedMemory}
                   setShowDetail={setShowDetail}
+                  canDelete={true}
                 />
               ))
             ) : (

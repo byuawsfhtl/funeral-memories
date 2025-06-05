@@ -1,9 +1,30 @@
 import React from "react";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
-export default function Memory({ mem, setSelectedMemory, setShowDetail }) {
+export default function Memory({
+  mem,
+  setSelectedMemory,
+  setShowDetail,
+  canDelete,
+}) {
+  const service = new FuneralMemoryService();
+
+  const handleDelete = async (e) => {
+    e.stopPropagation(); // Prevent click from opening detail
+    if (!window.confirm("Are you sure you want to delete this memory?")) return;
+
+    try {
+      await service.deleteMemory(mem._id);
+      window.location.reload(); // simplest way to refresh (or lift state update up)
+    } catch (err) {
+      console.error("Error deleting memory:", err.message);
+      alert("Failed to delete memory.");
+    }
+  };
+
   return (
     <li
-      className="memory border rounded m-2 d-flex align-items-center justify-content-center text-center"
+      className="memory border rounded m-2 d-flex align-items-center justify-content-center text-center position-relative"
       onClick={() => {
         setSelectedMemory(mem);
         setShowDetail(true);
@@ -20,6 +41,14 @@ export default function Memory({ mem, setSelectedMemory, setShowDetail }) {
         alignItems: "center",
       }}
     >
+      {canDelete && (
+        <button
+          className="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
+          onClick={handleDelete}
+        >
+          &times;
+        </button>
+      )}
       <div>
         <h5 className="fw-bold">{mem.title || "Untitled"}</h5>
         {mem.author && (
