@@ -93,6 +93,21 @@ export default function Wall() {
     }
   }, [groupId, sessionId.current]);
 
+  const handleDeleteDetail = async () => {
+    if (!window.confirm("Are you sure you want to delete this memory?")) return;
+
+    try {
+      await service.deleteMemory(selectedMemory._id);
+      setShowDetail(false);
+      const refreshed = await service.getMemories(groupId);
+      setMemoryList(refreshed);
+      setMyMemories(refreshed.filter((m) => m.sessionId === sessionId.current));
+    } catch (err) {
+      console.error("Error deleting memory:", err.message);
+      alert("Failed to delete memory.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
@@ -365,6 +380,12 @@ export default function Wall() {
               >
                 Close
               </button>
+
+              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
+                <button className="btn btn-danger" onClick={handleDeleteDetail}>
+                  Delete
+                </button>
+              )}
             </div>
           </div>
         </div>

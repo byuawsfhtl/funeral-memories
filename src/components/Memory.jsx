@@ -41,14 +41,6 @@ export default function Memory({
         alignItems: "center",
       }}
     >
-      {canDelete && (
-        <button
-          className="btn btn-sm btn-danger position-absolute top-0 end-0 m-2"
-          onClick={handleDelete}
-        >
-          &times;
-        </button>
-      )}
       <div>
         <h5 className="fw-bold">{mem.title || "Untitled"}</h5>
         {mem.author && (
