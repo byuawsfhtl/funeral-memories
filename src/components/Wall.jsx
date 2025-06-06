@@ -373,7 +373,7 @@ export default function Wall() {
                 </>
               )}
             </small>
-            <div className="mt-3 d-flex justify-content-start align-items-center gap-4">
+            <div className="mt-3 d-flex justify-content-start align-items-center gap-2">
               <button
                 className="btn btn-secondary me-2"
                 onClick={() => setShowDetail(false)}
