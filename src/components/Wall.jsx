@@ -427,13 +427,16 @@ export default function Wall() {
               </button>
 
               {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button className="btn btn-danger" onClick={handleDeleteDetail}>
+                <button
+                  className="btn btn-danger me-2"
+                  onClick={handleDeleteDetail}
+                >
                   Delete
                 </button>
               )}
 
               {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn" onClick={handleEdit}>
+                <button className="btn btn-success me-2" onClick={handleEdit}>
                   Edit
                 </button>
               )}
