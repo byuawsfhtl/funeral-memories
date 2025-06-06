@@ -373,7 +373,7 @@ export default function Wall() {
                 <button
                   type="button"
                   className="btn btn-outline-secondary me-2"
-                  onClick={() => setShowPopup(false)}
+                  onClick={() => resetFormFields}
                 >
                   Cancel
                 </button>
