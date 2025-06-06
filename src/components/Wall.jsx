@@ -373,7 +373,7 @@ export default function Wall() {
                 </>
               )}
             </small>
-            <div className="mt-3">
+            <div className="mt-3 d-flex gap-2">
               <button
                 className="btn btn-secondary"
                 onClick={() => setShowDetail(false)}
