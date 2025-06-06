@@ -33,6 +33,7 @@ export default function Wall() {
     localStorage.getItem("sessionId") || crypto.randomUUID()
   );
   const [isAdmin, setIsAdmin] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const checkAdmin = async () => {
     const sessions = await service.getAdminSessions(groupId);
@@ -117,34 +118,65 @@ export default function Wall() {
       setErrors(newErrors);
       return;
     }
-    setErrors({});
 
-    const memoryData = {
-      groupId,
-      title,
-      memory,
-      place,
-      date,
-      image: null,
-      author,
-      createdAt: new Date(),
-      sessionId: sessionId.current,
-    };
+    try {
+      if (editingId) {
+        // EDIT MODE
+        const imageBase64 = imageFile
+          ? await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(imageFile);
+            })
+          : imagePreview || null;
 
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        memoryData.image = reader.result;
-        const result = await service.addMemory(memoryData);
-        setMyMemories((prev) => [...prev, result]);
-        resetFormFields();
-      };
-      reader.readAsDataURL(imageFile);
-    } else {
-      const result = await service.addMemory(memoryData);
-      setMyMemories((prev) => [...prev, result]);
+        await service.updateMemory(
+          editingId,
+          title,
+          memory,
+          place,
+          date,
+          imageBase64
+        );
+      } else {
+        // ADD MODE
+        const memoryData = {
+          groupId,
+          title,
+          memory,
+          place,
+          date,
+          image: null,
+          author,
+          createdAt: new Date(),
+          sessionId: sessionId.current,
+        };
 
+        if (imageFile) {
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            memoryData.image = reader.result;
+            const result = await service.addMemory(memoryData);
+            setMyMemories((prev) => [...prev, result]);
+            resetFormFields();
+          };
+          reader.readAsDataURL(imageFile);
+          return;
+        } else {
+          const result = await service.addMemory(memoryData);
+          setMyMemories((prev) => [...prev, result]);
+        }
+      }
+
+      // Refresh after edit or add
+      const refreshed = await service.getMemories(groupId);
+      setMemoryList(refreshed);
+      setMyMemories(refreshed.filter((m) => m.sessionId === sessionId.current));
       resetFormFields();
+    } catch (error) {
+      console.error("Failed to submit:", error.message);
+      alert("Submission failed.");
     }
   };
 
@@ -157,6 +189,19 @@ export default function Wall() {
     setImagePreview(null);
     setAuthor("");
     setShowPopup(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = () => {
+    setTitle(selectedMemory.title || "");
+    setMemory(selectedMemory.memory || "");
+    setPlace(selectedMemory.place || "");
+    setDate(selectedMemory.date || "");
+    setAuthor(selectedMemory.author || "");
+    setImagePreview(selectedMemory.image || null);
+    setShowDetail(false); // Close the detail view
+    setShowPopup(true); // Open the form
+    setEditingId(selectedMemory._id); // Track that we're editing
   };
 
   return (
@@ -384,6 +429,12 @@ export default function Wall() {
               {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
                 <button className="btn btn-danger" onClick={handleDeleteDetail}>
                   Delete
+                </button>
+              )}
+
+              {selectedMemory.sessionId === sessionId.current && (
+                <button className="btn" onClick={handleEdit}>
+                  Edit
                 </button>
               )}
             </div>
