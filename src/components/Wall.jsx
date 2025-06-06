@@ -378,7 +378,7 @@ export default function Wall() {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Submit Memory
+                  {editingId ? "Update Memory" : "Submit Memory"}
                 </button>
               </div>
             </form>
