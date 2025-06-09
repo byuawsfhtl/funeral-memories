@@ -242,16 +242,12 @@ export default function Wall() {
 			<div
 				className="pt-3 pb-3 px-3"
 				style={{
-					display: flex,
-					justifyContent: center,
-					alignItems: center,
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
 				}}
 			>
-				<button
-					className="btn btn-primary"
-					style
-					onClick={() => setShowPopup(true)}
-				>
+				<button className="btn btn-primary" onClick={() => setShowPopup(true)}>
 					Add Memory
 				</button>
 			</div>
