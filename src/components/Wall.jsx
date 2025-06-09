@@ -131,6 +131,15 @@ export default function Wall() {
             })
           : imagePreview || null;
 
+        console.log("Submitting update:", {
+          memoryId: editingId,
+          title,
+          story: memory,
+          place,
+          date,
+          image: imageFile || imagePreview,
+        });
+
         await service.updateMemory(
           editingId,
           title,

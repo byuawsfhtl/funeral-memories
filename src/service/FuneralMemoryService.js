@@ -42,6 +42,15 @@ export class FuneralMemoryService {
   }
 
   async updateMemory(memoryId, title, story, location, date, image) {
+    console.log("Sending to backend:", {
+      memoryId,
+      title,
+      story,
+      location,
+      date,
+      image,
+    });
+
     try {
       const res = await fetch("/api/memories", {
         method: "PUT",
