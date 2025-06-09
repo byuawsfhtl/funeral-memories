@@ -240,7 +240,7 @@ export default function Wall() {
 			</div>
 
 			<div
-				className="pt-3 pb-3 px-3"
+				className="pt-1 pb-3 px-3"
 				style={{
 					display: "flex",
 					justifyContent: "center",
