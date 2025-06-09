@@ -242,10 +242,9 @@ export default function Wall() {
 			<div
 				className="pt-3 pb-3 px-3"
 				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "100vh",
+					display: flex,
+					justifyContent: center,
+					alignItems: center,
 				}}
 			>
 				<button
