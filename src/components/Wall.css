@@ -43,6 +43,15 @@
   flex-direction: column;
 }
 
+.popup img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
 /* Optional: Prevent background scroll */
 body.popup-open {
   overflow: hidden;
