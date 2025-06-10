@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
-import imageCompression from "browser-image-compression";
 import Memory from "./Memory";
 import TabbedMemoryWall from "./TabbedWall";
 
