@@ -382,7 +382,6 @@ export default function Wall() {
 									className="form-control"
 									value={date}
 									onChange={(e) => setDate(e.target.value)}
-									max={new Date().toISOString().split("T")[0]}
 								/>
 							</div>
 
