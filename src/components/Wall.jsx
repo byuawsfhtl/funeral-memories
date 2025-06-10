@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
+import imageCompression from "browser-image-compression";
 import Memory from "./Memory";
 import TabbedMemoryWall from "./TabbedWall";
 
@@ -36,6 +37,7 @@ export default function Wall() {
 
   const checkAdmin = async () => {
     const sessions = await service.getAdminSessions(groupId);
+    console.log(sessions);
     if (sessions.includes(sessionId.current)) {
       setIsAdmin(true);
     }
@@ -51,6 +53,8 @@ export default function Wall() {
     } else {
       document.body.classList.remove("popup-open");
     }
+
+    // Cleanup on unmount
     return () => {
       document.body.classList.remove("popup-open");
     };
@@ -62,19 +66,25 @@ export default function Wall() {
       return;
     }
 
+    // Admin checker effect (add this at the bottom of your useEffects
+
     const fetchMemories = async () => {
       try {
         const data = await service.getMemories(groupId);
         setMemoryList(data);
         const mine = data.filter((m) => m.sessionId === sessionId.current);
-        setMyMemories(mine);
+
+        setMyMemories(mine); // you'll display this separately
+        setMemoryList(data);
       } catch (error) {
         console.error("Error fetching memories:", error);
       }
     };
 
     fetchMemories();
+
     const intervalId = setInterval(fetchMemories, 10000);
+
     return () => clearInterval(intervalId);
   }, [groupId, navigate]);
 
@@ -86,6 +96,7 @@ export default function Wall() {
 
   const handleDeleteDetail = async () => {
     if (!window.confirm("Are you sure you want to delete this memory?")) return;
+
     try {
       await service.deleteMemory(selectedMemory._id);
       setShowDetail(false);
@@ -110,6 +121,7 @@ export default function Wall() {
 
     try {
       if (editingId) {
+        // EDIT MODE
         const imageBase64 = imageFile
           ? await new Promise((resolve, reject) => {
               const reader = new FileReader();
@@ -118,6 +130,15 @@ export default function Wall() {
               reader.readAsDataURL(imageFile);
             })
           : imagePreview || null;
+
+        console.log("Submitting update:", {
+          memoryId: editingId,
+          title,
+          story: memory,
+          place,
+          date,
+          image: imageFile || imagePreview,
+        });
 
         await service.updateMemory(
           editingId,
@@ -128,6 +149,7 @@ export default function Wall() {
           imageBase64
         );
       } else {
+        // ADD MODE
         const memoryData = {
           groupId,
           title,
@@ -156,6 +178,7 @@ export default function Wall() {
         }
       }
 
+      // Refresh after edit or add
       const refreshed = await service.getMemories(groupId);
       setMemoryList(refreshed);
       setMyMemories(refreshed.filter((m) => m.sessionId === sessionId.current));
@@ -185,14 +208,49 @@ export default function Wall() {
     setDate(selectedMemory.date || "");
     setAuthor(selectedMemory.author || "");
     setImagePreview(selectedMemory.image || null);
-    setShowDetail(false);
-    setShowPopup(true);
-    setEditingId(selectedMemory._id);
+    setShowDetail(false); // Close the detail view
+    setShowPopup(true); // Open the form
+    setEditingId(selectedMemory._id); // Track that we're editing
   };
 
   return (
     <div>
-      {/* ...header and add button... */}
+      <div className="pt-3 pb-3 text-center">
+        <h2
+          className="text-center"
+          style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
+        >
+          {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
+        </h2>
+
+        {/* Show portrait image with rounded corners */}
+        {person && (
+          <img
+            src={portraitUrl}
+            alt="Portrait"
+            className="img-fluid mt-2"
+            style={{ height: "100px", borderRadius: "10%" }}
+          />
+        )}
+
+        {/* Smaller group ID below */}
+        <p className="text-muted mt-2" style={{ fontSize: "0.9rem" }}>
+          Group ID: {groupId}
+        </p>
+      </div>
+
+      <div
+        className="pt-1 pb-3 px-3"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <button className="btn btn-primary" onClick={() => setShowPopup(true)}>
+          Add Memory
+        </button>
+      </div>
 
       <TabbedMemoryWall
         myMemories={myMemories}
@@ -350,26 +408,6 @@ export default function Wall() {
             className="popup text-start"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Buttons at the top */}
-            <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowDetail(false)}
-              >
-                Close
-              </button>
-              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button className="btn btn-danger" onClick={handleDeleteDetail}>
-                  Delete
-                </button>
-              )}
-              {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn btn-success" onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
-            </div>
-
             <h4 className="fw-bold">{selectedMemory.title}</h4>
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
@@ -396,6 +434,29 @@ export default function Wall() {
                 </>
               )}
             </small>
+            <div className="mt-3 d-flex justify-content-start align-items-center gap-2">
+              <button
+                className="btn btn-secondary me-2"
+                onClick={() => setShowDetail(false)}
+              >
+                Close
+              </button>
+
+              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
+                <button
+                  className="btn btn-danger me-2"
+                  onClick={handleDeleteDetail}
+                >
+                  Delete
+                </button>
+              )}
+
+              {selectedMemory.sessionId === sessionId.current && (
+                <button className="btn btn-success me-2" onClick={handleEdit}>
+                  Edit
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
