@@ -453,7 +453,6 @@ export default function Wall() {
           </div>
         </div>
       )}
-      )}
     </div>
   );
 }
