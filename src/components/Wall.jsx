@@ -407,7 +407,7 @@ export default function Wall() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Buttons at top */}
-            <div className="d-flex justify-content-start align-items-center gap-2 mb-3">
+            <div className="d-flex justify-content-end align-items-start gap-2 mb-3">
               <button
                 className="btn btn-secondary"
                 onClick={() => setShowDetail(false)}
