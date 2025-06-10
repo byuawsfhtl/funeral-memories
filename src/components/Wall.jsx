@@ -408,52 +408,21 @@ export default function Wall() {
             className="popup text-start"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Buttons now at the top */}
-            <div className="d-flex justify-content-end align-items-center gap-2 mb-3">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowDetail(false)}
-              >
-                Close
-              </button>
-
-              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button className="btn btn-danger" onClick={handleDeleteDetail}>
-                  Delete
-                </button>
-              )}
-
-              {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn btn-success" onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
-            </div>
-
-            {/* Memory content follows */}
             <h4 className="fw-bold">{selectedMemory.title}</h4>
-
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
                 Shared by: {selectedMemory.author}
               </p>
             )}
-
             {selectedMemory.image && (
               <img
                 src={selectedMemory.image}
                 alt="Memory"
                 className="img-fluid mb-3"
-                style={{
-                  maxHeight: "200px",
-                  borderRadius: "8px",
-                  objectFit: "contain",
-                }}
+                style={{ maxHeight: "200px", borderRadius: "8px" }}
               />
             )}
-
             <p>{selectedMemory.memory}</p>
-
             <small className="text-muted d-block mt-2">
               {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
               {selectedMemory.date && (
@@ -465,7 +434,6 @@ export default function Wall() {
                 </>
               )}
             </small>
-
             <div className="mt-3 d-flex justify-content-start align-items-center gap-2">
               <button
                 className="btn btn-secondary me-2"
