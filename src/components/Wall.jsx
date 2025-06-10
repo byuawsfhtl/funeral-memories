@@ -220,7 +220,7 @@ export default function Wall() {
           className="text-center"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
         >
-          {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
+          {person ? Memory Wall for ${person.name} : "Memory Wall"}
         </h2>
 
         {/* Show portrait image with rounded corners */}
@@ -238,20 +238,6 @@ export default function Wall() {
           Group ID: {groupId}
         </p>
       </div>
-
-      <div
-        className="pt-1 pb-3 px-3"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <button className="btn btn-primary" onClick={() => setShowPopup(true)}>
-          Add Memory
-        </button>
-      </div>
-
       <TabbedMemoryWall
         myMemories={myMemories}
         otherMemories={memoryList}
@@ -259,7 +245,11 @@ export default function Wall() {
         setShowDetail={setShowDetail}
         isAdmin={isAdmin}
       />
-
+      <div className="pt-3 pb-3 px-3">
+        <button className="btn btn-primary" onClick={() => setShowPopup(true)}>
+          Add Memory
+        </button>
+      </div>
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup text-start">
@@ -336,7 +326,7 @@ export default function Wall() {
                 </label>
                 <input
                   type="text"
-                  className={`form-control ${errors.title ? "is-invalid" : ""}`}
+                  className={form-control ${errors.title ? "is-invalid" : ""}}
                   placeholder="Story Title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -351,9 +341,9 @@ export default function Wall() {
                   Story<span className="text-danger small">* (required)</span>
                 </label>
                 <textarea
-                  className={`form-control ${
+                  className={form-control ${
                     errors.memory ? "is-invalid" : ""
-                  }`}
+                  }}
                   placeholder="I remember a time when…"
                   rows={4}
                   value={memory}
@@ -382,7 +372,6 @@ export default function Wall() {
                   className="form-control"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  max={new Date().toISOString().split("T")[0]}
                 />
               </div>
 
@@ -402,19 +391,43 @@ export default function Wall() {
           </div>
         </div>
       )}
-
       {showDetail && selectedMemory && (
         <div className="popup-overlay" onClick={() => setShowDetail(false)}>
           <div
             className="popup text-start"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Buttons at the top */}
+            <div className="d-flex justify-content-end align-items-center gap-2 mb-3 mt-1">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowDetail(false)}
+              >
+                Close
+              </button>
+
+              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
+                <button className="btn btn-danger" onClick={handleDeleteDetail}>
+                  Delete
+                </button>
+              )}
+
+              {selectedMemory.sessionId === sessionId.current && (
+                <button className="btn btn-success" onClick={handleEdit}>
+                  Edit
+                </button>
+              )}
+            </div>
+
+            {/* Memory content */}
             <h4 className="fw-bold">{selectedMemory.title}</h4>
+
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
                 Shared by: {selectedMemory.author}
               </p>
             )}
+
             {selectedMemory.image && (
               <img
                 src={selectedMemory.image}
@@ -423,7 +436,9 @@ export default function Wall() {
                 style={{ maxHeight: "200px", borderRadius: "8px" }}
               />
             )}
+
             <p>{selectedMemory.memory}</p>
+
             <small className="text-muted d-block mt-2">
               {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
               {selectedMemory.date && (
@@ -435,31 +450,9 @@ export default function Wall() {
                 </>
               )}
             </small>
-            <div className="mt-3 d-flex justify-content-start align-items-center gap-2">
-              <button
-                className="btn btn-secondary me-2"
-                onClick={() => setShowDetail(false)}
-              >
-                Close
-              </button>
-
-              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button
-                  className="btn btn-danger me-2"
-                  onClick={handleDeleteDetail}
-                >
-                  Delete
-                </button>
-              )}
-
-              {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn btn-success me-2" onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
-            </div>
           </div>
         </div>
+      )}
       )}
     </div>
   );
