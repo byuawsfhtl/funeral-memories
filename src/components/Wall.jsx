@@ -223,7 +223,6 @@ export default function Wall() {
           {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
         </h2>
 
-        {/* Show portrait image with rounded corners */}
         {person && (
           <img
             src={portraitUrl}
@@ -233,7 +232,6 @@ export default function Wall() {
           />
         )}
 
-        {/* Smaller group ID below */}
         <p className="text-muted mt-2" style={{ fontSize: "0.9rem" }}>
           Group ID: {groupId}
         </p>
@@ -280,8 +278,8 @@ export default function Wall() {
 
                     try {
                       const compressedFile = await imageCompression(file, {
-                        maxSizeMB: 1.5, // You can lower to ~1MB if you hit limits
-                        maxWidthOrHeight: 1024, // Optional resizing
+                        maxSizeMB: 1.5,
+                        maxWidthOrHeight: 1024,
                         useWebWorker: true,
                       });
 
@@ -408,6 +406,28 @@ export default function Wall() {
             className="popup text-start"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Buttons at top */}
+            <div className="d-flex justify-content-start align-items-center gap-2 mb-3">
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowDetail(false)}
+              >
+                Close
+              </button>
+
+              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
+                <button className="btn btn-danger" onClick={handleDeleteDetail}>
+                  Delete
+                </button>
+              )}
+
+              {selectedMemory.sessionId === sessionId.current && (
+                <button className="btn btn-success" onClick={handleEdit}>
+                  Edit
+                </button>
+              )}
+            </div>
+
             <h4 className="fw-bold">{selectedMemory.title}</h4>
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
@@ -434,29 +454,6 @@ export default function Wall() {
                 </>
               )}
             </small>
-            <div className="mt-3 d-flex justify-content-start align-items-center gap-2">
-              <button
-                className="btn btn-secondary me-2"
-                onClick={() => setShowDetail(false)}
-              >
-                Close
-              </button>
-
-              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button
-                  className="btn btn-danger me-2"
-                  onClick={handleDeleteDetail}
-                >
-                  Delete
-                </button>
-              )}
-
-              {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn btn-success me-2" onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
-            </div>
           </div>
         </div>
       )}
