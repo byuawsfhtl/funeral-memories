@@ -202,6 +202,148 @@ export default function Wall() {
         isAdmin={isAdmin}
       />
 
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup text-start">
+            <h5>Write a Memory</h5>
+            <form onSubmit={handleSubmit}>
+              {/* Image Upload */}
+              <div className="mb-3">
+                <label className="form-label">
+                  Image <span className="text-muted small">(optional)</span>
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    try {
+                      const compressedFile = await imageCompression(file, {
+                        maxSizeMB: 1.5, // You can lower to ~1MB if you hit limits
+                        maxWidthOrHeight: 1024, // Optional resizing
+                        useWebWorker: true,
+                      });
+
+                      setImageFile(compressedFile);
+
+                      const reader = new FileReader();
+                      reader.onloadend = () => setImagePreview(reader.result);
+                      reader.readAsDataURL(compressedFile);
+                    } catch (error) {
+                      console.error("Image compression failed:", error);
+                    }
+                  }}
+                />
+                {imagePreview && (
+                  <div className="position-relative mt-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="img-fluid"
+                      style={{ maxHeight: "150px", borderRadius: "8px" }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                      style={{ transform: "translate(50%, -50%)" }}
+                      onClick={() => {
+                        setImagePreview(null);
+                        setImageFile(null);
+                      }}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Form Fields */}
+              <div className="mb-3">
+                <label className="form-label">Your Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter your full name"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">
+                  Title<span className="text-danger small">* (required)</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.title ? "is-invalid" : ""}`}
+                  placeholder="Story Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                {errors.title && (
+                  <div className="invalid-feedback">{errors.title}</div>
+                )}
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">
+                  Story<span className="text-danger small">* (required)</span>
+                </label>
+                <textarea
+                  className={`form-control ${
+                    errors.memory ? "is-invalid" : ""
+                  }`}
+                  placeholder="I remember a time when…"
+                  rows={4}
+                  value={memory}
+                  onChange={(e) => setMemory(e.target.value)}
+                />
+                {errors.memory && (
+                  <div className="invalid-feedback">{errors.memory}</div>
+                )}
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Place</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter a place"
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+
+              <div className="d-flex justify-content-between mt-4">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary me-2"
+                  onClick={() => resetFormFields()}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  {editingId ? "Update Memory" : "Submit Memory"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showDetail && selectedMemory && (
         <div className="popup-overlay" onClick={() => setShowDetail(false)}>
           <div
