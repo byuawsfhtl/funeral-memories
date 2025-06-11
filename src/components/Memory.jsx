@@ -41,7 +41,7 @@ export default function Memory({
         alignItems: "center",
       }}
     >
-      <div>
+      <div style={{ width: "100%", textAlign: "center" }}>
         <h5
           className="fw-bold"
           title={mem.title}
