@@ -442,7 +442,16 @@ export default function Wall() {
                 style={{ maxHeight: "200px", borderRadius: "8px" }}
               />
             )}
-            <p>{selectedMemory.memory}</p>
+            <div
+              style={{
+                maxHeight: "200px",
+                overflowY: "auto",
+                whiteSpace: "pre-wrap",
+                paddingRight: "0.5rem",
+              }}
+            >
+              {selectedMemory.memory}
+            </div>
             <small className="text-muted d-block mt-2">
               {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
               {selectedMemory.date && (
