@@ -385,6 +385,7 @@ export default function Wall() {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select" // Makes month/year dropdown scrollable!
+                  maxDate={new Date()}
                 />
               </div>
 
