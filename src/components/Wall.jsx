@@ -380,7 +380,7 @@ export default function Wall() {
                 <br></br>
                 <DatePicker
                   selected={date ? new Date(date) : null}
-                  onChange={(d) => setDate(d.toLocaleDateString("en-CA"))}
+                  onChange={(d) => setDate(d.toISOString().split("T")[0])}
                   className="form-control"
                   placeholderText="Select a date"
                   showMonthDropdown
