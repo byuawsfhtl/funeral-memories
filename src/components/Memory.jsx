@@ -42,7 +42,19 @@ export default function Memory({
       }}
     >
       <div>
-        <h5 className="fw-bold">{mem.title || "Untitled"}</h5>
+        <h5
+          className="fw-bold"
+          title={mem.title}
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "100%",
+          }}
+        >
+          {mem.title || "Untitled"}
+        </h5>
+
         {mem.author && (
           <p className="fst-italic mb-1 text-secondary">
             Shared by: {mem.author}
