@@ -428,7 +428,17 @@ export default function Wall() {
               )}
             </div>
 
-            <h4 className="fw-bold">{selectedMemory.title}</h4>
+            <h4
+              title={selectedMemorymemory.title}
+              style={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%", // or a pixel value like "200px"
+              }}
+            >
+              {selectedMemorymemory.title}
+            </h4>
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
                 Shared by: {selectedMemory.author}
