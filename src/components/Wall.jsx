@@ -378,6 +378,7 @@ export default function Wall() {
               <div className="mb-3">
                 <label className="form-label">Date</label>
                 <br></br>
+                console.log(date, new Date())
                 <DatePicker
                   selected={date ? new Date(date) : null}
                   onChange={(d) => setDate(d.toISOString().split("T")[0])}
