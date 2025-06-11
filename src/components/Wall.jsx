@@ -429,7 +429,7 @@ export default function Wall() {
             </div>
 
             <h4
-              title={selectedMemorymemory.title}
+              title={selectedMemory.title}
               style={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
@@ -437,7 +437,7 @@ export default function Wall() {
                 maxWidth: "100%", // or a pixel value like "200px"
               }}
             >
-              {selectedMemorymemory.title}
+              {selectedMemory.title}
             </h4>
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
