@@ -7,6 +7,8 @@ import "./Wall.css";
 import imageCompression from "browser-image-compression";
 import Memory from "./Memory";
 import TabbedMemoryWall from "./TabbedWall";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Wall() {
   const [myMemories, setMyMemories] = useState([]);
@@ -375,11 +377,14 @@ export default function Wall() {
 
               <div className="mb-3">
                 <label className="form-label">Date</label>
-                <input
-                  type="date"
+                <DatePicker
+                  selected={date ? new Date(date) : null}
+                  onChange={(d) => setDate(d.toISOString().split("T")[0])}
                   className="form-control"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  placeholderText="Select a date"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select" // Makes month/year dropdown scrollable!
                 />
               </div>
 
