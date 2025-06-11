@@ -380,7 +380,12 @@ export default function Wall() {
                 <br></br>
                 <DatePicker
                   selected={date ? new Date(date) : null}
-                  onChange={(d) => setDate(d.toISOString().split("T")[0])}
+                  onChange={(d) => {
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, "0");
+                    const day = String(d.getDate()).padStart(2, "0");
+                    setDate(`${year}-${month}-${day}`);
+                  }}
                   className="form-control"
                   placeholderText="Select a date"
                   showMonthDropdown
