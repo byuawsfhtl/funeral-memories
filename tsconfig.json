@@ -1,16 +1,15 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"jsx": "react-jsx",
 		"module": "esnext",
 		"moduleResolution": "node",
+		"jsx": "react-jsx",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
-		"noEmit": true // <--- 💥 Prevents overwriting .js files!
+		"noEmit": true
 	},
-	"include": ["**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules"]
+	"include": ["api", "src"]
 }
