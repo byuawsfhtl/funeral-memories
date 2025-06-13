@@ -1,4 +1,5 @@
 import { Admin } from "../model/Admin";
+import { Group } from "../model/Group";
 import { Memory } from "../model/Memory";
 
 export class FuneralMemoryService {
@@ -114,7 +115,7 @@ export class FuneralMemoryService {
 		}
 	}
 
-	async getGroup(groupId: string) {
+	async getGroup(groupId: string): Promise<Group> {
 		try {
 			const res = await fetch(`/api/group?groupId=${groupId}`);
 			if (!res.ok) throw new Error("Failed to fetch group");
