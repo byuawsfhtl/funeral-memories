@@ -3,7 +3,7 @@ import {
 	getGroup,
 	updateGroup,
 	deleteGroup,
-} from "../lib/GroupDAO.js";
+} from "../lib/GroupDAO.ts";
 
 export default async function handler(req, res) {
 	try {

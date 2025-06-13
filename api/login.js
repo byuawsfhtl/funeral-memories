@@ -1,40 +1,40 @@
 // api/admin/login.js
 
-import { getAdmin } from "../lib/AdminDAO.js";
+import { getAdmin } from "../lib/AdminDAO.ts";
 import bcrypt from "bcryptjs";
 import { compareSync } from "bcryptjs";
-import { addAdminSession } from "../lib/AdminDAO.js";
+import { addAdminSession } from "../lib/AdminDAO.ts";
 
 export default async function handler(req, res) {
-  console.log("got to login.js");
-  if (req.method !== "POST") {
-    return res.status(405).send("Method not allowed");
-  }
+	console.log("got to login.js");
+	if (req.method !== "POST") {
+		return res.status(405).send("Method not allowed");
+	}
 
-  const { groupId, username, password, sessionId } = req.body;
+	const { groupId, username, password, sessionId } = req.body;
 
-  if (!groupId || !username || !password) {
-    return res.status(400).send("Missing groupId, username, or password");
-  }
+	if (!groupId || !username || !password) {
+		return res.status(400).send("Missing groupId, username, or password");
+	}
 
-  try {
-    const admin = await getAdmin(groupId);
-    if (!admin || admin.admin !== username) {
-      return res.status(401).send("Invalid username or group ID");
-    }
+	try {
+		const admin = await getAdmin(groupId);
+		if (!admin || admin.admin !== username) {
+			return res.status(401).send("Invalid username or group ID");
+		}
 
-    const isMatch = await bcrypt.compareSync(password, admin.password);
+		const isMatch = await bcrypt.compareSync(password, admin.password);
 
-    console.log("isMatch: ", isMatch);
-    if (!isMatch) {
-      return res.status(401).send("Invalid password");
-    }
+		console.log("isMatch: ", isMatch);
+		if (!isMatch) {
+			return res.status(401).send("Invalid password");
+		}
 
-    await addAdminSession(groupId, sessionId);
+		await addAdminSession(groupId, sessionId);
 
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error("Login error:", err.message);
-    return res.status(500).send("Internal server error");
-  }
+		return res.status(200).json({ success: true });
+	} catch (err) {
+		console.error("Login error:", err.message);
+		return res.status(500).send("Internal server error");
+	}
 }
