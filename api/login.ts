@@ -1,9 +1,9 @@
 // api/admin/login.js
 
-import { getAdmin } from "../lib/AdminDAO";
+import { getAdmin } from "../lib/AdminDAO.js";
 import bcrypt from "bcryptjs";
 import { compareSync } from "bcryptjs";
-import { addAdminSession } from "../lib/AdminDAO";
+import { addAdminSession } from "../lib/AdminDAO.js";
 
 export default async function handler(req: any, res: any) {
 	console.log("got to login.js");

@@ -140,7 +140,6 @@ export class FuneralMemoryService {
 			console.log(`in service: ${groupId}`);
 			const res = await fetch(`/api/group?groupId=${groupId}`);
 			if (!res.ok) throw new Error("Failed to fetch group");
-			console.log(`service fetched:${await res.json()} `);
 			return await res.json();
 		} catch (err) {
 			if (err instanceof Error) {
