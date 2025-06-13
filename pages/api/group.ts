@@ -1,4 +1,9 @@
-import { postGroup, getGroup, updateGroup, deleteGroup } from "../lib/GroupDAO";
+import {
+	postGroup,
+	getGroup,
+	updateGroup,
+	deleteGroup,
+} from "../../lib/GroupDAO";
 
 export default async function handler(req: any, res: any) {
 	try {

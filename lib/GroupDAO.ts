@@ -8,6 +8,8 @@ if (!uri) {
 const client = new MongoClient(uri);
 const dbName = "FuneralMemories";
 
+console.log("GroupDAO loaded");
+
 async function connect() {
 	await client.connect();
 	return client.db(dbName);
