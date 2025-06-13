@@ -3,6 +3,7 @@ import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO.ts";
 export default async function handler(req, res) {
 	try {
 		if (req.method === "GET") {
+			console.log("Got to GET");
 			const { groupId } = req.query;
 			if (!groupId) return res.status(400).json({ message: "Missing groupId" });
 

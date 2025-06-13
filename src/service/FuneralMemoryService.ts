@@ -117,8 +117,10 @@ export class FuneralMemoryService {
 
 	async getGroup(groupId: string): Promise<Group> {
 		try {
+			console.log(`in service: ${groupId}`);
 			const res = await fetch(`/api/group?groupId=${groupId}`);
 			if (!res.ok) throw new Error("Failed to fetch group");
+			console.log(`service fetched:${await res.json()} `);
 			return await res.json();
 		} catch (err) {
 			console.error("Error fetching group:", err.message);

@@ -20,9 +20,11 @@ export default function Join() {
 					state: { madeGroup: group },
 				});
 			} else {
+				console.log("no group");
 				alert("That group doesn't exist yet, double check the Group Id");
 			}
 		} catch (err) {
+			console.log("server error");
 			console.error("Error fetching group:", err.message);
 			alert("That group doesn't exist yet, double check the Group Id");
 		}
