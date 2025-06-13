@@ -1,4 +1,4 @@
-import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO.ts";
+import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO";
 
 export default async function handler(req, res) {
 	console.log(`req: ${req}`);

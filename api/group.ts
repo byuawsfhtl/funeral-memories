@@ -1,9 +1,4 @@
-import {
-	postGroup,
-	getGroup,
-	updateGroup,
-	deleteGroup,
-} from "../lib/GroupDAO.ts";
+import { postGroup, getGroup, updateGroup, deleteGroup } from "../lib/GroupDAO";
 
 export default async function handler(req, res) {
 	try {

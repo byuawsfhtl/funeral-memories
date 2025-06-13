@@ -1,5 +1,5 @@
 // pages/api/admin-sessions.js
-import { getAdminSessions } from "../lib/AdminDAO.ts";
+import { getAdminSessions } from "../lib/AdminDAO";
 
 export default async function handler(req, res) {
 	const groupId = req.query.groupId;

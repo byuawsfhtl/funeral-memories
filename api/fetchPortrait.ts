@@ -1,5 +1,5 @@
 // pages/api/fetchPortrait.js
-import fetch from "node-fetch";
+//import fetch from "node-fetch";
 
 export default async function handler(req, res) {
 	const { portraitUrl } = req.query;
@@ -18,7 +18,8 @@ export default async function handler(req, res) {
 		}
 
 		const contentType = imageRes.headers.get("content-type") || "image/jpeg";
-		const buffer = await imageRes.buffer();
+		const arrayBuffer = await imageRes.arrayBuffer();
+		const buffer = Buffer.from(arrayBuffer);
 		const base64 = `data:${contentType};base64,${buffer.toString("base64")}`;
 
 		res.status(200).json({ base64 });

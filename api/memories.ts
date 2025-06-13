@@ -3,7 +3,7 @@ import {
 	getMemories,
 	updateMemory,
 	deleteMemory,
-} from "../lib/MemoriesDAO.ts";
+} from "../lib/MemoriesDAO";
 
 export default async function handler(req, res) {
 	try {
