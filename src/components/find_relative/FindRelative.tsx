@@ -67,12 +67,12 @@ export default function FindRelative() {
 			});
 	}, [location.state]);
 
-	const handleChange = (event) => {
+	const handleChange = (event: any) => {
 		const { name, value } = event.target;
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 
 		if (!sessionStorage.getItem("yourKey")) {
@@ -90,7 +90,7 @@ export default function FindRelative() {
 	};
 
 	//const handleAncestorClick = (personData) => {
-	const handleAncestorClick = async (personData) => {
+	const handleAncestorClick = async (personData: any) => {
 		// Navigate to confirmation with all needed state
 		navigate("/confirmation", {
 			state: {
@@ -105,7 +105,7 @@ export default function FindRelative() {
 	};
 	// };
 
-	function printAncestor(ancestor) {
+	function printAncestor(ancestor: any) {
 		const p = ancestor.content.gedcomx.persons[0].display;
 		p.id = ancestor.content.gedcomx.persons[0].id;
 

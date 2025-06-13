@@ -1,6 +1,6 @@
 import { postGroup, getGroup, updateGroup, deleteGroup } from "../lib/GroupDAO";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	try {
 		if (req.method === "GET") {
 			const { groupId } = req.query;
@@ -42,6 +42,10 @@ export default async function handler(req, res) {
 
 		res.status(405).end();
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		if (error instanceof Error) {
+			res.status(500).json({ error: error.message });
+		} else {
+			res.status(500).json({ error: "An unknown error occurred" });
+		}
 	}
 }

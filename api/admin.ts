@@ -1,6 +1,6 @@
 import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	console.log(`req: ${req}`);
 	try {
 		if (req.method === "GET") {
@@ -35,6 +35,7 @@ export default async function handler(req, res) {
 
 		res.status(405).end();
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		const message = error instanceof Error ? error.message : String(error);
+		res.status(500).json({ error: message });
 	}
 }

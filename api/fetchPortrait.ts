@@ -1,7 +1,7 @@
 // pages/api/fetchPortrait.js
 //import fetch from "node-fetch";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	const { portraitUrl } = req.query;
 
 	if (!portraitUrl) {

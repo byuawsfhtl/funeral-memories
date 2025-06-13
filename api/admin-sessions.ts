@@ -1,7 +1,7 @@
 // pages/api/admin-sessions.js
 import { getAdminSessions } from "../lib/AdminDAO";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	const groupId = req.query.groupId;
 	if (!groupId) return res.status(400).json({ message: "Missing groupId" });
 

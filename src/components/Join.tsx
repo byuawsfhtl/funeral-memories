@@ -9,7 +9,7 @@ export default function Join() {
 	const navigate = useNavigate();
 	const service = new FuneralMemoryService();
 
-	const handleJoin = async (event) => {
+	const handleJoin = async (event: any) => {
 		event.preventDefault();
 
 		try {
@@ -25,7 +25,11 @@ export default function Join() {
 			}
 		} catch (err) {
 			console.log("server error");
-			console.error("Error fetching group:", err.message);
+			if (err instanceof Error) {
+				console.error("Error fetching group:", err.message);
+			} else {
+				console.error("Error fetching group:", err);
+			}
 			alert("That group doesn't exist yet, double check the Group Id");
 		}
 	};

@@ -10,7 +10,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to fetch memories");
 			return await res.json();
 		} catch (err) {
-			console.error("Error fetching memories from API:", err.message);
+			if (err instanceof Error) {
+				console.error("Error fetching memories from API:", err.message);
+			} else {
+				console.error("Error fetching memories from API:", err);
+			}
 			throw new Error("Unable to fetch memories");
 		}
 	}
@@ -25,7 +29,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to add memory");
 			return await res.json();
 		} catch (err) {
-			console.error("Error adding memory:", err.message);
+			if (err instanceof Error) {
+				console.error("Error adding memory:", err.message);
+			} else {
+				console.error("Error adding memory:", err);
+			}
 			throw new Error("Unable to add memory");
 		}
 	}
@@ -40,7 +48,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to delete memory");
 			return await res.json();
 		} catch (err) {
-			console.error("Error deleting memory:", err.message);
+			if (err instanceof Error) {
+				console.error("Error deleting memory:", err.message);
+			} else {
+				console.error("Error deleting memory:", err);
+			}
 			throw new Error("Unable to delete memory");
 		}
 	}
@@ -78,7 +90,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to update memory");
 			return await res.json();
 		} catch (err) {
-			console.error("Error updating memory:", err.message);
+			if (err instanceof Error) {
+				console.error("Error updating memory:", err.message);
+			} else {
+				console.error("Error updating memory:", err);
+			}
 			throw new Error("Unable to update memory");
 		}
 	}
@@ -110,7 +126,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to add group");
 			return await res.json();
 		} catch (err) {
-			console.error("Error adding group:", err.message);
+			if (err instanceof Error) {
+				console.error("Error adding group:", err.message);
+			} else {
+				console.error("Error adding group:", err);
+			}
 			throw new Error("Unable to add group");
 		}
 	}
@@ -123,7 +143,11 @@ export class FuneralMemoryService {
 			console.log(`service fetched:${await res.json()} `);
 			return await res.json();
 		} catch (err) {
-			console.error("Error fetching group:", err.message);
+			if (err instanceof Error) {
+				console.error("Error fetching group:", err.message);
+			} else {
+				console.error("Error fetching group:", err);
+			}
 			throw new Error("Unable to fetch group");
 		}
 	}
@@ -138,7 +162,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to update group");
 			return await res.json();
 		} catch (err) {
-			console.error("Error updating group:", err.message);
+			if (err instanceof Error) {
+				console.error("Error updating group:", err.message);
+			} else {
+				console.error("Error updating group:", err);
+			}
 			throw new Error("Unable to update group");
 		}
 	}
@@ -153,7 +181,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to delete group");
 			return await res.json();
 		} catch (err) {
-			console.error("Error deleting group:", err.message);
+			if (err instanceof Error) {
+				console.error("Error deleting group:", err.message);
+			} else {
+				console.error("Error deleting group:", err);
+			}
 			throw new Error("Unable to delete group");
 		}
 	}
@@ -173,7 +205,11 @@ export class FuneralMemoryService {
 			}
 			return await res.json();
 		} catch (err) {
-			console.error("Error adding admin:", err.message);
+			if (err instanceof Error) {
+				console.error("Error adding admin:", err.message);
+			} else {
+				console.error("Error adding admin:", err);
+			}
 			throw new Error("Unable to add admin");
 		}
 	}
@@ -184,7 +220,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to fetch admin");
 			return await res.json();
 		} catch (err) {
-			console.error("Error fetching admin:", err.message);
+			if (err instanceof Error) {
+				console.error("Error fetching admin:", err.message);
+			} else {
+				console.error("Error fetching admin:", err);
+			}
 			throw new Error("Unable to fetch admin");
 		}
 	}
@@ -199,7 +239,11 @@ export class FuneralMemoryService {
 			if (!res.ok) throw new Error("Failed to delete admin");
 			return await res.json();
 		} catch (err) {
-			console.error("Error deleting admin:", err.message);
+			if (err instanceof Error) {
+				console.error("Error deleting admin:", err.message);
+			} else {
+				console.error("Error deleting admin:", err);
+			}
 			throw new Error("Unable to delete admin");
 		}
 	}

@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { compareSync } from "bcryptjs";
 import { addAdminSession } from "../lib/AdminDAO";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
 	console.log("got to login.js");
 	if (req.method !== "POST") {
 		return res.status(405).send("Method not allowed");
@@ -34,7 +34,11 @@ export default async function handler(req, res) {
 
 		return res.status(200).json({ success: true });
 	} catch (err) {
-		console.error("Login error:", err.message);
+		if (err instanceof Error) {
+			console.error("Login error:", err.message);
+		} else {
+			console.error("Login error:", err);
+		}
 		return res.status(500).send("Internal server error");
 	}
 }
