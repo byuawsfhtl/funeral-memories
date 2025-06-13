@@ -34,7 +34,11 @@ export async function postMemory(
 		const result = await db.collection("memories").insertOne(memory);
 		return await db.collection("memories").findOne({ _id: result.insertedId });
 	} catch (err) {
-		console.error("Error adding memory to database:", err.message);
+		if (err instanceof Error) {
+			console.error("Error adding memory to database:", err.message);
+		} else {
+			console.error("Error adding memory to database:", err);
+		}
 		throw new Error("Unable to add memory");
 	}
 }
@@ -44,7 +48,11 @@ export async function getMemories(groupId: string): Promise<Document[]> {
 		const db = await connect();
 		return await db.collection("memories").find({ groupId }).toArray();
 	} catch (err) {
-		console.error("Error getting memories from the database:", err.message);
+		if (err instanceof Error) {
+			console.error("Error getting memories from the database:", err.message);
+		} else {
+			console.error("Error getting memories from the database:", err);
+		}
 		throw new Error("Unable to get memories");
 	}
 }
@@ -64,7 +72,11 @@ export async function deleteMemory(
 
 		return { message: "Memory deleted successfully" };
 	} catch (err) {
-		console.error("Error deleting memory:", err.message);
+		if (err instanceof Error) {
+			console.error("Error deleting memory:", err.message);
+		} else {
+			console.error("Error deleting memory:", err);
+		}
 		throw new Error("Unable to delete memory");
 	}
 }
@@ -100,7 +112,11 @@ export async function updateMemory(
 		console.log("Updated document:", updatedDoc);
 		return updatedDoc;
 	} catch (err) {
-		console.error("Error updating memory:", err.message);
+		if (err instanceof Error) {
+			console.error("Error updating memory:", err.message);
+		} else {
+			console.error("Error updating memory:", err);
+		}
 		throw new Error("Unable to update memory");
 	}
 }

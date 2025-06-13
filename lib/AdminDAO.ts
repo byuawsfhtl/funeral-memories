@@ -29,7 +29,11 @@ export async function postAdmin(
 		});
 		return await db.collection("admin").findOne({ _id: result.insertedId });
 	} catch (err) {
-		console.error("Error adding admin to database:", err.message);
+		if (err instanceof Error) {
+			console.error("Error adding admin to database:", err.message);
+		} else {
+			console.error("Error adding admin to database:", err);
+		}
 		throw new Error("Unable to add admin");
 	}
 }
@@ -39,7 +43,11 @@ export async function getAdmin(groupId: string): Promise<Document | null> {
 		const db = await connect();
 		return await db.collection("admin").findOne({ groupId });
 	} catch (err) {
-		console.error("Error getting admin:", err.message);
+		if (err instanceof Error) {
+			console.error("Error getting admin:", err.message);
+		} else {
+			console.error("Error getting admin:", err);
+		}
 		throw new Error("Unable to get admin");
 	}
 }
@@ -57,7 +65,11 @@ export async function deleteAdmin(
 
 		return { message: "Admin deleted successfully" };
 	} catch (err) {
-		console.error("Error deleting admin:", err.message);
+		if (err instanceof Error) {
+			console.error("Error deleting admin:", err.message);
+		} else {
+			console.error("Error deleting admin:", err);
+		}
 		throw new Error("Unable to delete admin");
 	}
 }

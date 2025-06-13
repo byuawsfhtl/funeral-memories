@@ -21,7 +21,11 @@ export async function postGroup(
 		const result = await db.collection("groups").insertOne(group);
 		return await db.collection("groups").findOne({ _id: result.insertedId });
 	} catch (err) {
-		console.error("Error adding group to database:", err.message);
+		if (err instanceof Error) {
+			console.error("Error adding group to database:", err.message);
+		} else {
+			console.error("Error adding group to database:", err);
+		}
 		throw new Error("Unable to add group");
 	}
 }
@@ -33,7 +37,11 @@ export async function getGroup(
 		const db = await connect();
 		return await db.collection("groups").findOne({ groupId });
 	} catch (err) {
-		console.error("Error getting group:", err.message);
+		if (err instanceof Error) {
+			console.error("Error getting group:", err.message);
+		} else {
+			console.error("Error getting group:", err);
+		}
 		throw new Error("Unable to get group");
 	}
 }
@@ -54,7 +62,11 @@ export async function updateGroup(
 
 		return await db.collection("groups").findOne({ groupId });
 	} catch (err) {
-		console.error("Error updating group:", err.message);
+		if (err instanceof Error) {
+			console.error("Error updating group:", err.message);
+		} else {
+			console.error("Error updating group:", err);
+		}
 		throw new Error("Unable to update group");
 	}
 }
@@ -72,7 +84,11 @@ export async function deleteGroup(
 
 		return { message: "Group deleted successfully" };
 	} catch (err) {
-		console.error("Error deleting group:", err.message);
+		if (err instanceof Error) {
+			console.error("Error deleting group:", err.message);
+		} else {
+			console.error("Error deleting group:", err);
+		}
 		throw new Error("Unable to delete group");
 	}
 }
