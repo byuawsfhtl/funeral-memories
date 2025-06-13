@@ -1,6 +1,7 @@
 import { postAdmin, getAdmin, deleteAdmin } from "../lib/AdminDAO.ts";
 
 export default async function handler(req, res) {
+	console.log(`req: ${req}`);
 	try {
 		if (req.method === "GET") {
 			console.log("Got to GET");
