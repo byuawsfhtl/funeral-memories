@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Memory from "./Memory";
+import AMemory from "./AMemory";
 
 export default function TabbedMemoryWall({
 	myMemories,
@@ -38,7 +38,7 @@ export default function TabbedMemoryWall({
 					<ul className="memory-wall d-flex flex-wrap justify-content-center">
 						{otherMemories.length > 0 ? (
 							otherMemories.map((mem, index) => (
-								<Memory
+								<AMemory
 									key={`others-${index}`}
 									mem={mem}
 									setSelectedMemory={setSelectedMemory}
@@ -56,7 +56,7 @@ export default function TabbedMemoryWall({
 					<ul className="memory-wall d-flex flex-wrap justify-content-center">
 						{myMemories.length > 0 ? (
 							myMemories.map((mem, index) => (
-								<Memory
+								<AMemory
 									key={`mine-${index}`}
 									mem={mem}
 									setSelectedMemory={setSelectedMemory}
