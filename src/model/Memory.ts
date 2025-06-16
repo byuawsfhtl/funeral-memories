@@ -1,4 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export interface Memory {
+	_id: ObjectId;
 	groupId: string;
 	title: string;
 	memory: string;

@@ -19,7 +19,7 @@ export class FuneralMemoryService {
 		}
 	}
 
-	async addMemory(memory: Memory) {
+	async addMemory(memory: Partial<Memory>) {
 		try {
 			const res = await fetch("/api/memories", {
 				method: "POST",
