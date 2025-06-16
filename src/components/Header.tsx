@@ -3,7 +3,7 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLocation } from "react-router-dom";
-import logo from "/placeholder_img/NewFuneralMemoriesLogo.png";
+import logo from "../../placeholder_img/NewFuneralMemoriesLogo.png";
 
 export default function Header() {
 	return (
@@ -27,11 +27,6 @@ export default function Header() {
 						<LinkContainer to="/" className="nav-link text-white">
 							<Nav.Link active={location.pathname === "/"}>Home</Nav.Link>
 						</LinkContainer>
-						<LinkContainer to="/login" className="nav-link text-white">
-							<Nav.Link active={location.pathname === "/login"}>
-								Family Search Login
-							</Nav.Link>
-						</LinkContainer>
 						<LinkContainer to="/instructions" className="nav-link text-white">
 							<Nav.Link active={location.pathname === "/instructions"}>
 								Instructions
@@ -47,21 +42,6 @@ export default function Header() {
 								Memory Wall
 							</Nav.Link>
 						</LinkContainer>
-						<LinkContainer to="/addmem" className="nav-link text-white">
-							<Nav.Link active={location.pathname === "/addmem"}>
-								Add Memory
-							</Nav.Link>
-						</LinkContainer>
-						{/* <LinkContainer to="/quote" className="nav-link text-white">
-                <Nav.Link active={location.pathname === "/quote"}>
-                    Quote
-                </Nav.Link>
-            </LinkContainer> */}
-						{/* <LinkContainer to="/chat" className="nav-link text-white">
-                <Nav.Link active={location.pathname === "/chat"}>
-                    Chat
-                </Nav.Link>
-            </LinkContainer> */}
 						<LinkContainer to="/find-relative" className="nav-link text-white">
 							<Nav.Link active={location.pathname === "/find-relative"}>
 								Find Relative
