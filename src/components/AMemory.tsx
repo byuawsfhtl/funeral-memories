@@ -11,7 +11,7 @@ interface MemoryProps {
 	canDelete?: boolean;
 }
 
-export default function Memory(props: MemoryProps) {
+export default function AMemory(props: MemoryProps) {
 	const service = new FuneralMemoryService();
 
 	const handleDelete = async (e: any) => {

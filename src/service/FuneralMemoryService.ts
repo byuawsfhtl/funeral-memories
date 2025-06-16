@@ -60,7 +60,7 @@ export class FuneralMemoryService {
 	async updateMemory(
 		memoryId: string,
 		title: string,
-		memory: string,
+		story: string,
 		location: string,
 		date: string,
 		image: string | null
@@ -68,7 +68,7 @@ export class FuneralMemoryService {
 		console.log("Sending to backend:", {
 			memoryId,
 			title,
-			memory,
+			story,
 			location,
 			date,
 			image,
@@ -81,7 +81,7 @@ export class FuneralMemoryService {
 				body: JSON.stringify({
 					memoryId,
 					title,
-					memory,
+					story,
 					location,
 					date,
 					image,
