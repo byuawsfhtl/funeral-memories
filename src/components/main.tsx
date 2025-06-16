@@ -1,17 +1,17 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./Header.jsx";
+import Header from "./Header";
 import Home from "./Home.js";
-import Instructions from "./Instructions.jsx";
-import Confirmation from "./Confirmation.jsx";
-import Wall from "./Wall.jsx";
-import Footer from "./Footer.jsx";
+import Instructions from "./Instructions";
+import Confirmation from "./Confirmation";
+import Wall from "./Wall";
+import Footer from "./Footer";
 import Join from "./Join.js";
-import Host from "./Host.jsx";
+import Host from "./Host";
 import RoleSelect from "./RoleSelect.js";
-import AdminLogin from "./adminLogin.jsx";
-import FindRelative from "./find_relative/FindRelative.js";
+import AdminLogin from "./adminLogin";
+import FindRelative from "./find_relative/FindRelative";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
