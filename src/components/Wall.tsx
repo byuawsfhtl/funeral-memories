@@ -51,9 +51,6 @@ export default function Wall() {
 	};
 
 	useEffect(() => {
-		console.log("Date updated to:", date);
-	}, [date]);
-	useEffect(() => {
 		localStorage.setItem("sessionId", sessionId.current);
 	}, []);
 
