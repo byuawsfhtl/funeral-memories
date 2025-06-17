@@ -22,7 +22,7 @@ export default function Wall() {
 	const [showPopup, setShowPopup] = useState(false);
 	const [title, setTitle] = useState("");
 	const [place, setPlace] = useState("");
-	const [date, setDate] = useState("");
+	const [date, setDate] = useState<Date | null>(null);
 	const [errors, setErrors] = useState<MemErrors | null>(null);
 	const [author, setAuthor] = useState("");
 	const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
@@ -170,7 +170,7 @@ export default function Wall() {
 					title,
 					memory,
 					place,
-					date,
+					date ? date.toString().split("T")[0] : "",
 					imageBase64
 				);
 			} else {
@@ -190,7 +190,7 @@ export default function Wall() {
 					title,
 					memory,
 					place,
-					date,
+					date: date ? date.toString().split("T")[0] : "",
 					image: null,
 					author,
 					createdAt: new Date(),
@@ -239,7 +239,7 @@ export default function Wall() {
 		setMemory("");
 		setTitle("");
 		setPlace("");
-		setDate("");
+		setDate(null);
 		setImageFile(null);
 		setImagePreview(null);
 		setAuthor("");
@@ -252,7 +252,7 @@ export default function Wall() {
 		setTitle(selectedMemory.title || "");
 		setMemory(selectedMemory.memory || "");
 		setPlace(selectedMemory.place || "");
-		setDate(selectedMemory.date || "");
+		setDate(new Date(selectedMemory.date));
 		setAuthor(selectedMemory.author || "");
 		setImagePreview(selectedMemory.image || null);
 		setShowDetail(false); // Close the detail view
@@ -436,7 +436,7 @@ export default function Wall() {
 								<DatePicker
 									selected={date ? new Date(date) : null}
 									onChange={(d) => {
-										if (d) setDate(d.toISOString().split("T")[0]);
+										if (d) setDate(d);
 									}}
 									className="form-control"
 									placeholderText="Select a date"
