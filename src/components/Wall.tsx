@@ -436,9 +436,7 @@ export default function Wall() {
 								<DatePicker
 									selected={date ? new Date(date) : null}
 									onChange={(d: Date | null) => {
-										console.log(d);
-										if (d) setDate(d);
-										console.log(date);
+										setDate(d);
 									}}
 									className="form-control"
 									placeholderText="Select a date"
