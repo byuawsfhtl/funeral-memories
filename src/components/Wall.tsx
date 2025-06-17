@@ -193,7 +193,7 @@ export default function Wall() {
 					title,
 					memory,
 					place,
-					date: date ? date.toString().split("T")[0] : "",
+					date: date ? date.toISOString().split("T")[0] : "",
 					image: null,
 					author,
 					createdAt: new Date(),
