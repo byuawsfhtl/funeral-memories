@@ -3,9 +3,7 @@ import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import { Memory } from "../model/Memory";
 
 interface MemoryProps {
-	mem: Memory & {
-		_id: string;
-	};
+	mem: Memory;
 	setSelectedMemory: (memory: Memory) => void;
 	setShowDetail: (show: boolean) => void;
 	canDelete?: boolean;

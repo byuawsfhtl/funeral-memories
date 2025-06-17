@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import AMemory from "./AMemory";
+import { Memory } from "../model/Memory";
 
-export default function TabbedMemoryWall({
-	myMemories,
-	otherMemories,
-	setSelectedMemory,
-	setShowDetail,
-	isAdmin,
-}) {
+interface TabbedMemoryWallProps {
+	myMemories: Memory[];
+	otherMemories: Memory[];
+	setSelectedMemory: (memory: Memory) => void;
+	setShowDetail: (show: boolean) => void;
+	isAdmin: boolean;
+}
+
+export default function TabbedMemoryWall(props: TabbedMemoryWallProps) {
 	const [activeTab, setActiveTab] = useState("others");
 
 	return (
@@ -36,14 +39,14 @@ export default function TabbedMemoryWall({
 			<div className="tab-content pt-3">
 				{activeTab === "others" && (
 					<ul className="memory-wall d-flex flex-wrap justify-content-center">
-						{otherMemories.length > 0 ? (
-							otherMemories.map((mem, index) => (
+						{props.otherMemories.length > 0 ? (
+							props.otherMemories.map((mem, index) => (
 								<AMemory
 									key={`others-${index}`}
 									mem={mem}
-									setSelectedMemory={setSelectedMemory}
-									setShowDetail={setShowDetail}
-									canDelete={isAdmin}
+									setSelectedMemory={props.setSelectedMemory}
+									setShowDetail={props.setShowDetail}
+									canDelete={props.isAdmin}
 								/>
 							))
 						) : (
@@ -54,13 +57,13 @@ export default function TabbedMemoryWall({
 
 				{activeTab === "mine" && (
 					<ul className="memory-wall d-flex flex-wrap justify-content-center">
-						{myMemories.length > 0 ? (
-							myMemories.map((mem, index) => (
+						{props.myMemories.length > 0 ? (
+							props.myMemories.map((mem, index) => (
 								<AMemory
 									key={`mine-${index}`}
 									mem={mem}
-									setSelectedMemory={setSelectedMemory}
-									setShowDetail={setShowDetail}
+									setSelectedMemory={props.setSelectedMemory}
+									setShowDetail={props.setShowDetail}
 									canDelete={true}
 								/>
 							))

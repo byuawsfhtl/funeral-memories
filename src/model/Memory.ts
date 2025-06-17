@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
-
 export interface Memory {
-	_id: ObjectId;
+	_id: string;
 	groupId: string;
 	title: string;
 	memory: string;
@@ -9,6 +7,6 @@ export interface Memory {
 	date: string;
 	image: string | null;
 	author: string;
-	createdAt: string;
+	createdAt: Date;
 	sessionId: string;
 }

@@ -8,21 +8,27 @@ import imageCompression from "browser-image-compression";
 import TabbedMemoryWall from "./TabbedWall";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Memory } from "../model/Memory";
+
+interface MemErrors {
+	title: string;
+	memory: string;
+}
 
 export default function Wall() {
-	const [myMemories, setMyMemories] = useState([]);
-	const [memoryList, setMemoryList] = useState([]);
+	const [myMemories, setMyMemories] = useState<Memory[]>([]);
+	const [memoryList, setMemoryList] = useState<Memory[]>([]);
 	const [memory, setMemory] = useState("");
 	const [showPopup, setShowPopup] = useState(false);
 	const [title, setTitle] = useState("");
 	const [place, setPlace] = useState("");
 	const [date, setDate] = useState("");
-	const [errors, setErrors] = useState({});
+	const [errors, setErrors] = useState<MemErrors | null>(null);
 	const [author, setAuthor] = useState("");
-	const [selectedMemory, setSelectedMemory] = useState(null);
+	const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
 	const [showDetail, setShowDetail] = useState(false);
-	const [imageFile, setImageFile] = useState(null);
-	const [imagePreview, setImagePreview] = useState(null);
+	const [imageFile, setImageFile] = useState<File | null>(null);
+	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const service = new FuneralMemoryService();
@@ -34,7 +40,7 @@ export default function Wall() {
 		localStorage.getItem("sessionId") || crypto.randomUUID()
 	);
 	const [isAdmin, setIsAdmin] = useState(false);
-	const [editingId, setEditingId] = useState(null);
+	const [editingId, setEditingId] = useState<string | null>(null);
 
 	const checkAdmin = async () => {
 		const sessions = await service.getAdminSessions(groupId);
@@ -73,7 +79,9 @@ export default function Wall() {
 			try {
 				const data = await service.getMemories(groupId);
 				setMemoryList(data);
-				const mine = data.filter((m) => m.sessionId === sessionId.current);
+				const mine = data.filter(
+					(m: Memory) => m.sessionId === sessionId.current
+				);
 
 				setMyMemories(mine); // you'll display this separately
 				setMemoryList(data);
@@ -98,24 +106,31 @@ export default function Wall() {
 	const handleDeleteDetail = async () => {
 		if (!window.confirm("Are you sure you want to delete this memory?")) return;
 
+		if (!selectedMemory) return;
 		try {
 			await service.deleteMemory(selectedMemory._id);
 			setShowDetail(false);
 			const refreshed = await service.getMemories(groupId);
 			setMemoryList(refreshed);
-			setMyMemories(refreshed.filter((m) => m.sessionId === sessionId.current));
+			setMyMemories(
+				refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
+			);
 		} catch (err) {
-			console.error("Error deleting memory:", err.message);
+			if (err instanceof Error) {
+				console.error("Error deleting memory:", err.message);
+			} else {
+				console.error("Error deleting memory:", err);
+			}
 			alert("Failed to delete memory.");
 		}
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: any) => {
 		e.preventDefault();
-		let newErrors = {};
+		let newErrors: MemErrors = { title: "", memory: "" };
 		if (!title.trim()) newErrors.title = "Title is required.";
 		if (!memory.trim()) newErrors.memory = "Story is required.";
-		if (Object.keys(newErrors).length > 0) {
+		if (newErrors.title || newErrors.memory) {
 			setErrors(newErrors);
 			return;
 		}
@@ -123,10 +138,19 @@ export default function Wall() {
 		try {
 			if (editingId) {
 				// EDIT MODE
-				const imageBase64 = imageFile
+				const imageBase64: string | null = imageFile
 					? await new Promise((resolve, reject) => {
 							const reader = new FileReader();
-							reader.onloadend = () => resolve(reader.result);
+							reader.onloadend = () => {
+								if (
+									typeof reader.result === "string" ||
+									reader.result === null
+								) {
+									resolve(reader.result);
+								} else {
+									resolve(null);
+								}
+							};
 							reader.onerror = reject;
 							reader.readAsDataURL(imageFile);
 					  })
@@ -151,7 +175,17 @@ export default function Wall() {
 				);
 			} else {
 				// ADD MODE
-				const memoryData = {
+				const memoryData: {
+					groupId: string;
+					title: string;
+					memory: string;
+					place: string;
+					date: string;
+					image: string | null; // ✅ this is the fix
+					author: string;
+					createdAt: Date;
+					sessionId: string;
+				} = {
 					groupId,
 					title,
 					memory,
@@ -166,7 +200,12 @@ export default function Wall() {
 				if (imageFile) {
 					const reader = new FileReader();
 					reader.onloadend = async () => {
-						memoryData.image = reader.result;
+						const result1 = reader.result;
+						if (typeof result1 === "string") {
+							memoryData.image = result1;
+						} else {
+							memoryData.image = null;
+						}
 						const result = await service.addMemory(memoryData);
 						setMyMemories((prev) => [...prev, result]);
 						resetFormFields();
@@ -182,10 +221,16 @@ export default function Wall() {
 			// Refresh after edit or add
 			const refreshed = await service.getMemories(groupId);
 			setMemoryList(refreshed);
-			setMyMemories(refreshed.filter((m) => m.sessionId === sessionId.current));
+			setMyMemories(
+				refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
+			);
 			resetFormFields();
 		} catch (error) {
-			console.error("Failed to submit:", error.message);
+			if (error instanceof Error) {
+				console.error("Failed to submit:", error.message);
+			} else {
+				console.error("Failed to submit:", String(error));
+			}
 			alert("Submission failed.");
 		}
 	};
@@ -203,6 +248,7 @@ export default function Wall() {
 	};
 
 	const handleEdit = () => {
+		if (!selectedMemory) return;
 		setTitle(selectedMemory.title || "");
 		setMemory(selectedMemory.memory || "");
 		setPlace(selectedMemory.place || "");
@@ -274,8 +320,9 @@ export default function Wall() {
 									className="form-control"
 									accept="image/*"
 									onChange={async (e) => {
-										const file = e.target.files[0];
-										if (!file) return;
+										const files = e.target.files;
+										if (!files || files.length === 0) return;
+										const file = files[0];
 
 										try {
 											const compressedFile = await imageCompression(file, {
@@ -287,7 +334,14 @@ export default function Wall() {
 											setImageFile(compressedFile);
 
 											const reader = new FileReader();
-											reader.onloadend = () => setImagePreview(reader.result);
+											reader.onloadend = () => {
+												const result = reader.result;
+												if (typeof result === "string") {
+													setImagePreview(result); // ✅ Safe
+												} else {
+													setImagePreview(null); // or handle error
+												}
+											};
 											reader.readAsDataURL(compressedFile);
 										} catch (error) {
 											console.error("Image compression failed:", error);
@@ -335,12 +389,14 @@ export default function Wall() {
 								</label>
 								<input
 									type="text"
-									className={`form-control ${errors.title ? "is-invalid" : ""}`}
+									className={`form-control ${
+										errors && errors.title ? "is-invalid" : ""
+									}`}
 									placeholder="Story Title"
 									value={title}
 									onChange={(e) => setTitle(e.target.value)}
 								/>
-								{errors.title && (
+								{errors && errors.title && (
 									<div className="invalid-feedback">{errors.title}</div>
 								)}
 							</div>
@@ -351,14 +407,14 @@ export default function Wall() {
 								</label>
 								<textarea
 									className={`form-control ${
-										errors.memory ? "is-invalid" : ""
+										errors && errors.memory ? "is-invalid" : ""
 									}`}
 									placeholder="I remember a time when…"
 									rows={4}
 									value={memory}
 									onChange={(e) => setMemory(e.target.value)}
 								/>
-								{errors.memory && (
+								{errors && errors.memory && (
 									<div className="invalid-feedback">{errors.memory}</div>
 								)}
 							</div>
@@ -379,7 +435,9 @@ export default function Wall() {
 								<br></br>
 								<DatePicker
 									selected={date ? new Date(date) : null}
-									onChange={(d) => setDate(d.toISOString().split("T")[0])}
+									onChange={(d) => {
+										if (d) setDate(d.toISOString().split("T")[0]);
+									}}
 									className="form-control"
 									placeholderText="Select a date"
 									showMonthDropdown

@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId, WithId, Document } from "mongodb";
+import { MongoClient, ObjectId, WithId, Document, OptionalId } from "mongodb";
 import { Memory } from "../src/model/Memory";
 
 const uri = process.env.MONGODB_URI;
@@ -31,7 +31,9 @@ export async function postMemory(
 			throw new Error("Group is closed and cannot accept new memories");
 		}
 
-		const result = await db.collection("memories").insertOne(memory);
+		const result = await db
+			.collection("memories")
+			.insertOne(memory as OptionalId<Document>);
 		return await db.collection("memories").findOne({ _id: result.insertedId });
 	} catch (err) {
 		if (err instanceof Error) {
