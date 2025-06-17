@@ -51,6 +51,9 @@ export default function Wall() {
 	};
 
 	useEffect(() => {
+		console.log("Date updated to:", date);
+	}, [date]);
+	useEffect(() => {
 		localStorage.setItem("sessionId", sessionId.current);
 	}, []);
 
@@ -434,7 +437,7 @@ export default function Wall() {
 								<label className="form-label">Date</label>
 								<br></br>
 								<DatePicker
-									selected={date ? new Date(date) : null}
+									selected={date}
 									onChange={(d: Date | null) => {
 										setDate(d);
 									}}
