@@ -435,7 +435,7 @@ export default function Wall() {
 								<br></br>
 								<DatePicker
 									selected={date ? new Date(date) : null}
-									onChange={(d) => {
+									onChange={(d: Date | null) => {
 										if (d) setDate(d);
 									}}
 									className="form-control"
