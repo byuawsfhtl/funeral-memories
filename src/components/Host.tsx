@@ -3,6 +3,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
+export const signin = (redirectPath = "/") => {
+  const redirectUri = `${window.location.origin}${redirectPath}`;
+  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}&`;
+};
+
+
+
 export default function Host() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -10,20 +17,9 @@ export default function Host() {
 	const service = new FuneralMemoryService();
 
 	const handleHost = (e: any) => {
-		e.preventDefault();
-		if (!username.trim() || !password.trim()) {
-			alert("Username and password are required.");
-			return;
-		}
-
-		// Just navigate, no group created here
-		navigate("/find-relative", {
-			state: {
-				username,
-				password,
-			},
-		});
-	};
+  e.preventDefault();
+  signin("/find-relative"); // redirect to FS login, then come back to this path
+};
 
 	return (
 		<main
@@ -38,48 +34,17 @@ export default function Host() {
 					Host a Group
 				</h1>
 
-				<p className="text-muted text-center mb-4">
-					Enter a username and password to create a group and continue to select
-					a relative.
-				</p>
+				 <p className="text-muted text-center mb-4">
+        Sign in with FamilySearch to continue.
+      </p>
 
-				<form onSubmit={handleHost}>
-					<div className="mb-3">
-						<label htmlFor="username" className="form-label">
-							Username<span className="text-danger">*</span>
-						</label>
-						<input
-							type="text"
-							id="username"
-							className="form-control"
-							placeholder="Create a username"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							required
-						/>
-					</div>
-
-					<div className="mb-4">
-						<label htmlFor="password" className="form-label">
-							Password<span className="text-danger">*</span>
-						</label>
-						<input
-							type="password"
-							id="password"
-							className="form-control"
-							placeholder="Create a password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-					</div>
-
-					<div className="d-grid">
-						<button type="submit" className="btn btn-secondary btn-lg">
-							Continue to Select Relative
-						</button>
-					</div>
-				</form>
+      <form onSubmit={handleHost}>
+        <div className="d-grid">
+          <button type="submit" className="btn btn-primary btn-lg">
+            Sign In with FamilySearch
+          </button>
+        </div>
+      </form>
 			</div>
 		</main>
 	);
