@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export const signin = (redirectPath = "/find-relative") => {
-  const redirectUri = `${window.location.origin}${redirectPath}`;
-  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}&scope=openid%20profile%20email`;
+   const redirectUri = `${window.location.origin}${location.pathname}`;
+  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}&`;
 };
 
 
