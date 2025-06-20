@@ -176,7 +176,7 @@ export default function Wall() {
           title,
           memory,
           place,
-          date ? date.toString().split("T")[0] : "",
+          date ? date.toISOString().split("T")[0] : "",
           imageBase64
         );
       } else {
