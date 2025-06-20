@@ -261,16 +261,32 @@ export default function Wall() {
     setTitle(selectedMemory.title || "");
     setMemory(selectedMemory.memory || "");
     setPlace(selectedMemory.place || "");
-    if (selectedMemory.date) {
-      const parsed = new Date(selectedMemory.date);
-      if (!isNaN(parsed.getTime())) {
-        setDate(parsed);
+    try {
+      if (selectedMemory.date) {
+        const timestamp = Date.parse(selectedMemory.date);
+        if (!isNaN(timestamp)) {
+          setDate(new Date(timestamp));
+        } else {
+          // fallback: try treating it like YYYY-MM-DD manually
+          const [year, month, day] = selectedMemory.date.split("-");
+          const fallbackDate = new Date(
+            Number(year),
+            Number(month) - 1,
+            Number(day)
+          );
+          if (!isNaN(fallbackDate.getTime())) {
+            setDate(fallbackDate);
+          } else {
+            setDate(null);
+          }
+        }
       } else {
         setDate(null);
       }
-    } else {
+    } catch {
       setDate(null);
     }
+
     setAuthor(selectedMemory.author || "");
     setImagePreview(selectedMemory.image || null);
     setShowDetail(false); // Close the detail view
