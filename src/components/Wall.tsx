@@ -261,7 +261,16 @@ export default function Wall() {
     setTitle(selectedMemory.title || "");
     setMemory(selectedMemory.memory || "");
     setPlace(selectedMemory.place || "");
-    setDate(new Date(selectedMemory.date) || null);
+    if (selectedMemory.date) {
+      const parsed = new Date(selectedMemory.date + "T00:00:00");
+      if (!isNaN(parsed.getTime())) {
+        setDate(parsed);
+      } else {
+        setDate(null);
+      }
+    } else {
+      setDate(null);
+    }
     setAuthor(selectedMemory.author || "");
     setImagePreview(selectedMemory.image || null);
     setShowDetail(false); // Close the detail view
