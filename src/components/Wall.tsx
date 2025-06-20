@@ -263,22 +263,12 @@ export default function Wall() {
     setPlace(selectedMemory.place || "");
     try {
       if (selectedMemory.date) {
-        const timestamp = Date.parse(selectedMemory.date);
-        if (!isNaN(timestamp)) {
-          setDate(new Date(timestamp));
+        // Assume it's in "YYYY-MM-DD" format — parse as local time
+        const [year, month, day] = selectedMemory.date.split("-").map(Number);
+        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+          setDate(new Date(year, month - 1, day)); // <-- local midnight
         } else {
-          // fallback: try treating it like YYYY-MM-DD manually
-          const [year, month, day] = selectedMemory.date.split("-");
-          const fallbackDate = new Date(
-            Number(year),
-            Number(month) - 1,
-            Number(day)
-          );
-          if (!isNaN(fallbackDate.getTime())) {
-            setDate(fallbackDate);
-          } else {
-            setDate(null);
-          }
+          setDate(null);
         }
       } else {
         setDate(null);
