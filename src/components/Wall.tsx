@@ -261,7 +261,7 @@ export default function Wall() {
     setTitle(selectedMemory.title || "");
     setMemory(selectedMemory.memory || "");
     setPlace(selectedMemory.place || "");
-    setDate(new Date(selectedMemory.date));
+    setDate(new Date(selectedMemory.date) || null);
     setAuthor(selectedMemory.author || "");
     setImagePreview(selectedMemory.image || null);
     setShowDetail(false); // Close the detail view
