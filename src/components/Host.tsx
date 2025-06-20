@@ -8,6 +8,9 @@ export const signin = (redirectPath = "/find-relative") => {
   window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 };
 
+//TODO:: FIX THIS AND GET IT WHITELISTED ON AUTH>FHTL>ORG
+
+
 
 
 
