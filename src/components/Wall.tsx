@@ -262,7 +262,7 @@ export default function Wall() {
     setMemory(selectedMemory.memory || "");
     setPlace(selectedMemory.place || "");
     if (selectedMemory.date) {
-      const parsed = new Date(selectedMemory.date + "T00:00:00");
+      const parsed = new Date(selectedMemory.date);
       if (!isNaN(parsed.getTime())) {
         setDate(parsed);
       } else {
