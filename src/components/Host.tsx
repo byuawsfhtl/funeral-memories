@@ -5,7 +5,7 @@ import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export const signin = (redirectPath = "/find-relative") => {
    const redirectUri = `${window.location.origin}${location.pathname}`;
-  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}&`;
+  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 };
 
 
