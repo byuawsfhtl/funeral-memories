@@ -178,6 +178,7 @@ export default function Wall() {
           place,
           date: date ? date.toISOString().split("T")[0] : "",
           image: imageBase64,
+          author,
         });
       } else {
         // ADD MODE

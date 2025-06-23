@@ -31,14 +31,15 @@ export default async function handler(req: any, res: any) {
 		}
 
 		if (req.method === "PUT") {
-			const { memoryId, title, story, place, date, image } = req.body;
+			const { memoryId, title, story, place, date, image, author } = req.body;
 			const result = await updateMemory(
 				memoryId,
 				title,
 				story,
 				place,
 				date,
-				image
+				image,
+				author
 			);
 			if (!result) {
 				return res.status(400).json({ message: "Failed to update memory" });

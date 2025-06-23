@@ -64,6 +64,7 @@ export class FuneralMemoryService {
 		place: string,
 		date: string,
 		image: string | null
+		author: string
 	}) {
 		 //const { memoryId, title, story, location, date, image } = data;
 		console.log("Sending to backend:", {

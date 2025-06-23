@@ -92,16 +92,17 @@ export async function updateMemory(
 	story: string,
 	place: string,
 	date: string,
-	image: string | null
+	image: string | null,
+	author: string 
 ): Promise<WithId<Document> | null> {
 	console.log("DAO updating:", {
 		memoryId,
-		updateFields: { title, memory: story, place, date, image },
+		updateFields: { title, memory: story, place, date, image, author },
 	});
 
 	try {
 		const db = await connect();
-		const updateFields = { title, memory: story, place, date, image };
+		const updateFields = { title, memory: story, place, date, image, author };
 		const result = await db
 			.collection("memories")
 			.updateOne({ _id: new ObjectId(memoryId) }, { $set: updateFields });
