@@ -75,7 +75,7 @@ export class FuneralMemoryService {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					data
+					...data
 				}),
 			});
 			if (!res.ok) throw new Error("Failed to update memory");
