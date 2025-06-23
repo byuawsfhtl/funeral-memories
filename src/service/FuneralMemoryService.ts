@@ -61,7 +61,7 @@ export class FuneralMemoryService {
 		memoryId: string,
 		title: string,
 		story: string,
-		location: string,
+		place: string,
 		date: string,
 		image: string | null
 	}) {

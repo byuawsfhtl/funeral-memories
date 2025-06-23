@@ -175,7 +175,7 @@ export default function Wall() {
           memoryId: editingId,
           title,
           story: memory,
-          location: place,
+          place,
           date: date ? date.toISOString().split("T")[0] : "",
           image: imageBase64,
         });
@@ -185,7 +185,7 @@ export default function Wall() {
           groupId: string;
           title: string;
           memory: string;
-          location: string;
+          place: string;
           date: string;
           image: string | null; // ✅ this is the fix
           author: string;
@@ -195,7 +195,7 @@ export default function Wall() {
           groupId,
           title,
           memory,
-          location: place,
+          place,
           date: date ? date.toISOString().split("T")[0] : "",
           image: null,
           author,
