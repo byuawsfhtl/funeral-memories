@@ -20,6 +20,7 @@ export default async function handler(req: any, res: any) {
 
 		if (req.method === "POST") {
 			const memory = req.body;
+			console.log("Backend received memory:", memory);
 			const result = await postMemory(memory);
 			if (!result) {
 				return res.status(400).json({ message: "Failed to add memory" });

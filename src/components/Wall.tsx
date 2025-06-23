@@ -212,6 +212,7 @@ export default function Wall() {
             } else {
               memoryData.image = null;
             }
+            console.log("Memory being submitted:", memoryData);
             const result = await service.addMemory(memoryData);
             setMyMemories((prev) => [...prev, result]);
             resetFormFields();
@@ -220,6 +221,8 @@ export default function Wall() {
           reader.readAsDataURL(imageFile);
           return;
         } else {
+          console.log("Memory being submitted:", memoryData);
+
           const result = await service.addMemory(memoryData);
           setMyMemories((prev) => [...prev, result]);
         }
