@@ -57,21 +57,17 @@ export class FuneralMemoryService {
 		}
 	}
 
-	async updateMemory(
+	async updateMemory(data: {
 		memoryId: string,
 		title: string,
 		story: string,
 		location: string,
 		date: string,
 		image: string | null
-	) {
+	}) {
+		 //const { memoryId, title, story, location, date, image } = data;
 		console.log("Sending to backend:", {
-			memoryId,
-			title,
-			story,
-			location,
-			date,
-			image,
+			data
 		});
 
 		try {
@@ -79,12 +75,7 @@ export class FuneralMemoryService {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					memoryId,
-					title,
-					story,
-					location,
-					date,
-					image,
+					data
 				}),
 			});
 			if (!res.ok) throw new Error("Failed to update memory");

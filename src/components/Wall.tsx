@@ -171,14 +171,14 @@ export default function Wall() {
           image: imageFile || imagePreview,
         });
 
-        await service.updateMemory(
-          editingId,
+        await service.updateMemory({
+          memoryId: editingId,
           title,
-          memory,
-          place,
-          date ? date.toISOString().split("T")[0] : "",
-          imageBase64
-        );
+          story: memory,
+          location: place,
+          date: date ? date.toISOString().split("T")[0] : "",
+          image: imageBase64,
+        });
       } else {
         // ADD MODE
         const memoryData: {
