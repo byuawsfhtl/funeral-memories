@@ -495,7 +495,7 @@ export default function Wall() {
                         role="status"
                         aria-hidden="true"
                       ></span>
-                      Submitting...
+                      {editingId ? "Updating..." : "Submitting..."}
                     </>
                   ) : editingId ? (
                     "Update Memory"
