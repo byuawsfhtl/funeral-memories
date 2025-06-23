@@ -30,6 +30,7 @@ export async function postMemory(
 		if (group.closed) {
 			throw new Error("Group is closed and cannot accept new memories");
 		}
+		console.log("DAO about to insert:", memory);
 
 		const result = await db
 			.collection("memories")

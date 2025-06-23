@@ -7,6 +7,7 @@ import {
 
 export default async function handler(req: any, res: any) {
 	try {
+		console.log("got to memories.ts")
 		if (req.method === "GET") {
 			const { groupId } = req.query;
 			if (!groupId) return res.status(400).json({ message: "Missing groupId" });
@@ -19,6 +20,7 @@ export default async function handler(req: any, res: any) {
 		}
 
 		if (req.method === "POST") {
+			console.log("got to post");
 			const memory = req.body;
 			console.log("Backend received memory:", memory);
 			const result = await postMemory(memory);
