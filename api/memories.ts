@@ -31,12 +31,12 @@ export default async function handler(req: any, res: any) {
 		}
 
 		if (req.method === "PUT") {
-			const { memoryId, title, story, location, date, image } = req.body;
+			const { memoryId, title, story, place, date, image } = req.body;
 			const result = await updateMemory(
 				memoryId,
 				title,
 				story,
-				location,
+				place,
 				date,
 				image
 			);
