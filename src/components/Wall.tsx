@@ -56,17 +56,49 @@ export default function Wall() {
   }, []);
 
   useEffect(() => {
-    if (showPopup) {
-      document.body.classList.add("popup-open");
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+
+    if (showPopup || showDetail) {
+      html.style.position = "fixed";
+      html.style.width = "100%";
+      html.style.overflow = "hidden";
+
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.left = "0";
+      body.style.width = "100%";
+      body.style.overflow = "hidden";
+      body.style.height = "100vh";
     } else {
-      document.body.classList.remove("popup-open");
+      const scrollPos = body.style.top;
+      html.style.position = "";
+      html.style.width = "";
+      html.style.overflow = "";
+
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      body.style.height = "";
+      window.scrollTo(0, parseInt(scrollPos || "0") * -1);
     }
 
-    // Cleanup on unmount
     return () => {
-      document.body.classList.remove("popup-open");
+      html.style.position = "";
+      html.style.width = "";
+      html.style.overflow = "";
+
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      body.style.height = "";
     };
-  }, [showPopup]);
+  }, [showPopup, showDetail]);
 
   useEffect(() => {
     if (!groupId) {
