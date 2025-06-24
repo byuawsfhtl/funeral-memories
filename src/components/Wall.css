@@ -54,7 +54,11 @@
 
 /* Optional: Prevent background scroll */
 body.popup-open {
+  position: fixed;
+  width: 100%;
   overflow: hidden;
+  touch-action: none; /* Prevent gestures */
+  overscroll-behavior: none;
 }
 
   .memory {
