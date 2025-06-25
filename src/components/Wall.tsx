@@ -312,12 +312,11 @@ export default function Wall() {
 				</p>
 			</div>
 
-			<button
-				className="btn btn-primary fixed-add-button"
-				onClick={() => setShowPopup(true)}
-			>
-				Add Memory
-			</button>
+			<div className="sticky-button-wrapper">
+				<button className="btn btn-primary" onClick={() => setShowPopup(true)}>
+					Add Memory
+				</button>
+			</div>
 
 			<TabbedMemoryWall
 				myMemories={myMemories}

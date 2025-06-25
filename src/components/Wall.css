@@ -81,13 +81,11 @@ body.popup-open {
 	list-style: none;
 }
 
-.fixed-add-button {
-	position: fixed;
+.sticky-button-wrapper {
+	position: sticky;
 	bottom: 24px;
-	right: 24px;
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 24px;
 	z-index: 1000;
-	padding: 12px 20px;
-	font-size: 1rem;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
