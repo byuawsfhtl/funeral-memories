@@ -313,11 +313,10 @@ export default function Wall() {
 			</div>
 
 			<button
-				className="btn btn-light rounded-circle shadow add-memory-btn"
+				className="btn btn-primary fixed-add-button"
 				onClick={() => setShowPopup(true)}
-				title="Add Memory"
 			>
-				<span style={{ fontSize: "1.5rem", lineHeight: "1" }}>Add Memory</span>
+				Add Memory
 			</button>
 
 			<TabbedMemoryWall
