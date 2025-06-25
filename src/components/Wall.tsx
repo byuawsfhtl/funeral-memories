@@ -57,6 +57,34 @@ export default function Wall() {
   }, []);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.querySelector("footer");
+      const button = document.querySelector(".fixed-add-button") as HTMLElement;
+
+      if (footer && button) {
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        if (footerRect.top < windowHeight) {
+          const overlap = windowHeight - footerRect.top + 16;
+          button.style.bottom = `${overlap}px`;
+        } else {
+          button.style.bottom = "24px";
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
     if (showPopup) {
       document.body.classList.add("popup-open");
     } else {
@@ -317,18 +345,12 @@ export default function Wall() {
         <Publish />
       </div>
 
-      <div
-        className="pt-1 pb-3 px-3"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      <button
+        className="btn btn-primary fixed-add-button"
+        onClick={() => setShowPopup(true)}
       >
-        <button className="btn btn-primary" onClick={() => setShowPopup(true)}>
-          Add Memory
-        </button>
-      </div>
+        Add Memory
+      </button>
 
       <TabbedMemoryWall
         myMemories={myMemories}
