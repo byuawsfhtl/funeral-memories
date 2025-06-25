@@ -9,6 +9,7 @@ import TabbedMemoryWall from "./TabbedWall";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Memory } from "../model/Memory";
+import Publish from "./Publish";
 
 interface MemErrors {
   title: string;
@@ -310,6 +311,10 @@ export default function Wall() {
         <p className="text-muted mt-2" style={{ fontSize: "0.9rem" }}>
           Group ID: {groupId}
         </p>
+      </div>
+
+      <div className="mt-2">
+        <Publish />
       </div>
 
       <div
