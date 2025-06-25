@@ -33,8 +33,6 @@ export default function AMemory(props: MemoryProps) {
     <li
       className="memory border rounded m-2 d-flex align-items-center justify-content-center text-center position-relative"
       onClick={() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-
         props.setSelectedMemory(props.mem);
         props.setShowDetail(true);
       }}
