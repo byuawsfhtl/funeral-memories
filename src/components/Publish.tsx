@@ -14,7 +14,7 @@ export default function PublishButton() {
   };
 
   const handleConfirm = () => {
-    setShowConfirm(false);
+    //setShowConfirm(false);
     signin(); // redirect to FamilySearch login
   };
 
