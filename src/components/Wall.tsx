@@ -317,7 +317,7 @@ export default function Wall() {
 				onClick={() => setShowPopup(true)}
 				title="Add Memory"
 			>
-				<span style={{ fontSize: "1.5rem", lineHeight: "1" }}>＋</span>
+				<span style={{ fontSize: "1.5rem", lineHeight: "1" }}>Add Memory</span>
 			</button>
 
 			<TabbedMemoryWall
