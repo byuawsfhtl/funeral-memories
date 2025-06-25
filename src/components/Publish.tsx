@@ -31,12 +31,11 @@ export default function PublishButton({ groupId }: PublishProps) {
 
   return (
     <>
-      <div className="text-end">
+      <div className="text-end p-3">
         <button className="btn btn-success" onClick={handlePublishClick}>
           Publish
         </button>
       </div>
-
       {showConfirm && (
         <div className="popup-overlay" style={overlayStyle}>
           <div className="popup text-center" style={popupStyle}>

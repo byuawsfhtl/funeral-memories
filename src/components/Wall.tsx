@@ -34,12 +34,25 @@ export default function Wall() {
   const navigate = useNavigate();
   const location = useLocation();
   const service = new FuneralMemoryService();
-  const madeGroup = location.state?.madeGroup;
-  const stateGroup = location.state?.madeGroup;
-  const localGroupId = localStorage.getItem("groupId");
+  const rawGroup =
+    location.state?.madeGroup || localStorage.getItem("madeGroup");
+  const madeGroup =
+    typeof rawGroup === "string" ? JSON.parse(rawGroup) : rawGroup;
+
+  // 🎯 Key extracted values
   const person = madeGroup?.ancestor;
-  const groupId = stateGroup?.groupId || localGroupId;
+  const groupId = madeGroup?.groupId || localStorage.getItem("groupId");
   const portraitUrl = madeGroup?.portrait;
+
+  // 🧠 Save to localStorage on first load
+  useEffect(() => {
+    if (location.state?.madeGroup) {
+      localStorage.setItem(
+        "madeGroup",
+        JSON.stringify(location.state.madeGroup)
+      );
+    }
+  }, [location.state?.madeGroup]);
   const sessionId = useRef(
     localStorage.getItem("sessionId") || crypto.randomUUID()
   );
