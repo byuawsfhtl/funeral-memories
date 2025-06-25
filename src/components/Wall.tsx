@@ -35,8 +35,10 @@ export default function Wall() {
   const location = useLocation();
   const service = new FuneralMemoryService();
   const madeGroup = location.state?.madeGroup;
+  const stateGroup = location.state?.madeGroup;
+  const localGroupId = localStorage.getItem("groupId");
   const person = madeGroup?.ancestor;
-  const groupId = madeGroup?.groupId;
+  const groupId = stateGroup?.groupId || localGroupId;
   const portraitUrl = madeGroup?.portrait;
   const sessionId = useRef(
     localStorage.getItem("sessionId") || crypto.randomUUID()
@@ -342,7 +344,7 @@ export default function Wall() {
       </div>
 
       <div className="mt-2">
-        <Publish />
+        <Publish groupId={groupId} />
       </div>
 
       <button

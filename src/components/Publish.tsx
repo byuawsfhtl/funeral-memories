@@ -1,12 +1,16 @@
 // PublishButton.tsx
+
+interface PublishProps {
+  groupId?: string;
+}
 import React, { useState } from "react";
 
-export const signin = () => {
+export const signin = (redirectPath = "/find-relative") => {
   const redirectUri = `${window.location.origin}${location.pathname}`;
   window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 };
 
-export default function PublishButton() {
+export default function PublishButton({ groupId }: PublishProps) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handlePublishClick = () => {
@@ -14,6 +18,9 @@ export default function PublishButton() {
   };
 
   const handleConfirm = () => {
+    if (groupId) {
+      localStorage.setItem("groupId", groupId);
+    }
     //setShowConfirm(false);
     signin(); // redirect to FamilySearch login
   };
