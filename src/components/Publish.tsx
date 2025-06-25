@@ -1,7 +1,7 @@
 // PublishButton.tsx
 import React, { useState } from "react";
 
-export const signin = (redirectPath = "/find-relative") => {
+export const signin = () => {
   const redirectUri = `${window.location.origin}${location.pathname}`;
   window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 };
