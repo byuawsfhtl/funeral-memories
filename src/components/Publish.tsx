@@ -30,7 +30,7 @@ export default function PublishButton(props: PublishProps) {
 
     // Save groupId for after redirect
 
-    const redirectUri = `${window.location.origin}${location.pathname}`;
+    const redirectUri = `${window.location.origin}/wall?fs_access_token=`;
     window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
     return;
   };
