@@ -1,28 +1,50 @@
 // PublishButton.tsx
 
 interface PublishProps {
-  groupId?: string;
+  groupId: string;
+  personId: string;
+  token: string;
 }
 import React, { useState } from "react";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export const signin = () => {
   const redirectUri = `${window.location.origin}${location.pathname}`;
   window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 };
 
-export default function PublishButton({ groupId }: PublishProps) {
+export default function PublishButton(props: PublishProps) {
   const [showConfirm, setShowConfirm] = useState(false);
+  const service = new FuneralMemoryService();
 
   const handlePublishClick = () => {
     setShowConfirm(true);
   };
 
-  const handleConfirm = () => {
-    if (groupId) {
-      localStorage.setItem("groupId", groupId);
+  const handleConfirm = async () => {
+    setShowConfirm(false);
+
+    const token = localStorage.getItem("fs_access_token");
+    if (!token) {
+      // Save groupId for after redirect
+      localStorage.setItem("groupId", props.groupId);
+      localStorage.setItem("personId", props.personId);
+      const redirectUri = `${window.location.origin}${location.pathname}`;
+      window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
+      return;
     }
-    //setShowConfirm(false);
-    signin(); // redirect to FamilySearch login
+
+    try {
+      const results = await service.publishMemoriesToFamilySearch(
+        props.groupId,
+        props.personId,
+        token
+      );
+      alert(`Published ${results.filter((r) => r.success).length} memories!`);
+    } catch (err) {
+      console.error("Error publishing memories:", err);
+      alert("Failed to publish some or all memories.");
+    }
   };
 
   const handleCancel = () => {

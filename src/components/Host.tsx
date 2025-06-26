@@ -3,53 +3,84 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
-export const signin = (redirectPath = "/find-relative") => {
-   const redirectUri = `${window.location.origin}${location.pathname}`;
-  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
-};
-
-//TODO:: FIX THIS AND GET IT WHITELISTED ON AUTH>FHTL>ORG
-
-
-
-
-
 export default function Host() {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const navigate = useNavigate();
-	const service = new FuneralMemoryService();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const service = new FuneralMemoryService();
 
-	const handleHost = (e: any) => {
-  e.preventDefault();
-  signin("/find-relative"); // redirect to FS login, then come back to this path
-};
+  const handleHost = (e: any) => {
+    e.preventDefault();
+    if (!username.trim() || !password.trim()) {
+      alert("Username and password are required.");
+      return;
+    }
 
-	return (
-		<main
-			className="d-flex justify-content-center align-items-center flex-column"
-			style={{ minHeight: "100vh", padding: "2rem" }}
-		>
-			<div style={{ width: "100%", maxWidth: "500px" }}>
-				<h1
-					className="text-center mb-3"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
-					Host a Group
-				</h1>
+    // Just navigate, no group created here
+    navigate("/find-relative", {
+      state: {
+        username,
+        password,
+      },
+    });
+  };
 
-				 <p className="text-muted text-center mb-4">
-        Sign in with FamilySearch to continue.
-      </p>
+  return (
+    <main
+      className="d-flex justify-content-center align-items-center flex-column"
+      style={{ minHeight: "100vh", padding: "2rem" }}
+    >
+      <div style={{ width: "100%", maxWidth: "500px" }}>
+        <h1
+          className="text-center mb-3"
+          style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
+        >
+          Host a Group
+        </h1>
 
-      <form onSubmit={handleHost}>
-        <div className="d-grid">
-          <button type="submit" className="btn btn-primary btn-lg">
-            Sign In with FamilySearch
-          </button>
-        </div>
-      </form>
-			</div>
-		</main>
-	);
+        <p className="text-muted text-center mb-4">
+          Enter a username and password to create a group and continue to select
+          a relative.
+        </p>
+
+        <form onSubmit={handleHost}>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Username<span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="form-control"
+              placeholder="Create a username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="form-label">
+              Password<span className="text-danger">*</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="form-control"
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="d-grid">
+            <button type="submit" className="btn btn-secondary btn-lg">
+              Continue to Select Relative
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  );
 }

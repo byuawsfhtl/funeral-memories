@@ -33,6 +33,38 @@ export default function Wall() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handlePublish = async () => {
+    const token = localStorage.getItem("fstoken");
+    if (!token || !person?.id || !groupId)
+      return alert("Missing token/person/group");
+    try {
+      const results = await service.publishMemoriesToFamilySearch(
+        groupId as string,
+        person.id,
+        token
+      );
+      console.log("Publish results:", results);
+      alert(`Published ${results.filter((r) => r.success).length} memories!`);
+    } catch (e) {
+      console.error("Publish failed:", e);
+      alert("Publish failed");
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("fs_access_token");
+
+    if (token) {
+      localStorage.setItem("fs_access_token", token);
+
+      // Optionally clean up the URL for aesthetics
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  }, []);
+
   const service = new FuneralMemoryService();
   const rawGroup =
     location.state?.madeGroup || localStorage.getItem("madeGroup");
@@ -357,7 +389,11 @@ export default function Wall() {
       </div>
 
       <div className="mt-2">
-        <Publish groupId={groupId} />
+        <Publish
+          groupId={groupId}
+          personId={person.id}
+          token={localStorage.getItem("fs_access_token") || ""}
+        />
       </div>
 
       <button

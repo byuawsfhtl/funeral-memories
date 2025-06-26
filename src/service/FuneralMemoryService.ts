@@ -3,6 +3,62 @@ import { Group } from "../model/Group";
 import { Memory } from "../model/Memory";
 
 export class FuneralMemoryService {
+
+async publishMemoriesToFamilySearch(groupId: string, personId: string, token: string) {
+	try {
+		const memories = await this.getMemories(groupId);
+
+		const results = await Promise.all(
+			memories.map(async (memory: Memory) => {
+				const formattedDate = memory.date
+					? new Date(memory.date).toLocaleDateString("en-US", {
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+					  })
+					: "N/A";
+
+				const description = `Date: ${formattedDate}\nLocation: ${memory.place || "N/A"}\n\n${memory.memory}`;
+
+				const file = new File([description], `${memory.title || "Memory"}.txt`, {
+					type: "text/plain",
+				});
+
+				const formData = new FormData();
+				formData.append("artifact", file);
+				formData.append("title", memory.title);
+				formData.append("description", description);
+				formData.append("filename", file.name);
+				formData.append("type", "Story");
+
+				const response = await fetch(
+					`https://api.familysearch.org/platform/tree/persons/${personId}/memories`,
+					{
+						method: "POST",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+						body: formData,
+					}
+				);
+
+				if (!response.ok) {
+					const errorText = await response.text();
+					return { memoryId: memory._id, success: false, error: errorText };
+				}
+
+				return { memoryId: memory._id, success: true };
+			})
+		);
+
+		return results;
+	} catch (err) {
+		console.error("Error during FamilySearch publishing:", err);
+		throw err;
+	}
+}
+
+	
 	// MEMORIES
 	async getMemories(groupId: string) {
 		try {
@@ -266,4 +322,7 @@ export class FuneralMemoryService {
 			throw new Error("Unable to check group status");
 		}
 	}
+	
 }
+
+
