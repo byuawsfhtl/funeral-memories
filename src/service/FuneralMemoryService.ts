@@ -3,9 +3,24 @@ import { Group } from "../model/Group";
 import { Memory } from "../model/Memory";
 
 export class FuneralMemoryService {
+	private extractActualAccessToken(jwt: string): string | null {
+	try {
+		const payload = JSON.parse(atob(jwt.split(".")[1]));
+		return payload.fs_access_token;
+	} catch (err) {
+		console.error("Failed to decode token:", err);
+		return null;
+	}
+}
+
 
 async publishMemoriesToFamilySearch(groupId: string, personId: string, token: string) {
 	console.log("uploading");
+	const accessToken = this.extractActualAccessToken(token);
+	if (!accessToken) {
+		throw new Error("Invalid or missing fs_access_token in JWT");
+	}
+	console.log("Access Token:", accessToken);
 	try {
 		const memories = await this.getMemories(groupId);
 		console.log(memories);
@@ -52,7 +67,7 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 					{
 						method: "POST",
 						headers: {
-							Authorization: `Bearer ${token}`,
+							Authorization: `Bearer ${accessToken}`,
 						},
 						body: formData,
 					}
