@@ -7,7 +7,7 @@ import {
 
 export default async function handler(req: any, res: any) {
 	try {
-		console.log("got to memories.ts")
+		
 		if (req.method === "GET") {
 			const { groupId } = req.query;
 			if (!groupId) return res.status(400).json({ message: "Missing groupId" });
