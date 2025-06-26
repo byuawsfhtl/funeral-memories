@@ -58,17 +58,17 @@ export class FuneralMemoryService {
 	}
 
 	async updateMemory(data: {
-		memoryId: string,
-		title: string,
-		story: string,
-		place: string,
-		date: string,
-		image: string | null
-		author: string
+		memoryId: string;
+		title: string;
+		story: string;
+		place: string;
+		date: string;
+		image: string | null;
+		author: string;
 	}) {
-		 //const { memoryId, title, story, location, date, image } = data;
+		//const { memoryId, title, story, location, date, image } = data;
 		console.log("Sending to backend:", {
-			data
+			data,
 		});
 
 		try {
@@ -76,7 +76,7 @@ export class FuneralMemoryService {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					...data
+					...data,
 				}),
 			});
 			if (!res.ok) throw new Error("Failed to update memory");
@@ -143,12 +143,12 @@ export class FuneralMemoryService {
 		}
 	}
 
-	async updateGroup(groupId: string, closed: boolean) {
+	async closeGroup(groupId: string) {
 		try {
 			const res = await fetch("/api/group", {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ groupId, closed }),
+				body: JSON.stringify({ groupId, closed: true }),
 			});
 			if (!res.ok) throw new Error("Failed to update group");
 			return await res.json();
@@ -248,6 +248,22 @@ export class FuneralMemoryService {
 		} catch (err) {
 			console.error("Error fetching admin sessions:", err);
 			return [];
+		}
+	}
+
+	async isClosed(groupId: string): Promise<boolean> {
+		try {
+			const res = await fetch(`/api/group?groupId=${groupId}`);
+			if (!res.ok) throw new Error("Failed to fetch group status");
+			const group = await res.json();
+			return group.closed || false;
+		} catch (err) {
+			if (err instanceof Error) {
+				console.error("Error checking group status:", err.message);
+			} else {
+				console.error("Error checking group status:", err);
+			}
+			throw new Error("Unable to check group status");
 		}
 	}
 }
