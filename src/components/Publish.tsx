@@ -27,30 +27,12 @@ export default function PublishButton(props: PublishProps) {
     const token = localStorage.getItem("fs_access_token");
     localStorage.setItem("groupId", props.groupId);
     localStorage.setItem("personId", props.personId);
-    if (!token) {
-      // Save groupId for after redirect
 
-      const redirectUri = `${window.location.origin}${location.pathname}`;
-      window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
-      return;
-    }
+    // Save groupId for after redirect
 
-    try {
-      const results = await service.publishMemoriesToFamilySearch(
-        props.groupId,
-        props.personId,
-        token
-      );
-      results.forEach((r) => {
-        console.log(
-          `Memory: ${r.title} — ${r.success ? "✅ Success" : "❌ Failed"}`
-        );
-      });
-      alert(`Published ${results.filter((r) => r.success).length} memories!`);
-    } catch (err) {
-      console.error("Error publishing memories:", err);
-      alert("Failed to publish some or all memories.");
-    }
+    const redirectUri = `${window.location.origin}${location.pathname}`;
+    window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
+    return;
   };
 
   const handleCancel = () => {

@@ -10,6 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Memory } from "../model/Memory";
 import Publish from "./Publish";
+import { useFamilySearchResumePublish } from "./Publishing"; // or wherever you put it
 
 interface MemErrors {
   title: string;
@@ -31,6 +32,7 @@ export default function Wall() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  useFamilySearchResumePublish();
   const navigate = useNavigate();
   const location = useLocation();
 
