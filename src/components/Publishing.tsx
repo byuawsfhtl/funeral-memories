@@ -8,7 +8,7 @@ export function useFamilySearchResumePublish() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const token = params.get("fstoken");
+    const token = params.get("fs_access_token");
     const groupId = localStorage.getItem("groupId");
     const personId = localStorage.getItem("personId");
 
