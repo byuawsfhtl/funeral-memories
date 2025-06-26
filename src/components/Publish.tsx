@@ -40,6 +40,11 @@ export default function PublishButton(props: PublishProps) {
         props.personId,
         token
       );
+      results.forEach((r) => {
+        console.log(
+          `Memory: ${r.title} — ${r.success ? "✅ Success" : "❌ Failed"}`
+        );
+      });
       alert(`Published ${results.filter((r) => r.success).length} memories!`);
     } catch (err) {
       console.error("Error publishing memories:", err);
