@@ -25,10 +25,11 @@ export default function PublishButton(props: PublishProps) {
     setShowConfirm(false);
 
     const token = localStorage.getItem("fs_access_token");
+    localStorage.setItem("groupId", props.groupId);
+    localStorage.setItem("personId", props.personId);
     if (!token) {
       // Save groupId for after redirect
-      localStorage.setItem("groupId", props.groupId);
-      localStorage.setItem("personId", props.personId);
+
       const redirectUri = `${window.location.origin}${location.pathname}`;
       window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
       return;

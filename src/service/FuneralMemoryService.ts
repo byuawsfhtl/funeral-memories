@@ -5,6 +5,7 @@ import { Memory } from "../model/Memory";
 export class FuneralMemoryService {
 
 async publishMemoriesToFamilySearch(groupId: string, personId: string, token: string) {
+	console.log("uploading");
 	try {
 		const memories = await this.getMemories(groupId);
 
@@ -31,6 +32,8 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 				formData.append("filename", file.name);
 				formData.append("type", "Story");
 
+				console.log("finished appending to formData", formData);
+
 				const response = await fetch(
 					`https://api.familysearch.org/platform/tree/persons/${personId}/memories`,
 					{
@@ -46,6 +49,7 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 					const errorText = await response.text();
 					return { memoryId: memory._id, success: false, error: errorText };
 				}
+				console.log(`✅ Upload succeeded for ${memory.title}`);
 
 				return { memoryId: memory._id, success: true };
 			})
