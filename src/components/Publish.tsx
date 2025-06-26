@@ -24,13 +24,13 @@ export default function PublishButton(props: PublishProps) {
   const handleConfirm = async () => {
     setShowConfirm(false);
 
-    const token = localStorage.getItem("fs_access_token");
+    const token = localStorage.getItem("fstoken");
     localStorage.setItem("groupId", props.groupId);
     localStorage.setItem("personId", props.personId);
 
     // Save groupId for after redirect
 
-    const redirectUri = `${window.location.origin}/wall?fs_access_token=`;
+    const redirectUri = `${window.location.origin}${location.pathname}`;
     window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
     return;
   };

@@ -37,7 +37,7 @@ export default function Wall() {
   const location = useLocation();
 
   const handlePublish = async () => {
-    const token = localStorage.getItem("fs_access_token");
+    const token = localStorage.getItem("fstoken");
     if (!token || !person?.id || !groupId)
       return alert("Missing token/person/group");
     try {
@@ -56,10 +56,10 @@ export default function Wall() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("fs_access_token");
+    const token = params.get("fstoken");
 
     if (token) {
-      localStorage.setItem("fs_access_token", token);
+      localStorage.setItem("fstoken", token);
       console.log(token);
 
       // Optionally clean up the URL for aesthetics
@@ -395,7 +395,7 @@ export default function Wall() {
         <Publish
           groupId={groupId}
           personId={person.id}
-          token={localStorage.getItem("fs_access_token") || ""}
+          token={localStorage.getItem("fstoken") || ""}
         />
       </div>
 

@@ -8,12 +8,12 @@ export function useFamilySearchResumePublish() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const token = params.get("fs_access_token");
+    const token = params.get("fstoken");
     const groupId = localStorage.getItem("groupId");
     const personId = localStorage.getItem("personId");
 
     if (token && groupId && personId) {
-      localStorage.setItem("fs_access_token", token);
+      localStorage.setItem("fstoken", token);
       const service = new FuneralMemoryService();
 
       (async () => {
