@@ -37,7 +37,7 @@ export default function Wall() {
   const location = useLocation();
 
   const handlePublish = async () => {
-    const token = localStorage.getItem("fstoken");
+    const token = localStorage.getItem("fs_access_token");
     if (!token || !person?.id || !groupId)
       return alert("Missing token/person/group");
     try {
@@ -60,6 +60,7 @@ export default function Wall() {
 
     if (token) {
       localStorage.setItem("fs_access_token", token);
+      console.log(token);
 
       // Optionally clean up the URL for aesthetics
       const cleanUrl = window.location.origin + window.location.pathname;

@@ -8,6 +8,7 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 	console.log("uploading");
 	try {
 		const memories = await this.getMemories(groupId);
+		console.log(memories);
 
 		const results = await Promise.all(
 			memories.map(async (memory: Memory) => {
@@ -19,7 +20,17 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 					  })
 					: "N/A";
 
+					console.log("Preparing memory upload:", {
+  id: memory._id,
+  title: memory.title,
+  place: memory.place,
+  date: memory.date,
+  sessionId: memory.sessionId,
+});
+
+
 				const description = `Date: ${formattedDate}\nLocation: ${memory.place || "N/A"}\n\n${memory.memory}`;
+				console.log("decription");
 
 				const file = new File([description], `${memory.title || "Memory"}.txt`, {
 					type: "text/plain",
@@ -32,7 +43,9 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 				formData.append("filename", file.name);
 				formData.append("type", "Story");
 
-				console.log("finished appending to formData", formData);
+				for (const [key, value] of formData.entries()) {
+  console.log(`FormData: ${key} =`, value);
+}
 
 				const response = await fetch(
 					`https://api.familysearch.org/platform/tree/persons/${personId}/memories`,
