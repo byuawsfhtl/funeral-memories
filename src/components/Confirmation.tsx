@@ -62,23 +62,30 @@ export default function Confirmation() {
 
       const madeGroup = await service.addGroup(group, admin);
 
-      // ✅ Generate or retrieve session ID
+      // ✅ Set and store sessionId
       const sessionId =
         localStorage.getItem("sessionId") || crypto.randomUUID();
       localStorage.setItem("sessionId", sessionId);
 
-      // ✅ Register admin session
-      await fetch("/api/admin-sessions", {
+      // ✅ Log them in (and insert session into admin sessions)
+      const loginRes = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           groupId: madeGroup.groupId,
-          sessionId: sessionId,
+          username,
+          password,
+          sessionId,
         }),
       });
 
-      // ✅ Navigate to wall
-      navigate("/wall", { state: { madeGroup: madeGroup } });
+      if (!loginRes.ok) {
+        console.error("Failed to record session as admin");
+        alert("Group made, but admin session failed.");
+      }
+
+      // ✅ Proceed to wall
+      navigate("/wall", { state: { madeGroup } });
       localStorage.setItem("madeGroup", JSON.stringify(madeGroup));
     } catch (err) {
       console.error("Error during confirmation:", err);
