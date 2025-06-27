@@ -37,7 +37,6 @@ export default function Confirmation() {
   )}`;
 
   const handleConfirm = async () => {
-    // Generate the portrait URL
     const accessToken = sessionStorage.getItem("yourKey");
     const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${person.id}/portrait?access_token=${accessToken}`;
 
@@ -50,7 +49,6 @@ export default function Confirmation() {
       portraitBase64 = data.base64;
     } catch (err) {
       console.warn("Failed to fetch portrait:", err);
-      portraitBase64 = null;
     }
 
     try {
@@ -62,10 +60,24 @@ export default function Confirmation() {
       };
       const admin = { admin: username, password: password };
 
-      // ✅ Update the group with selected person ID
-      const madeGroup = await service.addGroup(group, admin); // or pass { personId } if supported
+      const madeGroup = await service.addGroup(group, admin);
 
-      // ✅ Navigate to the memory wall
+      // ✅ Generate or retrieve session ID
+      const sessionId =
+        localStorage.getItem("sessionId") || crypto.randomUUID();
+      localStorage.setItem("sessionId", sessionId);
+
+      // ✅ Register admin session
+      await fetch("/api/admin-sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groupId: madeGroup.groupId,
+          sessionId: sessionId,
+        }),
+      });
+
+      // ✅ Navigate to wall
       navigate("/wall", { state: { madeGroup: madeGroup } });
       localStorage.setItem("madeGroup", JSON.stringify(madeGroup));
     } catch (err) {
