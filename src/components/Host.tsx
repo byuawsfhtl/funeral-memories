@@ -39,14 +39,14 @@ export default function Host() {
         </h1>
 
         <p className="text-muted text-center mb-4">
-          Enter a username and password to create a group and continue to select
+          Enter your email and password to create a group and continue to select
           a relative.
         </p>
 
         <form onSubmit={handleHost}>
           <div className="mb-3">
             <label htmlFor="username" className="form-label">
-              Username<span className="text-danger">*</span>
+              Email<span className="text-danger">*</span>
             </label>
             <input
               type="text"
