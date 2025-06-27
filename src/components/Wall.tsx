@@ -178,6 +178,7 @@ export default function Wall() {
 	}, [groupId, navigate]);
 
 	useEffect(() => {
+		alert(`groupId: ${groupId}, sessionId: ${sessionId.current}`);
 		if (groupId && sessionId.current) {
 			checkAdmin();
 		}
