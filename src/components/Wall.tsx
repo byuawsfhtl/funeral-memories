@@ -109,37 +109,32 @@ export default function Wall() {
 	}, []);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			const footer = document.querySelector("footer");
-			const button = document.querySelector(".fixed-add-button") as HTMLElement;
+		const button = document.querySelector(".fixed-add-button") as HTMLElement;
+		const footer = document.querySelector("footer");
 
-			if (!button) return;
+		if (!button || !footer) return;
 
-			if (!footer) {
-				// No footer? Just pin it normally
-				button.style.bottom = "24px";
-				return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						// Footer is visible — shift button up
+						button.style.bottom = `${entry.intersectionRect.height + 16}px`;
+					} else {
+						// Footer not visible — keep button at bottom
+						button.style.bottom = "24px";
+					}
+				});
+			},
+			{
+				root: null,
+				threshold: 0,
 			}
+		);
 
-			const footerRect = footer.getBoundingClientRect();
-			const windowHeight = window.innerHeight;
+		observer.observe(footer);
 
-			if (footerRect.top < windowHeight) {
-				const overlap = windowHeight - footerRect.top + 16;
-				button.style.bottom = `${overlap}px`;
-			} else {
-				button.style.bottom = "24px";
-			}
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("resize", handleScroll);
-		handleScroll();
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("resize", handleScroll);
-		};
+		return () => observer.disconnect();
 	}, []);
 
 	useEffect(() => {
