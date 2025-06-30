@@ -392,306 +392,310 @@ export default function Wall() {
         </h2>
 
         {person && (
-  <div className="d-flex justify-content-center align-items-start mt-2 position-relative">
-    <img
-      src={portraitUrl}
-      alt="Portrait"
-      className="img-fluid"
-      style={{ height: "100px", borderRadius: "10%" }}
-    />
-    {isAdmin && (
-      <div className="dropdown ms-2">
-        <button
-          className="btn btn-light"
-          type="button"
-          id="adminDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i className="bi bi-three-dots-vertical"></i>
-        </button>
-        <ul className="dropdown-menu" aria-labelledby="adminDropdown">
-          <li>
-            <div className="dropdown-item">
-              <Publish
-                groupId={groupId}
-                personId={person.id}
-                token={localStorage.getItem("fstoken") || ""}
-              />
-            </div>
-          </li>
-          <li>
-            <button
-              className="dropdown-item"
-              onClick={() => alert("Export not implemented yet")}
-            >
-              Export Memories
-            </button>
-          </li>
-        </ul>
-      </div>
-    )}
-  </div>
-)}
-
-
-      <button
-        className="btn btn-primary fixed-add-button"
-        onClick={() => setShowPopup(true)}
-      >
-        Add Memory
-      </button>
-
-      <TabbedMemoryWall
-        myMemories={myMemories}
-        otherMemories={memoryList}
-        setSelectedMemory={setSelectedMemory}
-        setShowDetail={setShowDetail}
-        isAdmin={isAdmin}
-      />
-
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup text-start">
-            <h5>Write a Memory</h5>
-            <form onSubmit={handleSubmit}>
-              {/* Image Upload */}
-              <div className="mb-3">
-                <label className="form-label">
-                  Image <span className="text-muted small">(optional)</span>
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const files = e.target.files;
-                    if (!files || files.length === 0) return;
-                    const file = files[0];
-
-                    try {
-                      const compressedFile = await imageCompression(file, {
-                        maxSizeMB: 1.5,
-                        maxWidthOrHeight: 1024,
-                        useWebWorker: true,
-                      });
-
-                      setImageFile(compressedFile);
-
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        const result = reader.result;
-                        if (typeof result === "string") {
-                          setImagePreview(result); // ✅ Safe
-                        } else {
-                          setImagePreview(null); // or handle error
-                        }
-                      };
-                      reader.readAsDataURL(compressedFile);
-                    } catch (error) {
-                      console.error("Image compression failed:", error);
-                    }
-                  }}
-                />
-                {imagePreview && (
-                  <div className="position-relative mt-2">
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="img-fluid"
-                      style={{ maxHeight: "150px", borderRadius: "8px" }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
-                      style={{ transform: "translate(50%, -50%)" }}
-                      onClick={() => {
-                        setImagePreview(null);
-                        setImageFile(null);
-                      }}
-                    >
-                      &times;
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Form Fields */}
-              <div className="mb-3">
-                <label className="form-label">Your Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter your full name"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">
-                  Title<span className="text-danger small">* (required)</span>
-                </label>
-                <input
-                  type="text"
-                  className={`form-control ${
-                    errors && errors.title ? "is-invalid" : ""
-                  }`}
-                  placeholder="Story Title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                {errors && errors.title && (
-                  <div className="invalid-feedback">{errors.title}</div>
-                )}
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">
-                  Story<span className="text-danger small">* (required)</span>
-                </label>
-                <textarea
-                  className={`form-control ${
-                    errors && errors.memory ? "is-invalid" : ""
-                  }`}
-                  placeholder="I remember a time when…"
-                  rows={4}
-                  value={memory}
-                  onChange={(e) => setMemory(e.target.value)}
-                />
-                {errors && errors.memory && (
-                  <div className="invalid-feedback">{errors.memory}</div>
-                )}
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Place</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter a place"
-                  value={place}
-                  onChange={(e) => setPlace(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label">Date</label>
-                <br></br>
-                <DatePicker
-                  selected={date}
-                  onChange={(d: Date | null) => {
-                    setDate(d);
-                  }}
-                  className="form-control"
-                  placeholderText="Select a date"
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select" // Makes month/year dropdown scrollable!
-                  maxDate={new Date()}
-                />
-              </div>
-
-              <div className="d-flex justify-content-between mt-4">
+          <div className="d-flex justify-content-center align-items-start mt-2 position-relative">
+            <img
+              src={portraitUrl}
+              alt="Portrait"
+              className="img-fluid"
+              style={{ height: "100px", borderRadius: "10%" }}
+            />
+            {isAdmin && (
+              <div className="dropdown ms-2">
                 <button
+                  className="btn btn-light"
                   type="button"
-                  className="btn btn-outline-secondary me-2"
-                  onClick={() => resetFormFields()}
+                  id="adminDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
                 >
-                  Cancel
+                  <i className="bi bi-three-dots-vertical"></i>
                 </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                        aria-hidden="true"
-                      ></span>
-                      {editingId ? "Updating..." : "Submitting..."}
-                    </>
-                  ) : editingId ? (
-                    "Update Memory"
-                  ) : (
-                    "Submit Memory"
-                  )}
-                </button>
+                <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                  <li>
+                    <div className="dropdown-item">
+                      <Publish
+                        groupId={groupId}
+                        personId={person.id}
+                        token={localStorage.getItem("fstoken") || ""}
+                      />
+                    </div>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => alert("Export not implemented yet")}
+                    >
+                      Export Memories
+                    </button>
+                  </li>
+                </ul>
               </div>
-            </form>
+            )}
           </div>
-        </div>
-      )}
+        )}
 
-      {showDetail && selectedMemory && (
-        <div className="popup-overlay" onClick={() => setShowDetail(false)}>
-          <div
-            className="popup text-start"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Buttons at top */}
-            <div className="d-flex justify-content-end align-items-start gap-2 mb-3">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowDetail(false)}
-              >
-                Close
-              </button>
+        <button
+          className="btn btn-primary fixed-add-button"
+          onClick={() => setShowPopup(true)}
+        >
+          Add Memory
+        </button>
 
-              {(isAdmin || selectedMemory.sessionId === sessionId.current) && (
-                <button className="btn btn-danger" onClick={handleDeleteDetail}>
-                  Delete
-                </button>
-              )}
+        <TabbedMemoryWall
+          myMemories={myMemories}
+          otherMemories={memoryList}
+          setSelectedMemory={setSelectedMemory}
+          setShowDetail={setShowDetail}
+          isAdmin={isAdmin}
+        />
 
-              {selectedMemory.sessionId === sessionId.current && (
-                <button className="btn btn-success" onClick={handleEdit}>
-                  Edit
-                </button>
-              )}
+        {showPopup && (
+          <div className="popup-overlay">
+            <div className="popup text-start">
+              <h5>Write a Memory</h5>
+              <form onSubmit={handleSubmit}>
+                {/* Image Upload */}
+                <div className="mb-3">
+                  <label className="form-label">
+                    Image <span className="text-muted small">(optional)</span>
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const files = e.target.files;
+                      if (!files || files.length === 0) return;
+                      const file = files[0];
+
+                      try {
+                        const compressedFile = await imageCompression(file, {
+                          maxSizeMB: 1.5,
+                          maxWidthOrHeight: 1024,
+                          useWebWorker: true,
+                        });
+
+                        setImageFile(compressedFile);
+
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          const result = reader.result;
+                          if (typeof result === "string") {
+                            setImagePreview(result); // ✅ Safe
+                          } else {
+                            setImagePreview(null); // or handle error
+                          }
+                        };
+                        reader.readAsDataURL(compressedFile);
+                      } catch (error) {
+                        console.error("Image compression failed:", error);
+                      }
+                    }}
+                  />
+                  {imagePreview && (
+                    <div className="position-relative mt-2">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="img-fluid"
+                        style={{ maxHeight: "150px", borderRadius: "8px" }}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                        style={{ transform: "translate(50%, -50%)" }}
+                        onClick={() => {
+                          setImagePreview(null);
+                          setImageFile(null);
+                        }}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Form Fields */}
+                <div className="mb-3">
+                  <label className="form-label">Your Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your full name"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Title<span className="text-danger small">* (required)</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      errors && errors.title ? "is-invalid" : ""
+                    }`}
+                    placeholder="Story Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  {errors && errors.title && (
+                    <div className="invalid-feedback">{errors.title}</div>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">
+                    Story<span className="text-danger small">* (required)</span>
+                  </label>
+                  <textarea
+                    className={`form-control ${
+                      errors && errors.memory ? "is-invalid" : ""
+                    }`}
+                    placeholder="I remember a time when…"
+                    rows={4}
+                    value={memory}
+                    onChange={(e) => setMemory(e.target.value)}
+                  />
+                  {errors && errors.memory && (
+                    <div className="invalid-feedback">{errors.memory}</div>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Place</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter a place"
+                    value={place}
+                    onChange={(e) => setPlace(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Date</label>
+                  <br></br>
+                  <DatePicker
+                    selected={date}
+                    onChange={(d: Date | null) => {
+                      setDate(d);
+                    }}
+                    className="form-control"
+                    placeholderText="Select a date"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select" // Makes month/year dropdown scrollable!
+                    maxDate={new Date()}
+                  />
+                </div>
+
+                <div className="d-flex justify-content-between mt-4">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary me-2"
+                    onClick={() => resetFormFields()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        {editingId ? "Updating..." : "Submitting..."}
+                      </>
+                    ) : editingId ? (
+                      "Update Memory"
+                    ) : (
+                      "Submit Memory"
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
+          </div>
+        )}
 
-            <h4 className="fw-bold">{selectedMemory.title}</h4>
-            {selectedMemory.author && (
-              <p className="fst-italic text-secondary">
-                Shared by: {selectedMemory.author}
-              </p>
-            )}
-            {selectedMemory.image && (
-              <img
-                src={selectedMemory.image}
-                alt="Memory"
-                className="img-fluid mb-3"
-                style={{ maxHeight: "200px", borderRadius: "8px" }}
-              />
-            )}
+        {showDetail && selectedMemory && (
+          <div className="popup-overlay" onClick={() => setShowDetail(false)}>
             <div
-              style={{
-                maxHeight: "200px",
-                overflowY: "auto",
-                whiteSpace: "pre-wrap",
-                paddingRight: "0.5rem",
-              }}
+              className="popup text-start"
+              onClick={(e) => e.stopPropagation()}
             >
-              {selectedMemory.memory}
-            </div>
-            <small className="text-muted d-block mt-2">
-              {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
-              {selectedMemory.date && (
-                <>
-                  📅{" "}
-                  {new Date(
-                    selectedMemory.date + "T00:00:00"
-                  ).toLocaleDateString()}
-                </>
+              {/* Buttons at top */}
+              <div className="d-flex justify-content-end align-items-start gap-2 mb-3">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowDetail(false)}
+                >
+                  Close
+                </button>
+
+                {(isAdmin ||
+                  selectedMemory.sessionId === sessionId.current) && (
+                  <button
+                    className="btn btn-danger"
+                    onClick={handleDeleteDetail}
+                  >
+                    Delete
+                  </button>
+                )}
+
+                {selectedMemory.sessionId === sessionId.current && (
+                  <button className="btn btn-success" onClick={handleEdit}>
+                    Edit
+                  </button>
+                )}
+              </div>
+
+              <h4 className="fw-bold">{selectedMemory.title}</h4>
+              {selectedMemory.author && (
+                <p className="fst-italic text-secondary">
+                  Shared by: {selectedMemory.author}
+                </p>
               )}
-            </small>
+              {selectedMemory.image && (
+                <img
+                  src={selectedMemory.image}
+                  alt="Memory"
+                  className="img-fluid mb-3"
+                  style={{ maxHeight: "200px", borderRadius: "8px" }}
+                />
+              )}
+              <div
+                style={{
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                  whiteSpace: "pre-wrap",
+                  paddingRight: "0.5rem",
+                }}
+              >
+                {selectedMemory.memory}
+              </div>
+              <small className="text-muted d-block mt-2">
+                {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
+                {selectedMemory.date && (
+                  <>
+                    📅{" "}
+                    {new Date(
+                      selectedMemory.date + "T00:00:00"
+                    ).toLocaleDateString()}
+                  </>
+                )}
+              </small>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
