@@ -68,6 +68,7 @@ export default function Wall() {
 		}
 	}, []);
 	console.log("useless");
+	console.log("another test for vercel");
 
 	const service = new FuneralMemoryService();
 	const rawGroup =
