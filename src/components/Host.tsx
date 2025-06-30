@@ -52,7 +52,7 @@ export default function Host() {
               type="text"
               id="username"
               className="form-control"
-              placeholder="Create a username"
+              placeholder="Enter your email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
