@@ -405,7 +405,14 @@ export default function Wall() {
       </div>
 
       {isAdmin && (
-        <div className="container mb-3 d-flex justify-content-end">
+        <div
+          style={{
+            position: "fixed",
+            top: "80px", // below the header
+            right: "24px",
+            zIndex: 1000,
+          }}
+        >
           <Publish
             groupId={groupId}
             personId={person.id}
