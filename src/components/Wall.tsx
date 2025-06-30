@@ -431,6 +431,7 @@ export default function Wall() {
             </ul>
           </div>
         )}
+        <br></br>
 
         {person && (
           <div className="d-flex justify-content-center align-items-start mt-2 position-relative">
