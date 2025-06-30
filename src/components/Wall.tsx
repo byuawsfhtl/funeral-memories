@@ -417,7 +417,7 @@ export default function Wall() {
 							<li>
 								<button
 									className="dropdown-item"
-									onClick={() => exportMemoriesAsPDF(memoryList)}
+									onClick={() => exportMemoriesAsPDF(person.name, memoryList)}
 								>
 									Export Memories
 								</button>
