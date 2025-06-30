@@ -91,3 +91,10 @@ body.popup-open {
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+@media (max-width: 600px) {
+	.fixed-add-button {
+		bottom: 16px;
+		right: 16px;
+	}
+}

@@ -115,18 +115,19 @@ export default function Wall() {
 
 			if (!button) return;
 
-			if (footer) {
-				const footerRect = footer.getBoundingClientRect();
-				const windowHeight = window.innerHeight;
+			if (!footer) {
+				// No footer? Just pin it normally
+				button.style.bottom = "24px";
+				return;
+			}
 
-				if (footerRect.top < windowHeight) {
-					const overlap = windowHeight - footerRect.top + 16;
-					button.style.bottom = `${overlap}px`;
-				} else {
-					button.style.bottom = "24px";
-				}
+			const footerRect = footer.getBoundingClientRect();
+			const windowHeight = window.innerHeight;
+
+			if (footerRect.top < windowHeight) {
+				const overlap = windowHeight - footerRect.top + 16;
+				button.style.bottom = `${overlap}px`;
 			} else {
-				// No footer — just default position
 				button.style.bottom = "24px";
 			}
 		};
