@@ -114,16 +114,14 @@ export default function Wall() {
 
 		if (!button || !footer) return;
 
+		const updatePosition = (isIntersecting: boolean, height: number = 0) => {
+			button.style.bottom = isIntersecting ? `${height + 16}px` : "24px";
+		};
+
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						// Footer is visible — shift button up
-						button.style.bottom = `${entry.intersectionRect.height + 16}px`;
-					} else {
-						// Footer not visible — keep button at bottom
-						button.style.bottom = "24px";
-					}
+					updatePosition(entry.isIntersecting, entry.intersectionRect.height);
 				});
 			},
 			{
@@ -134,7 +132,18 @@ export default function Wall() {
 
 		observer.observe(footer);
 
-		return () => observer.disconnect();
+		// Bonus: trigger manual update on resize
+		const handleResize = () => {
+			const rect = footer.getBoundingClientRect();
+			updatePosition(rect.top < window.innerHeight, rect.height);
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			observer.disconnect();
+			window.removeEventListener("resize", handleResize);
+		};
 	}, []);
 
 	useEffect(() => {
