@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
@@ -382,61 +383,66 @@ export default function Wall() {
 
   return (
     <div>
-      <div className="pt-3 pb-3 text-center">
+      {/* Title + dropdown */}
+      <div className="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-2">
         <h2
-          className="text-center"
+          className="mb-0"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
         >
           {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
         </h2>
 
-        {person && (
+        {isAdmin && (
+          <div className="dropdown">
+            <button
+              className="btn btn-light"
+              type="button"
+              id="adminDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i className="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+              <li>
+                <div className="dropdown-item">
+                  <Publish
+                    groupId={groupId}
+                    personId={person.id}
+                    token={localStorage.getItem("fstoken") || ""}
+                  />
+                </div>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => alert("Export not implemented yet")}
+                >
+                  Export Memories
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => alert("Export not implemented yet")}
+                >
+                  Publish and Export
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Portrait on its own row below */}
+      {person && (
+        <div className="d-flex justify-content-center mt-2">
           <img
             src={portraitUrl}
             alt="Portrait"
-            className="img-fluid mt-2"
+            className="img-fluid"
             style={{ height: "100px", borderRadius: "10%" }}
           />
-        )}
-
-        <p className="text-muted mt-2" style={{ fontSize: "0.9rem" }}>
-          Group ID: {groupId}
-        </p>
-      </div>
-
-      {isAdmin && (
-        <div className="dropdown ms-2">
-          <button
-            className="btn btn-light"
-            type="button"
-            id="adminDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <i className="bi bi-three-dots-vertical"></i>
-          </button>
-          <ul className="dropdown-menu" aria-labelledby="adminDropdown">
-            <li>
-              {/* Wrap the Publish component in a <div> inside the list item */}
-              <div className="dropdown-item">
-                <Publish
-                  groupId={groupId}
-                  personId={person.id}
-                  token={localStorage.getItem("fstoken") || ""}
-                />
-              </div>
-            </li>
-            <li>
-              <button
-                className="dropdown-item"
-                onClick={() => {
-                  alert("Export not implemented yet");
-                }}
-              >
-                Export Memories
-              </button>
-            </li>
-          </ul>
         </div>
       )}
 
