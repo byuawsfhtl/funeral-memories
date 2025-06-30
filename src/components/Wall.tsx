@@ -389,47 +389,47 @@ export default function Wall() {
           style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
         >
           {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
+          {isAdmin && (
+            <div className="dropdown ms-2">
+              <button
+                className="btn btn-light"
+                type="button"
+                id="adminDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                <li>
+                  <div className="dropdown-item">
+                    <Publish
+                      groupId={groupId}
+                      personId={person.id}
+                      token={localStorage.getItem("fstoken") || ""}
+                    />
+                  </div>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => alert("Export not implemented yet")}
+                  >
+                    Export Memories
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => alert("Export not implemented yet")}
+                  >
+                    Publish and Export
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </h2>
-        {isAdmin && (
-          <div className="dropdown ms-2">
-            <button
-              className="btn btn-light"
-              type="button"
-              id="adminDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i className="bi bi-three-dots-vertical"></i>
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="adminDropdown">
-              <li>
-                <div className="dropdown-item">
-                  <Publish
-                    groupId={groupId}
-                    personId={person.id}
-                    token={localStorage.getItem("fstoken") || ""}
-                  />
-                </div>
-              </li>
-              <li>
-                <button
-                  className="dropdown-item"
-                  onClick={() => alert("Export not implemented yet")}
-                >
-                  Export Memories
-                </button>
-              </li>
-              <li>
-                <button
-                  className="dropdown-item"
-                  onClick={() => alert("Export not implemented yet")}
-                >
-                  Publish and Export
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
 
         {person && (
           <div className="d-flex justify-content-center align-items-start mt-2 position-relative">
