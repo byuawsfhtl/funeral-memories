@@ -40,5 +40,5 @@ export function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		}
 	});
 
-	doc.save("memories.pdf");
+	doc.save(`${name}_memories.pdf`);
 }
