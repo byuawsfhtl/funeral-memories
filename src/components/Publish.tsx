@@ -42,7 +42,7 @@ export default function PublishButton(props: PublishProps) {
   return (
     <>
       <div className="text-end p-3">
-        <button className="btn btn-success" onClick={handlePublishClick}>
+        <button className="btn" onClick={handlePublishClick}>
           Publish
         </button>
       </div>
