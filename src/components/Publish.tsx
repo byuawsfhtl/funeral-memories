@@ -41,11 +41,10 @@ export default function PublishButton(props: PublishProps) {
 
   return (
     <>
-      <div className="text-end p-3">
-        <button className="btn" onClick={handlePublishClick}>
-          Publish
-        </button>
-      </div>
+      <button className="dropdown-item" onClick={handlePublishClick}>
+        Publish
+      </button>
+
       {showConfirm && (
         <div className="popup-overlay" style={overlayStyle}>
           <div className="popup text-center" style={popupStyle}>
