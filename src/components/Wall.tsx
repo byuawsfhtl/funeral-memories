@@ -423,14 +423,6 @@ export default function Wall() {
                     Export Memories
                   </button>
                 </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => alert("Export not implemented yet")}
-                  >
-                    Publish and Export
-                  </button>
-                </li>
               </ul>
             </div>
           )}
