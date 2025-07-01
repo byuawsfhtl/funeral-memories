@@ -5,6 +5,8 @@ import {
 	deleteGroup,
 } from "../lib/GroupDAO.js";
 
+import { deleteMemories } from "../lib/MemoriesDAO.js";
+
 export default async function handler(req: any, res: any) {
 	try {
 		if (req.method === "GET") {
@@ -42,7 +44,11 @@ export default async function handler(req: any, res: any) {
 			if (!result) {
 				return res.status(404).json({ message: "Failed to delete group" });
 			}
-			return res.status(200).json(result);
+			const memoriesResult = await deleteMemories(groupId);
+			if (!memoriesResult) {
+				return res.status(404).json({ message: "Failed to delete memories" });
+			}
+			return res.status(200).json(result, memoriesResult);
 		}
 
 		res.status(405).end();

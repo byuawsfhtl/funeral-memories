@@ -31,7 +31,6 @@ export async function postMemory(
 			throw new Error("Group is closed and cannot accept new memories");
 		}
 
-		
 		console.log("DAO about to insert:", memory);
 
 		const result = await db
@@ -86,6 +85,30 @@ export async function deleteMemory(
 	}
 }
 
+export async function deleteMemories(
+	groupId: string
+): Promise<{ message: string }> {
+	try {
+		const db = await connect();
+		const result = await db.collection("memories").deleteMany({
+			groupId,
+		});
+
+		if (result.deletedCount === 0) {
+			throw new Error("No memories found for this group");
+		}
+
+		return { message: "Memories deleted successfully" };
+	} catch (err) {
+		if (err instanceof Error) {
+			console.error("Error deleting memories by groupId:", err.message);
+		} else {
+			console.error("Error deleting memories by groupId:", err);
+		}
+		throw new Error("Unable to delete memories");
+	}
+}
+
 export async function updateMemory(
 	memoryId: string,
 	title: string,
@@ -93,7 +116,7 @@ export async function updateMemory(
 	place: string,
 	date: string,
 	image: string | null,
-	author: string 
+	author: string
 ): Promise<WithId<Document> | null> {
 	console.log("DAO updating:", {
 		memoryId,
