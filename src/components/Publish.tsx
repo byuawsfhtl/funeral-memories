@@ -41,7 +41,10 @@ export default function PublishButton(props: PublishProps) {
 
   return (
     <>
-      <button className="dropdown-item" onClick={handlePublishClick}>
+      <button
+        onClick={handlePublishClick}
+        style={{ padding: "0.375rem 1rem", margin: 0 }}
+      >
         Publish
       </button>
 
