@@ -94,3 +94,25 @@ export async function getAdminSessions(groupId: string): Promise<string[]> {
 	console.log(doc);
 	return doc?.sessionIds || [];
 }
+
+export async function deleteAdminSessions(
+	groupId: string
+): Promise<{ message: string }> {
+	try {
+		const db = await connect();
+		const result = await db.collection("adminSessions").deleteOne({ groupId });
+
+		if (result.deletedCount === 0) {
+			throw new Error("Admin sessions not found or already deleted");
+		}
+
+		return { message: "Admin sessions deleted successfully" };
+	} catch (err) {
+		if (err instanceof Error) {
+			console.error("Error deleting admin sessions:", err.message);
+		} else {
+			console.error("Error deleting admin sessions:", err);
+		}
+		throw new Error("Unable to delete admin sessions");
+	}
+}

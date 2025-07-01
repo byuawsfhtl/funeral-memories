@@ -1,3 +1,4 @@
+import { deleteAdmin, deleteAdminSessions } from "../lib/AdminDAO.js";
 import {
 	getGroup,
 	postGroup,
@@ -44,11 +45,27 @@ export default async function handler(req: any, res: any) {
 			if (!result) {
 				return res.status(404).json({ message: "Failed to delete group" });
 			}
+
 			const memoriesResult = await deleteMemories(groupId);
 			if (!memoriesResult) {
 				return res.status(404).json({ message: "Failed to delete memories" });
 			}
-			return res.status(200).json(result, memoriesResult);
+
+			const adminResult = await deleteAdmin(groupId);
+			if (!adminResult) {
+				return res.status(404).json({ message: "Failed to delete admin" });
+			}
+
+			const sessionResult = await deleteAdminSessions(groupId);
+			if (!sessionResult) {
+				return res
+					.status(404)
+					.json({ message: "Failed to delete admin sessions" });
+			}
+
+			return res
+				.status(200)
+				.json(result, memoriesResult, adminResult, sessionResult);
 		}
 
 		res.status(405).end();
