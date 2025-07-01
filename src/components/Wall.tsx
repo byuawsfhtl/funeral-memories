@@ -193,7 +193,6 @@ export default function Wall() {
   }, [groupId, navigate]);
 
   useEffect(() => {
-    alert(`groupId: ${groupId}, sessionId: ${sessionId.current}`);
     if (groupId && sessionId.current) {
       checkAdmin();
     }
@@ -406,23 +405,25 @@ export default function Wall() {
               >
                 <i className="bi bi-three-dots-vertical"></i>
               </button>
-              <li>
-                <button
-                  className="dropdown-item"
-                  onClick={() => setShowConfirmPublish(true)}
-                >
-                  Publish
-                </button>
-              </li>
+              <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => setShowConfirmPublish(true)}
+                  >
+                    Publish
+                  </button>
+                </li>
 
-              <li>
-                <button
-                  className="dropdown-item"
-                  onClick={() => exportMemoriesAsPDF(person.name, memoryList)}
-                >
-                  Export Memories
-                </button>
-              </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => exportMemoriesAsPDF(person.name, memoryList)}
+                  >
+                    Export Memories
+                  </button>
+                </li>
+              </ul>
             </div>
           )}
         </div>
