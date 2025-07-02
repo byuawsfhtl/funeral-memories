@@ -702,6 +702,10 @@ export default function Wall() {
         <div className="popup-overlay" style={overlayStyle}>
           <div className="popup text-center" style={popupStyle}>
             <h5>Are you sure you want to publish?</h5>
+            <p className="text-danger">
+              After publishing, this group will be deleted with all associated
+              memories.
+            </p>
             <p className="text-muted">
               You’ll be redirected to sign in with FamilySearch.
             </p>
