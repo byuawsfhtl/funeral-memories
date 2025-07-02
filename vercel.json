@@ -22,7 +22,7 @@
       ]
     }
   ],
-  "cron": [
+  "crons": [
     {
       "path": "/utils/cleanup",
       "schedule": "0 4 * * *"
