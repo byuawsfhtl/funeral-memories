@@ -16,7 +16,7 @@ export default async function handler(
     const allGroups = await response.json();
 
     const now = Date.now();
-    const cutoff = now - 14 * 24 * 60 * 60 * 1000; // 14 days
+    const cutoff = now - 5 * 60 * 1000; // 14 days
 
     for (const group of allGroups) {
       if (group.timestamp < cutoff) {
