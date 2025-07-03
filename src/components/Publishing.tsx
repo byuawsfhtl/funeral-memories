@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
 
 export function useFamilySearchResumePublish() {
   const location = useLocation();

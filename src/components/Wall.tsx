@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
 import TabbedMemoryWall from "./TabbedWall";
@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Memory } from "../model/Memory";
 import Publish from "./Publish";
 import { useFamilySearchResumePublish } from "./Publishing"; // or wherever you put it
-import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
+import { exportMemoriesAsPDF } from "../../api/service/exportMemoriesAsPDF";
 
 interface MemErrors {
   title: string;

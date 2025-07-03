@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
 
 export default function Confirmation() {
   const navigate = useNavigate();
