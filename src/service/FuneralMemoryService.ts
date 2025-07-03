@@ -1,6 +1,6 @@
-import { Admin } from "../../src/model/Admin";
-import { Group } from "../../src/model/Group";
-import { Memory } from "../../src/model/Memory";
+import { Admin } from "../model/Admin";
+import { Group } from "../model/Group";
+import { Memory } from "../model/Memory";
 
 export class FuneralMemoryService {
 	private extractActualAccessToken(jwt: string): string | null {

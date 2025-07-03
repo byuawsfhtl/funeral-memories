@@ -6,7 +6,7 @@ interface PublishProps {
   token: string;
 }
 import React, { useState } from "react";
-import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export const signin = () => {
   const redirectUri = `${window.location.origin}${location.pathname}`;

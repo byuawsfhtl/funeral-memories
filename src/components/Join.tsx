@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
+import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export default function Join() {
   const [groupId, setGroupId] = useState<string>("");

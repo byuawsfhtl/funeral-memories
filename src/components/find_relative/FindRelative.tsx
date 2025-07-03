@@ -3,7 +3,7 @@ import "./FindRelative.css";
 import axios from "axios";
 import FsService from "./FsService";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FuneralMemoryService } from "../../../api/service/FuneralMemoryService";
+import { FuneralMemoryService } from "../../service/FuneralMemoryService";
 
 export default function FindRelative() {
   const location = useLocation();

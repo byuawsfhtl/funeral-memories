@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import { Memory } from "../../src/model/Memory";
+import { Memory } from "../model/Memory";
 
 export function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	const doc = new jsPDF();
