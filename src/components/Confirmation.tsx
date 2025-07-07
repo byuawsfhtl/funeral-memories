@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
@@ -12,6 +12,7 @@ export default function Confirmation() {
   const formData = location.state?.formData;
   const ancestors = location.state?.ancestors;
   const service = new FuneralMemoryService();
+  const [loading, setLoading] = useState(false); // 🆕 loading state
 
   if (!person) {
     return (
@@ -37,6 +38,7 @@ export default function Confirmation() {
   )}`;
 
   const handleConfirm = async () => {
+    setLoading(true); // 🆕 show overlay
     const accessToken = sessionStorage.getItem("yourKey");
     const portraitUrl = `https://api.familysearch.org/platform/tree/persons/${person.id}/portrait?access_token=${accessToken}`;
 
@@ -62,12 +64,10 @@ export default function Confirmation() {
 
       const madeGroup = await service.addGroup(group, admin);
 
-      // ✅ Set and store sessionId
       const sessionId =
         localStorage.getItem("sessionId") || crypto.randomUUID();
       localStorage.setItem("sessionId", sessionId);
 
-      // ✅ Log them in (and insert session into admin sessions)
       const loginRes = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,48 +84,78 @@ export default function Confirmation() {
         alert("Group made, but admin session failed.");
       }
 
-      // ✅ Proceed to wall
       navigate("/wall", { state: { madeGroup } });
       localStorage.setItem("madeGroup", JSON.stringify(madeGroup));
     } catch (err) {
       console.error("Error during confirmation:", err);
       alert("Something went wrong. Could not confirm group setup.");
+    } finally {
+      setLoading(false); // 🆕 hide overlay after navigation fails
     }
   };
 
   return (
-    <main className="container d-flex justify-content-center align-items-center flex-grow-1">
-      <div className="text-center">
-        <h1>Is this the family member you are looking for?</h1>
-        <img
-          src={portraitUrl}
-          style={{ height: "100px", borderRadius: "50%" }}
-          alt="Person Portrait"
-        />
-        <h2>{person.name}</h2>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <p>
-            Born {birthYear} - {person.birthPlace}
-          </p>
-        </div>
-        <p>
-          This information was found using FamilySearch records. If this looks
-          like the correct person, click "Yes" to continue or "No" to go back.
-        </p>
-        <button className="btn btn-primary me-2" onClick={handleConfirm}>
-          Yes
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() =>
-            navigate("/find-relative", {
-              state: { formData, ancestors, username, password },
-            })
-          }
+    <>
+      {/* 🆕 Fullscreen loading overlay */}
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            zIndex: 9999,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          No
-        </button>
-      </div>
-    </main>
+          <div className="spinner-border text-primary" role="status" />
+          <h2 className="mt-3">Creating Memory Wall...</h2>
+        </div>
+      )}
+
+      <main className="container d-flex justify-content-center align-items-center flex-grow-1">
+        <div className="text-center">
+          <h1>Is this the family member you are looking for?</h1>
+          <img
+            src={portraitUrl}
+            style={{ height: "100px", borderRadius: "50%" }}
+            alt="Person Portrait"
+          />
+          <h2>{person.name}</h2>
+          <div className="d-flex flex-row justify-content-center align-items-center">
+            <p>
+              Born {birthYear} - {person.birthPlace}
+            </p>
+          </div>
+          <p>
+            This information was found using FamilySearch records. If this looks
+            like the correct person, click "Yes" to continue or "No" to go back.
+          </p>
+          <button
+            className="btn btn-primary me-2"
+            onClick={handleConfirm}
+            disabled={loading}
+          >
+            Yes
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() =>
+              navigate("/find-relative", {
+                state: { formData, ancestors, username, password },
+              })
+            }
+            disabled={loading}
+          >
+            No
+          </button>
+        </div>
+      </main>
+    </>
   );
 }
