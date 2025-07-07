@@ -428,12 +428,6 @@ export default function Wall() {
           )}
         </div>
 
-        {groupId && (
-          <p className="text-muted small mt-1 text-center">
-            Group ID: {groupId}
-          </p>
-        )}
-
         {/* Portrait on its own row below */}
         {person && (
           <div className="d-flex justify-content-center mt-2">
@@ -446,6 +440,10 @@ export default function Wall() {
           </div>
         )}
       </div>
+
+      {groupId && (
+        <p className="text-muted small mt-1 text-center">Group ID: {groupId}</p>
+      )}
 
       <button
         className="btn btn-primary fixed-add-button"
