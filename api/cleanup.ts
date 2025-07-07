@@ -1,41 +1,46 @@
 import type { IncomingMessage, ServerResponse } from "http";
+import { MongoClient, ObjectId } from "mongodb";
 
-// Determine base URL depending on environment (Vercel or local)
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+// Setup DB connection
+const uri = process.env.MONGODB_URI!;
+const dbName = "FuneralMemories";
+const client = new MongoClient(uri);
+
+async function connect() {
+  if (!client.topology?.isConnected?.()) {
+    await client.connect();
+  }
+  return client.db(dbName);
+}
+
+async function getAllGroups() {
+  const db = await connect();
+  return await db.collection("group").find().toArray();
+}
 
 async function getMemories(groupId: string) {
-  const res = await fetch(`${baseUrl}/api/memories?groupId=${groupId}`);
-  if (!res.ok) throw new Error("Failed to fetch memories");
-  return await res.json();
+  const db = await connect();
+  return await db.collection("memories").find({ groupId }).toArray();
 }
 
 async function deleteMemory(memoryId: string) {
-  const res = await fetch(`${baseUrl}/api/memories`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ memoryId }),
-  });
-  if (!res.ok) throw new Error("Failed to delete memory");
+  const db = await connect();
+  return await db.collection("memories").deleteOne({ _id: new ObjectId(memoryId) });
 }
 
 async function deleteGroup(groupId: string) {
-  const res = await fetch(`${baseUrl}/api/group`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ groupId }),
-  });
-  if (!res.ok) throw new Error("Failed to delete group");
+  const db = await connect();
+  return await db.collection("group").deleteOne({ groupId });
 }
 
 async function deleteAdmin(groupId: string) {
-  const res = await fetch(`${baseUrl}/api/admin`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ groupId }),
-  });
-  if (!res.ok) throw new Error("Failed to delete admin");
+  const db = await connect();
+  return await db.collection("admin").deleteOne({ groupId });
+}
+
+async function deleteAdminSessions(groupId: string) {
+  const db = await connect();
+  return await db.collection("adminSessions").deleteOne({ groupId });
 }
 
 export default async function handler(
@@ -46,9 +51,7 @@ export default async function handler(
   }
 ) {
   try {
-    const response = await fetch(`${baseUrl}/api/group`);
-    if (!response.ok) throw new Error("Failed to fetch all groups");
-    const allGroups = await response.json();
+    const allGroups = await getAllGroups();
 
     const now = Date.now();
     const cutoff = now - 5 * 60 * 1000; // 5 minutes
@@ -60,8 +63,11 @@ export default async function handler(
           for (const memory of memories) {
             await deleteMemory(memory._id);
           }
+
           await deleteAdmin(group.groupId);
+          await deleteAdminSessions(group.groupId); // optional but nice
           await deleteGroup(group.groupId);
+
           console.log(`✅ Deleted group ${group.groupId}`);
         } catch (err) {
           console.error(`❌ Error deleting group ${group.groupId}:`, err);
