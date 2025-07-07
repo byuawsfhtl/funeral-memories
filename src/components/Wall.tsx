@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import { FuneralMemoryService } from "../../api/service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
 import TabbedMemoryWall from "./TabbedWall";
@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Memory } from "../model/Memory";
 import Publish from "./Publish";
 import { useFamilySearchResumePublish } from "./Publishing"; // or wherever you put it
-import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
+import { exportMemoriesAsPDF } from "../../api/service/exportMemoriesAsPDF";
 
 interface MemErrors {
   title: string;
@@ -427,6 +427,18 @@ export default function Wall() {
             </div>
           )}
         </div>
+
+        <h2
+          className="mb-0 text-center"
+          style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
+        >
+          {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
+        </h2>
+        {groupId && (
+          <p className="text-muted small mt-1 text-center">
+            Group ID: {groupId}
+          </p>
+        )}
 
         {/* Portrait on its own row below */}
         {person && (
