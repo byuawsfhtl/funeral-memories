@@ -27,5 +27,13 @@
       "path": "/api/utils/cleanup",
       "schedule": "*/5 * * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.ts": {
+      "includeFiles": [
+        "src/service/**"
+      ]
+    }
+  }
+
 }

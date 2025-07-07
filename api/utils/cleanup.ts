@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { FuneralMemoryService } from "../../src/service/FuneralMemoryService";
+import { FuneralMemoryService } from '../../src/service/FuneralMemoryService';
 
 export default async function handler(
   req: IncomingMessage & { method?: string },
