@@ -1,13 +1,18 @@
 import type { IncomingMessage, ServerResponse } from "http";
 
+// Determine base URL depending on environment (Vercel or local)
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 async function getMemories(groupId: string) {
-  const res = await fetch(`${process.env.BASE_URL}/api/memories?groupId=${groupId}`);
+  const res = await fetch(`${baseUrl}/api/memories?groupId=${groupId}`);
   if (!res.ok) throw new Error("Failed to fetch memories");
   return await res.json();
 }
 
 async function deleteMemory(memoryId: string) {
-  const res = await fetch(`${process.env.BASE_URL}/api/memories`, {
+  const res = await fetch(`${baseUrl}/api/memories`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ memoryId }),
@@ -16,7 +21,7 @@ async function deleteMemory(memoryId: string) {
 }
 
 async function deleteGroup(groupId: string) {
-  const res = await fetch(`${process.env.BASE_URL}/api/group`, {
+  const res = await fetch(`${baseUrl}/api/group`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ groupId }),
@@ -25,7 +30,7 @@ async function deleteGroup(groupId: string) {
 }
 
 async function deleteAdmin(groupId: string) {
-  const res = await fetch(`${process.env.BASE_URL}/api/admin`, {
+  const res = await fetch(`${baseUrl}/api/admin`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ groupId }),
@@ -41,7 +46,7 @@ export default async function handler(
   }
 ) {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/group`);
+    const response = await fetch(`${baseUrl}/api/group`);
     if (!response.ok) throw new Error("Failed to fetch all groups");
     const allGroups = await response.json();
 
