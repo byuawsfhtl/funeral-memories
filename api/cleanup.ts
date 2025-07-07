@@ -1,75 +1,109 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { deleteGroup, getGroup } from "../lib/GroupDAO";
-import { deleteMemories } from "../lib/MemoriesDAO";
-import { deleteAdmin } from "../lib/AdminDAO";
-import { deleteAdminSessions } from "../lib/AdminDAO"; // if you have one
+import { MongoClient } from "mongodb";
 
-export default async function handler(
-  req: IncomingMessage & { method?: string },
-  res: ServerResponse & {
-    status: (code: number) => typeof res;
-    json: (body: any) => void;
-  }
-) {
-  try {
-    console.log("🚀 Cleanup cron job triggered");
+// 🌐 Environment connection
+const uri = process.env.MONGODB_URI;
+if (!uri) throw new Error("MONGODB_URI environment variable is not set");
 
-    const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes
-    console.log("🕒 Cutoff timestamp:", cutoff);
+const client = new MongoClient(uri);
+const dbName = "FuneralMemories";
 
-    const allGroups = await getAllGroups();
-    console.log(`📦 Found ${allGroups.length} group(s)`);
-
-    for (const group of allGroups) {
-      const { groupId, timestamp } = group;
-
-      try {
-        console.log(`\n🔍 Checking group ${groupId} (timestamp: ${timestamp})`);
-
-        if (timestamp < cutoff) {
-          console.log(`⚠️ Group ${groupId} is older than 5 minutes — deleting related data`);
-
-          const deleteMemoriesResult = await deleteMemories(groupId);
-          console.log("🗑️ Memories deleted:", deleteMemoriesResult.message);
-
-          const deleteAdminResult = await deleteAdmin(groupId);
-          console.log("🗑️ Admin deleted:", deleteAdminResult.message);
-
-          try {
-            const deleteAdminSessionsResult = await deleteAdminSessions(groupId);
-            console.log("🗑️ Admin sessions deleted:", deleteAdminSessionsResult.message);
-          } catch (err) {
-            console.warn("⚠️ Failed to delete admin sessions (might be fine):", err);
-          }
-
-          const deleteGroupResult = await deleteGroup(groupId);
-          console.log("✅ Group deleted:", deleteGroupResult.message);
-        } else {
-          console.log(`⏭️ Group ${groupId} is still newer than 5 minutes. Skipping.`);
-        }
-      } catch (err) {
-        console.error(`❌ Failed processing group ${groupId}:`, err);
-      }
-    }
-
-    return res.status(200).json({ success: true, message: "Cleanup complete" });
-  } catch (err) {
-    console.error("❌ Cleanup failed:", err);
-    return res.status(500).json({ success: false, error: "Cleanup failed" });
-  }
+async function connect() {
+	await client.connect();
+	return client.db(dbName);
 }
 
+// 🔍 Get all groups with timestamps
 async function getAllGroups(): Promise<{ groupId: string; timestamp: number }[]> {
-  const { connect } = await import("../lib/GroupDAO");
-  const db = await connect();
-  const docs = await db
-    .collection("groups")
-    .find({}, { projection: { groupId: 1, timestamp: 1 } })
-    .toArray();
+	const db = await connect();
+	const docs = await db
+		.collection("groups")
+		.find({}, { projection: { groupId: 1, timestamp: 1 } })
+		.toArray();
 
-  return docs.map(doc => ({
-    groupId: doc.groupId as string,
-    timestamp: doc.timestamp as number
-  }));
+	return docs.map(doc => ({
+		groupId: doc.groupId as string,
+		timestamp: doc.timestamp as number,
+	}));
 }
 
+// 🧽 Deletion helpers
+async function deleteMemories(groupId: string) {
+	const db = await connect();
+	const result = await db.collection("memories").deleteMany({ groupId });
+	return { message: `${result.deletedCount} memory/memories deleted` };
+}
+
+async function deleteGroup(groupId: string) {
+	const db = await connect();
+	const result = await db.collection("groups").deleteOne({ groupId });
+	return { message: `${result.deletedCount} group(s) deleted` };
+}
+
+async function deleteAdmin(groupId: string) {
+	const db = await connect();
+	const result = await db.collection("admins").deleteOne({ groupId });
+	return { message: `${result.deletedCount} admin(s) deleted` };
+}
+
+async function deleteAdminSessions(groupId: string) {
+	const db = await connect();
+	const result = await db.collection("adminSessions").deleteMany({ groupId });
+	return { message: `${result.deletedCount} admin session(s) deleted` };
+}
+
+// 🧹 Main handler for cleanup
+export default async function handler(
+	req: IncomingMessage & { method?: string },
+	res: ServerResponse & {
+		status: (code: number) => typeof res;
+		json: (body: any) => void;
+	}
+) {
+	try {
+		console.log("🚀 Cleanup cron job triggered");
+
+		const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
+		console.log("🕒 Cutoff timestamp:", cutoff);
+
+		const allGroups = await getAllGroups();
+		console.log(`📦 Found ${allGroups.length} group(s)`);
+
+		for (const group of allGroups) {
+			const { groupId, timestamp } = group;
+
+			try {
+				console.log(`🔍 Checking group ${groupId} (timestamp: ${timestamp})`);
+
+				if (timestamp < cutoff) {
+					console.log(`⚠️ Group ${groupId} is older than 5 minutes — deleting`);
+
+					const mems = await deleteMemories(groupId);
+					console.log("🗑️ Memories:", mems.message);
+
+					const admin = await deleteAdmin(groupId);
+					console.log("🗑️ Admin:", admin.message);
+
+					try {
+						const sessions = await deleteAdminSessions(groupId);
+						console.log("🗑️ Admin sessions:", sessions.message);
+					} catch (err) {
+						console.warn("⚠️ Admin sessions deletion failed (optional):", err);
+					}
+
+					const grp = await deleteGroup(groupId);
+					console.log("✅ Group:", grp.message);
+				} else {
+					console.log(`⏭️ Group ${groupId} is newer. Skipping.`);
+				}
+			} catch (err) {
+				console.error(`❌ Error processing group ${groupId}:`, err);
+			}
+		}
+
+		return res.status(200).json({ success: true, message: "Cleanup complete" });
+	} catch (err) {
+		console.error("❌ Cleanup failed:", err);
+		return res.status(500).json({ success: false, error: "Cleanup failed" });
+	}
+}
