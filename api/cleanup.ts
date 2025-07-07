@@ -2,15 +2,16 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { MongoClient, ObjectId } from "mongodb";
 
 // Setup DB connection
-const uri = process.env.MONGODB_URI!;
-const dbName = "FuneralMemories";
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+	throw new Error("MONGODB_URI environment variable is not set");
+}
 const client = new MongoClient(uri);
+const dbName = "FuneralMemories";
 
 async function connect() {
-  if (!client.topology?.isConnected?.()) {
-    await client.connect();
-  }
-  return client.db(dbName);
+	await client.connect();
+	return client.db(dbName);
 }
 
 async function getAllGroups() {
@@ -23,7 +24,7 @@ async function getMemories(groupId: string) {
   return await db.collection("memories").find({ groupId }).toArray();
 }
 
-async function deleteMemory(memoryId: string) {
+async function deleteMemory(memoryId: ObjectId) {
   const db = await connect();
   return await db.collection("memories").deleteOne({ _id: new ObjectId(memoryId) });
 }
