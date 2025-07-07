@@ -393,18 +393,6 @@ export default function Wall() {
           >
             {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
           </h2>
-          {groupId && (
-            <p
-              style={{
-                fontSize: "0.9rem",
-                color: "#6c757d", // Bootstrap’s text-muted gray
-                marginTop: "0.25rem",
-                fontWeight: 400,
-              }}
-            >
-              Group ID: {groupId}
-            </p>
-          )}
 
           {isAdmin && (
             <div className="dropdown">
@@ -439,6 +427,19 @@ export default function Wall() {
             </div>
           )}
         </div>
+
+        {groupId && (
+          <p
+            style={{
+              fontSize: "0.9rem",
+              color: "#6c757d", // Bootstrap’s text-muted gray
+              marginTop: "0.25rem",
+              fontWeight: 400,
+            }}
+          >
+            Group ID: {groupId}
+          </p>
+        )}
 
         {/* Portrait on its own row below */}
         {person && (
