@@ -42,7 +42,7 @@ async function deleteGroup(groupId: string) {
 
 async function deleteAdmin(groupId: string) {
 	const db = await connect();
-	const result = await db.collection("admins").deleteOne({ groupId });
+	const result = await db.collection("admin").deleteOne({ groupId });
 	return { message: `${result.deletedCount} admin(s) deleted` };
 }
 
