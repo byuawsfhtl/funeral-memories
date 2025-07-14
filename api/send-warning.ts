@@ -10,37 +10,52 @@ const dbName = "FuneralMemories";
 const THIRTEEN_DAYS_MS = 5 * 60 * 1000;
 
 export default async function handler(_: any, res: any) {
+  console.log("⚙️ send-warning function triggered");
+
   try {
     await client.connect();
+    console.log("✅ Connected to MongoDB");
+
     const db = client.db(dbName);
     const now = Date.now();
 
-    // 1. Get groups created exactly 13 days ago
     const cutoffStart = now - THIRTEEN_DAYS_MS;
-    const cutoffEnd = cutoffStart + 24 * 60 * 60 * 1000; // within that 24-hour window
+    const cutoffEnd = cutoffStart + 24 * 60 * 60 * 1000;
+
+    console.log(`🕒 Searching for groups created between ${new Date(cutoffStart).toISOString()} and ${new Date(cutoffEnd).toISOString()}`);
 
     const groupsToWarn = await db.collection("groups").find({
       timestamp: { $gte: cutoffStart, $lt: cutoffEnd }
     }).toArray();
 
+    console.log(`📦 Found ${groupsToWarn.length} group(s) to warn`);
+
     for (const group of groupsToWarn) {
       const groupId = group.groupId;
+      console.log(`🔍 Looking up admin for groupId: ${groupId}`);
 
-      // 2. Find admin associated with the group
       const admin = await db.collection("admin").findOne({ groupId });
       const email = admin?.admin;
-      if (!email) continue;
 
-      // 3. Send warning email
+      if (!email) {
+        console.warn(`⚠️ No admin email found for groupId: ${groupId}`);
+        continue;
+      }
+
+      console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
       await sendEmail(email, groupId);
     }
 
+    console.log("✅ All warning emails processed");
     res.status(200).json({ message: "Warning emails sent." });
+
   } catch (err) {
-    console.error("Error in send-warning:", err);
+    console.error("❌ Error in send-warning:", err);
     res.status(500).json({ error: "Failed to send warnings." });
+
   } finally {
     await client.close();
+    console.log("🔒 MongoDB connection closed");
   }
 }
 
@@ -69,4 +84,5 @@ The Funeral Memories Team`,
   };
 
   await transporter.sendMail(mailOptions);
+  console.log(`✅ Email sent to ${to} for group ${groupId}`);
 }
