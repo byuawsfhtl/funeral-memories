@@ -6,8 +6,8 @@ const uri = process.env.MONGODB_URI!;
 const client = new MongoClient(uri);
 const dbName = "FuneralMemories";
 
-// Constants
-const THIRTEEN_DAYS_MS = 13 * 24 * 60 * 60 * 1000;
+// Constants 5 minutes for testing
+const THIRTEEN_DAYS_MS = 5 * 60 * 1000;
 
 export default async function handler(_: any, res: any) {
   try {
@@ -27,8 +27,8 @@ export default async function handler(_: any, res: any) {
       const groupId = group.groupId;
 
       // 2. Find admin associated with the group
-      const admin = await db.collection("admins").findOne({ groupId });
-      const email = admin?.email;
+      const admin = await db.collection("admin").findOne({ groupId });
+      const email = admin?.admin;
       if (!email) continue;
 
       // 3. Send warning email
