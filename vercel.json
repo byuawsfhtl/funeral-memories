@@ -26,6 +26,10 @@
     {
       "path": "/api/cleanup",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/send-warning",
+      "schedule":"0 12 * * *"
     }
   ],
   "functions": {
