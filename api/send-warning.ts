@@ -19,14 +19,14 @@ export default async function handler(_: any, res: any) {
     const db = client.db(dbName);
     const now = Date.now();
 
-    const cutoffStart = now - THIRTEEN_DAYS_MS;
-    const cutoffEnd = cutoffStart + 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
 
-    console.log(`🕒 Searching for groups created between ${new Date(cutoffStart).toISOString()} and ${new Date(cutoffEnd).toISOString()}`);
 
-    const groupsToWarn = await db.collection("groups").find({
-      timestamp: { $gte: cutoffStart, $lt: cutoffEnd }
-    }).toArray();
+console.log(`🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`);
+
+   const groupsToWarn = await db.collection("groups").find({
+  timestamp: { $lte: cutoff }
+}).toArray();
 
     console.log(`📦 Found ${groupsToWarn.length} group(s) to warn`);
 
