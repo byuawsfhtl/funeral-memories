@@ -1,10 +1,15 @@
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export function useFamilySearchResumePublish() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [publishResults, setPublishResults] = useState<
+    { title: string; success: boolean }[] | null
+  >(null);
+  const [isCleaning, setIsCleaning] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -17,36 +22,39 @@ export function useFamilySearchResumePublish() {
       const service = new FuneralMemoryService();
 
       (async () => {
-        let results = await service.publishMemoriesToFamilySearch(
-          groupId,
-          personId,
-          token
-        );
+        let results;
         try {
-          results.forEach((r) =>
-            console.log(
-              `Memory: ${r.title} — ${r.success ? "✅ Success" : "❌ Failed"}`
-            )
+          results = await service.publishMemoriesToFamilySearch(
+            groupId,
+            personId,
+            token
           );
-          alert(
-            `Published ${results.filter((r) => r.success).length} memories!`
-          );
+          setPublishResults(results);
+        } catch (err) {
+          console.error("Error publishing:", err);
+          setPublishResults([]);
+        }
+
+        setIsCleaning(true);
+
+        try {
           await service.deleteGroup(groupId);
           console.log("Group deleted", groupId);
         } catch (err) {
-          console.error("Error publishing:", err);
-          alert("Failed to publish some or all memories.");
+          console.error("Error deleting group:", err);
         } finally {
-          // Clean up
           localStorage.removeItem("groupId");
           localStorage.removeItem("personId");
           localStorage.removeItem("fstoken");
           localStorage.removeItem("madeGroup");
 
-          const successCount = results.filter((r) => r.success).length;
-          navigate("/", { replace: true });
+          setTimeout(() => {
+            navigate("/", { replace: true });
+          }, 2000); // give user a moment to see cleaning finished
         }
       })();
     }
   }, [location, navigate]);
+
+  return { publishResults, isCleaning };
 }
