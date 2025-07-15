@@ -25,7 +25,8 @@ export default async function handler(_: any, res: any) {
 console.log(`🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`);
 
    const groupsToWarn = await db.collection("groups").find({
-  timestamp: { $lte: cutoff }
+  timestamp: { $lte: cutoff },
+   emailSent: { $ne: true }
 }).toArray();
 
     console.log(`📦 Found ${groupsToWarn.length} group(s) to warn`);
@@ -44,6 +45,10 @@ console.log(`🕒 Searching for groups created before ${new Date(cutoff).toISOSt
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
       await sendEmail(email, groupId);
+      await db.collection("groups").updateOne(
+  { groupId },
+  { $set: { emailSent: true } }
+);
     }
 
     console.log("✅ All warning emails processed");
