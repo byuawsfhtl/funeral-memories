@@ -35,10 +35,12 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
+
   useFamilySearchResumePublish();
   const navigate = useNavigate();
   const location = useLocation();
   const message = location.state?.message;
+  const [showOverlay, setShowOverlay] = useState(!!message);
 
   const handlePublish = async () => {
     const token = localStorage.getItem("fstoken");
@@ -428,9 +430,20 @@ export default function Wall() {
             </div>
           )}
         </div>
-        {message && (
-          <div className="alert alert-success text-center mt-2" role="alert">
-            {message}
+        {showOverlay && (
+          <div style={overlayStyle}>
+            <div style={messageBoxStyle}>
+              <p className="mb-3">{message}</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setShowOverlay(false);
+                  navigate("/");
+                }}
+              >
+                Close
+              </button>
+            </div>
           </div>
         )}
 
@@ -765,4 +778,14 @@ const popupStyle: React.CSSProperties = {
   boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
   maxWidth: "400px",
   width: "90%",
+};
+
+const messageBoxStyle: React.CSSProperties = {
+  backgroundColor: "#fff",
+  padding: "2rem",
+  borderRadius: "8px",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+  maxWidth: "400px",
+  width: "90%",
+  textAlign: "center",
 };
