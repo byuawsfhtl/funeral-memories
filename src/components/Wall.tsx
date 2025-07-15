@@ -35,7 +35,6 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
-  const { publishResults, isCleaning } = useFamilySearchResumePublish();
 
   useFamilySearchResumePublish();
   const navigate = useNavigate();
@@ -755,53 +754,6 @@ export default function Wall() {
           </div>
         </div>
       )}
-      {publishResults && (
-        <PublishOverlay
-          publishResults={publishResults}
-          isCleaning={isCleaning}
-        />
-      )}
-    </div>
-  );
-}
-
-interface PublishResult {
-  title: string;
-  success: boolean;
-}
-
-function PublishOverlay({
-  publishResults,
-  isCleaning,
-}: {
-  publishResults: PublishResult[];
-  isCleaning: boolean;
-}) {
-  if (!publishResults) return null;
-
-  return (
-    <div className="overlay">
-      <div className="modal">
-        <h3>Publish Results</h3>
-        {publishResults.length === 0 && <p>Failed to publish memories.</p>}
-        {publishResults.length > 0 && (
-          <ul>
-            {publishResults.map(({ title, success }) => (
-              <li key={title}>
-                {title} — {success ? "✅ Success" : "❌ Failed"}
-              </li>
-            ))}
-          </ul>
-        )}
-        {isCleaning ? (
-          <>
-            <p>Cleaning up...</p>
-            <div className="spinner"></div>
-          </>
-        ) : (
-          <p>Redirecting...</p>
-        )}
-      </div>
     </div>
   );
 }
