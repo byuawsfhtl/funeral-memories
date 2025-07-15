@@ -21,13 +21,17 @@ export default async function handler(_: any, res: any) {
 
     const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
 
+    console.log(
+      `🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`
+    );
 
-console.log(`🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`);
-
-   const groupsToWarn = await db.collection("groups").find({
-  timestamp: { $lte: cutoff },
-   emailSent: { $ne: true }
-}).toArray();
+    const groupsToWarn = await db
+      .collection("groups")
+      .find({
+        timestamp: { $lte: cutoff },
+        emailSent: { $ne: true },
+      })
+      .toArray();
 
     console.log(`📦 Found ${groupsToWarn.length} group(s) to warn`);
 
@@ -45,19 +49,16 @@ console.log(`🕒 Searching for groups created before ${new Date(cutoff).toISOSt
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
       await sendEmail(email, groupId);
-      await db.collection("groups").updateOne(
-  { groupId },
-  { $set: { emailSent: true } }
-);
+      await db
+        .collection("groups")
+        .updateOne({ groupId }, { $set: { emailSent: true } });
     }
 
     console.log("✅ All warning emails processed");
     res.status(200).json({ message: "Warning emails sent." });
-
   } catch (err) {
     console.error("❌ Error in send-warning:", err);
     res.status(500).json({ error: "Failed to send warnings." });
-
   } finally {
     await client.close();
     console.log("🔒 MongoDB connection closed");
@@ -71,7 +72,7 @@ async function sendEmail(to: string, groupId: string) {
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
-    }
+    },
   });
 
   const mailOptions = {
