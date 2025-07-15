@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
 import nodemailer from "nodemailer";
 
 // Connect to MongoDB
@@ -50,10 +50,8 @@ export default async function handler(_: any, res: any) {
       }
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
-      await sendEmail(email, groupId, groupPersonName);
-      await db
-        .collection("groups")
-        .updateOne({ groupId }, { $set: { emailSent: true } });
+      await sendEmail(email, groupId, groupPersonName, db);
+     
     }
 
     console.log("✅ All warning emails processed");
@@ -68,7 +66,7 @@ export default async function handler(_: any, res: any) {
 }
 
 // Email sender
-async function sendEmail(to: string, groupId: string, groupPersonName: string) {
+async function sendEmail(to: string, groupId: string, groupPersonName: string, db: Db) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -93,4 +91,7 @@ The Funeral Memories Team`,
 
   await transporter.sendMail(mailOptions);
   console.log(`✅ Email sent to ${to} for group ${groupId}`);
+   await db
+        .collection("groups")
+        .updateOne({ groupId }, { $set: { emailSent: true } });
 }
