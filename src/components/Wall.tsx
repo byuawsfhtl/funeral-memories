@@ -35,8 +35,8 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
-  const [publishMessage, setPublishMessage] = useState<string | null>(null);
-  useFamilySearchResumePublish(setPublishMessage);
+
+  useFamilySearchResumePublish();
   const navigate = useNavigate();
   const location = useLocation();
   const message = location.state?.message;
@@ -440,19 +440,6 @@ export default function Wall() {
                   setShowOverlay(false);
                   navigate("/");
                 }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-        {publishMessage && (
-          <div style={overlayStyle}>
-            <div style={messageBoxStyle}>
-              <p className="mb-3">{publishMessage}</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => setPublishMessage(null)}
               >
                 Close
               </button>

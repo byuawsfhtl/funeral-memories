@@ -2,9 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
-export function useFamilySearchResumePublish(
-  setMessage: (msg: string) => void
-) {
+export function useFamilySearchResumePublish() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -30,15 +28,14 @@ export function useFamilySearchResumePublish(
               `Memory: ${r.title} — ${r.success ? "✅ Success" : "❌ Failed"}`
             )
           );
-
-          const successCount = results.filter((r) => r.success).length;
-          setMessage(`✅ Published ${successCount} memories successfully!`);
-
+          alert(
+            `Published ${results.filter((r) => r.success).length} memories!`
+          );
           await service.deleteGroup(groupId);
           console.log("Group deleted", groupId);
         } catch (err) {
           console.error("Error publishing:", err);
-          setMessage("❌ Failed to publish some or all memories.");
+          alert("Failed to publish some or all memories.");
         } finally {
           // Clean up
           localStorage.removeItem("groupId");
@@ -46,11 +43,17 @@ export function useFamilySearchResumePublish(
           localStorage.removeItem("fstoken");
           localStorage.removeItem("madeGroup");
 
+          const successCount = results.filter((r) => r.success).length;
+          navigate("/wall", {
+            state: {
+              message: `✅ Published ${successCount} memories successfully!`,
+            },
+          });
           setTimeout(() => {
             navigate("/", { replace: true });
           }, 4000);
         }
       })();
     }
-  }, [location, navigate, setMessage]);
+  }, [location, navigate]);
 }
