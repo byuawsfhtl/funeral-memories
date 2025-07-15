@@ -37,6 +37,8 @@ export default async function handler(_: any, res: any) {
 
     for (const group of groupsToWarn) {
       const groupId = group.groupId;
+      const groupPerson = group.ancestor;
+      const groupPersonName = groupPerson.name;
       console.log(`🔍 Looking up admin for groupId: ${groupId}`);
 
       const admin = await db.collection("admin").findOne({ groupId });
@@ -48,7 +50,7 @@ export default async function handler(_: any, res: any) {
       }
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
-      await sendEmail(email, groupId);
+      await sendEmail(email, groupId, groupPersonName);
       await db
         .collection("groups")
         .updateOne({ groupId }, { $set: { emailSent: true } });
@@ -66,7 +68,7 @@ export default async function handler(_: any, res: any) {
 }
 
 // Email sender
-async function sendEmail(to: string, groupId: string) {
+async function sendEmail(to: string, groupId: string, groupPersonName: string) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -81,9 +83,9 @@ async function sendEmail(to: string, groupId: string) {
     subject: `⏳ Your Funeral Memories group "${groupId}" will be deleted tomorrow`,
     text: `Hi,
 
-This is a friendly reminder that your Funeral Memories group "${groupId}" is scheduled to be deleted tomorrow, 14 days after creation.
+This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted tomorrow, 14 days after creation.
 
-If you would like to save anything, please do so today.
+If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so today.
 
 Thank you,
 The Funeral Memories Team`,
