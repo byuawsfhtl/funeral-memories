@@ -38,6 +38,7 @@ export default function Wall() {
   useFamilySearchResumePublish();
   const navigate = useNavigate();
   const location = useLocation();
+  const message = location.state?.message;
 
   const handlePublish = async () => {
     const token = localStorage.getItem("fstoken");
@@ -427,6 +428,11 @@ export default function Wall() {
             </div>
           )}
         </div>
+        {message && (
+          <div className="alert alert-success text-center mt-2" role="alert">
+            {message}
+          </div>
+        )}
 
         {/* Portrait on its own row below */}
         {person && (

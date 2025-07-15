@@ -17,12 +17,12 @@ export function useFamilySearchResumePublish() {
       const service = new FuneralMemoryService();
 
       (async () => {
+        let results = await service.publishMemoriesToFamilySearch(
+          groupId,
+          personId,
+          token
+        );
         try {
-          const results = await service.publishMemoriesToFamilySearch(
-            groupId,
-            personId,
-            token
-          );
           results.forEach((r) =>
             console.log(
               `Memory: ${r.title} — ${r.success ? "✅ Success" : "❌ Failed"}`
@@ -42,7 +42,16 @@ export function useFamilySearchResumePublish() {
           localStorage.removeItem("personId");
           localStorage.removeItem("fstoken");
           localStorage.removeItem("madeGroup");
-          navigate(location.pathname, { replace: true }); // remove ?fstoken=... from URL
+
+          const successCount = results.filter((r) => r.success).length;
+          navigate("/wall", {
+            state: {
+              message: `✅ Published ${successCount} memories successfully!`,
+            },
+          });
+          setTimeout(() => {
+            navigate("/", { replace: true });
+          }, 4000);
         }
       })();
     }
