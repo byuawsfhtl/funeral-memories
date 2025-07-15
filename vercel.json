@@ -29,7 +29,7 @@
     },
     {
       "path": "/api/send-warning",
-      "schedule":"*/5 * * * *"
+      "schedule":"0 12 * * *"
     }
   ],
   "functions": {
