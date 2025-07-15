@@ -44,14 +44,7 @@ export function useFamilySearchResumePublish() {
           localStorage.removeItem("madeGroup");
 
           const successCount = results.filter((r) => r.success).length;
-          navigate("/wall", {
-            state: {
-              message: `✅ Published ${successCount} memories successfully!`,
-            },
-          });
-          setTimeout(() => {
-            navigate("/", { replace: true });
-          }, 4000);
+          navigate("/", { replace: true });
         }
       })();
     }
