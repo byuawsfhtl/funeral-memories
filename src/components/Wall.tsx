@@ -35,30 +35,30 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
-
-  useFamilySearchResumePublish();
+  const [publishMessage, setPublishMessage] = useState<string | null>(null);
+  useFamilySearchResumePublish(setPublishMessage);
   const navigate = useNavigate();
   const location = useLocation();
   const message = location.state?.message;
   const [showOverlay, setShowOverlay] = useState(!!message);
 
-  const handlePublish = async () => {
-    const token = localStorage.getItem("fstoken");
-    if (!token || !person?.id || !groupId)
-      return alert("Missing token/person/group");
-    try {
-      const results = await service.publishMemoriesToFamilySearch(
-        groupId as string,
-        person.id,
-        token
-      );
-      console.log("Publish results:", results);
-      alert(`Published ${results.filter((r) => r.success).length} memories!`);
-    } catch (e) {
-      console.error("Publish failed:", e);
-      alert("Publish failed");
-    }
-  };
+  // const handlePublish = async () => {
+  //   const token = localStorage.getItem("fstoken");
+  //   if (!token || !person?.id || !groupId)
+  //     return alert("Missing token/person/group");
+  //   try {
+  //     const results = await service.publishMemoriesToFamilySearch(
+  //       groupId as string,
+  //       person.id,
+  //       token
+  //     );
+  //     console.log("Publish results:", results);
+  //     alert(`Published ${results.filter((r) => r.success).length} memories!`);
+  //   } catch (e) {
+  //     console.error("Publish failed:", e);
+  //     alert("Publish failed");
+  //   }
+  // };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -440,6 +440,19 @@ export default function Wall() {
                   setShowOverlay(false);
                   navigate("/");
                 }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+        {publishMessage && (
+          <div style={overlayStyle}>
+            <div style={messageBoxStyle}>
+              <p className="mb-3">{publishMessage}</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => setPublishMessage(null)}
               >
                 Close
               </button>
