@@ -161,8 +161,8 @@ export default async function handler(
   try {
     console.log("🚀 Cleanup cron job triggered");
 
-    //const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000; //2 weeks ago
-    const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
+    const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000; //2 weeks ago
+    //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
     console.log("🕒 Cutoff timestamp:", cutoff);
 
     const allGroups = await getAllGroups();
