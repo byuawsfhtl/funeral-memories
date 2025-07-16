@@ -42,24 +42,6 @@ export default function Wall() {
   const message = location.state?.message;
   const [showOverlay, setShowOverlay] = useState(!!message);
 
-  // const handlePublish = async () => {
-  //   const token = localStorage.getItem("fstoken");
-  //   if (!token || !person?.id || !groupId)
-  //     return alert("Missing token/person/group");
-  //   try {
-  //     const results = await service.publishMemoriesToFamilySearch(
-  //       groupId as string,
-  //       person.id,
-  //       token
-  //     );
-  //     console.log("Publish results:", results);
-  //     alert(`Published ${results.filter((r) => r.success).length} memories!`);
-  //   } catch (e) {
-  //     console.error("Publish failed:", e);
-  //     alert("Publish failed");
-  //   }
-  // };
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("fstoken");
@@ -396,56 +378,7 @@ export default function Wall() {
           >
             {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
           </h2>
-
-          {isAdmin && (
-            <div className="dropdown">
-              <button
-                className="btn btn-light"
-                type="button"
-                id="adminDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="bi bi-three-dots-vertical"></i>
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="adminDropdown">
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setShowConfirmPublish(true)}
-                  >
-                    Publish
-                  </button>
-                </li>
-
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => exportMemoriesAsPDF(person.name, memoryList)}
-                  >
-                    Export Memories
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
         </div>
-        {showOverlay && (
-          <div style={overlayStyle}>
-            <div style={messageBoxStyle}>
-              <p className="mb-3">{message}</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => {
-                  setShowOverlay(false);
-                  navigate("/");
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Portrait on its own row below */}
         {person && (
@@ -456,6 +389,40 @@ export default function Wall() {
               className="img-fluid"
               style={{ height: "100px", borderRadius: "10%" }}
             />
+            {isAdmin && (
+              <div className="dropdown">
+                <button
+                  className="btn btn-light"
+                  type="button"
+                  id="adminDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setShowConfirmPublish(true)}
+                    >
+                      Publish
+                    </button>
+                  </li>
+
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() =>
+                        exportMemoriesAsPDF(person.name, memoryList)
+                      }
+                    >
+                      Export Memories
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>

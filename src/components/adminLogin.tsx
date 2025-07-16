@@ -88,7 +88,7 @@ export default function AdminLogin() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Admin Username</label>
+            <label className="form-label">Admin Email</label>
             <input
               type="text"
               className="form-control"
