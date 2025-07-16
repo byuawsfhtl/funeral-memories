@@ -389,46 +389,48 @@ export default function Wall() {
               className="img-fluid"
               style={{ height: "100px", borderRadius: "10%" }}
             />
-            {isAdmin && (
-              <div className="dropdown">
-                <button
-                  className="btn btn-light"
-                  type="button"
-                  id="adminDropdown"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i className="bi bi-three-dots-vertical"></i>
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="adminDropdown">
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => setShowConfirmPublish(true)}
-                    >
-                      Publish
-                    </button>
-                  </li>
-
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() =>
-                        exportMemoriesAsPDF(person.name, memoryList)
-                      }
-                    >
-                      Export Memories
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
           </div>
         )}
       </div>
 
       {groupId && (
-        <p className="text-muted small mt-1 text-center">Group ID: {groupId}</p>
+        <div className="d-flex align-items-center justify-content-center gap-2 mt-1">
+          <p className="text-muted small mb-0">
+            Group ID: <strong>{groupId}</strong>
+          </p>
+
+          {isAdmin && (
+            <div className="dropdown">
+              <button
+                className="btn btn-light btn-sm"
+                type="button"
+                id="adminDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="adminDropdown">
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => setShowConfirmPublish(true)}
+                  >
+                    Publish
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => exportMemoriesAsPDF(person.name, memoryList)}
+                  >
+                    Export Memories
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       )}
 
       <button
