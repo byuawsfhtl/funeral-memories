@@ -4,9 +4,7 @@ import React from "react";
 export default function Instructions() {
   return (
     <div className="container my-5">
-      <h1 className="mb-4 text-center">
-        🕊 Funeral Memories — How to Use the App
-      </h1>
+      <h1 className="mb-4 text-center">🕊 How to Use Funeral Memories</h1>
 
       <p>
         Funeral Memories is a shared space for preserving and celebrating the
