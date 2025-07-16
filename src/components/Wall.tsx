@@ -373,7 +373,7 @@ export default function Wall() {
       <div className="container py-3">
         <div className="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-2">
           <h2
-            className="mb-0"
+            className="mb-0 text-center w-100"
             style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
           >
             {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
