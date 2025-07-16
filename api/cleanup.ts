@@ -184,7 +184,10 @@ export default async function handler(
             .collection("memories")
             .find({ groupId })
             .toArray();
-          const personName = adminDoc?.person?.name ?? "Your Loved One";
+          const fullGroupDoc = await db
+            .collection("groups")
+            .findOne({ groupId });
+          const personName = fullGroupDoc?.ancestor?.name ?? "Your Loved One";
 
           if (adminDoc?.admin) {
             try {
