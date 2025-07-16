@@ -186,7 +186,7 @@ export default async function handler(
             .toArray();
           const personName = adminDoc?.person?.name ?? "Your Loved One";
 
-          if (adminDoc?.admin && memories.length > 0) {
+          if (adminDoc?.admin) {
             try {
               const pdf = await generateMemoriesPDF(personName, memories);
               await sendMemoryEmail(adminDoc.admin, pdf, personName);
