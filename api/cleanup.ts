@@ -177,6 +177,7 @@ export default async function handler(
         if (timestamp < cutoff) {
           console.log(`⚠️ Group ${groupId} is older than 5 minutes — deleting`);
           const db = await connect();
+          console.log("got to getting emails");
 
           const adminDoc = await db.collection("admin").findOne({ groupId });
           const memories = await db
@@ -185,14 +186,14 @@ export default async function handler(
             .toArray();
           const personName = adminDoc?.person?.name ?? "Your Loved One";
 
-          if (adminDoc?.email && memories.length > 0) {
+          if (adminDoc?.admin && memories.length > 0) {
             try {
               const pdf = await generateMemoriesPDF(personName, memories);
-              await sendMemoryEmail(adminDoc.email, pdf, personName);
-              console.log(`📧 Sent PDF to ${adminDoc.email}`);
+              await sendMemoryEmail(adminDoc.admin, pdf, personName);
+              console.log(`📧 Sent PDF to ${adminDoc.admin}`);
             } catch (err) {
               console.warn(
-                `⚠️ Failed to email memories to ${adminDoc.email}:`,
+                `⚠️ Failed to email memories to ${adminDoc.admin}:`,
                 err
               );
             }
