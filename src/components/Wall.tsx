@@ -381,7 +381,7 @@ export default function Wall() {
         </div>
 
         {/* Portrait on its own row below */}
-        {person && (
+        {person && portraitUrl && (
           <div className="d-flex justify-content-center mt-2">
             <img
               src={portraitUrl}
