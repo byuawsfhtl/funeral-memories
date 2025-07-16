@@ -33,7 +33,7 @@ export default function Instructions() {
           photo, and optionally show your name.
         </li>
         <li>
-          Click <strong>"Post"</strong> to publish it to the wall.
+          Click <strong>"Submit"</strong> to publish it to the wall.
         </li>
       </ul>
 
