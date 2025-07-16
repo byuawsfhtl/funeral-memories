@@ -73,8 +73,8 @@ export default function Instructions() {
       <h4 className="mt-4">📄 Export or Publish Memories</h4>
       <ul>
         <li>
-          Click the <strong>three dots (⋮)</strong> next to the title of the
-          wall.
+          Click the <strong>three dots (⋮)</strong> next to the Group ID on the
+          Memory Wall.
         </li>
         <li>
           Choose to <strong>export as PDF</strong> or{" "}
