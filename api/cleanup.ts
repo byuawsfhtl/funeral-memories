@@ -87,7 +87,7 @@ async function sendMemoryEmail(
     from: `"Funeral Memories" <${process.env.EMAIL_USER}>`,
     to: toEmail,
     subject: `Memories for ${personName}`,
-    text: `Attached is a PDF archive of your group's memories.`,
+    text: `Your group for Funeral Memories (funeral-memories.fhtl.org) has expired. Attached is a PDF archive of your group's memories.`,
     attachments: [
       {
         filename: `Memories-${personName}.pdf`,
