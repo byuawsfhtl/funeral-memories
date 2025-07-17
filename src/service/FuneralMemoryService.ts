@@ -4,93 +4,100 @@ import { Memory } from "../model/Memory";
 
 export class FuneralMemoryService {
 	private extractActualAccessToken(jwt: string): string | null {
-	try {
-		const payload = JSON.parse(atob(jwt.split(".")[1]));
-		return payload.fs_access_token;
-	} catch (err) {
-		console.error("Failed to decode token:", err);
-		return null;
+		try {
+			const payload = JSON.parse(atob(jwt.split(".")[1]));
+			return payload.fs_access_token;
+		} catch (err) {
+			console.error("Failed to decode token:", err);
+			return null;
+		}
 	}
-}
 
+	async publishMemoriesToFamilySearch(
+		groupId: string,
+		personId: string,
+		token: string
+	) {
+		console.log("uploading");
+		const accessToken = this.extractActualAccessToken(token);
+		if (!accessToken) {
+			throw new Error("Invalid or missing fs_access_token in JWT");
+		}
+		console.log("Access Token:", accessToken);
+		try {
+			const memories = await this.getMemories(groupId);
+			console.log(memories);
 
-async publishMemoriesToFamilySearch(groupId: string, personId: string, token: string) {
-	console.log("uploading");
-	const accessToken = this.extractActualAccessToken(token);
-	if (!accessToken) {
-		throw new Error("Invalid or missing fs_access_token in JWT");
-	}
-	console.log("Access Token:", accessToken);
-	try {
-		const memories = await this.getMemories(groupId);
-		console.log(memories);
-
-		const results = await Promise.all(
-			memories.map(async (memory: Memory) => {
-				const formattedDate = memory.date
-					? new Date(memory.date).toLocaleDateString("en-US", {
-							year: "numeric",
-							month: "long",
-							day: "numeric",
-					  })
-					: "N/A";
+			const results = await Promise.all(
+				memories.map(async (memory: Memory) => {
+					const formattedDate = memory.date
+						? new Date(memory.date).toLocaleDateString("en-US", {
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+						  })
+						: "N/A";
 
 					console.log("Preparing memory upload:", {
-  id: memory._id,
-  title: memory.title,
-  place: memory.place,
-  date: memory.date,
-  sessionId: memory.sessionId,
-});
+						id: memory._id,
+						title: memory.title,
+						place: memory.place,
+						date: memory.date,
+						sessionId: memory.sessionId,
+					});
 
+					const description = `Date: ${formattedDate}\nLocation: ${
+						memory.place || "N/A"
+					}\n\n${memory.memory}`;
+					console.log("decription");
 
-				const description = `Date: ${formattedDate}\nLocation: ${memory.place || "N/A"}\n\n${memory.memory}`;
-				console.log("decription");
+					const file = new File(
+						[description],
+						`${memory.title || "Memory"}.txt`,
+						{
+							type: "text/plain",
+						}
+					);
 
-				const file = new File([description], `${memory.title || "Memory"}.txt`, {
-					type: "text/plain",
-				});
+					const formData = new FormData();
+					formData.append("artifact", file);
+					formData.append("title", memory.title);
+					formData.append("description", description);
+					formData.append("filename", file.name);
+					formData.append("type", "Story");
 
-				const formData = new FormData();
-				formData.append("artifact", file);
-				formData.append("title", memory.title);
-				formData.append("description", description);
-				formData.append("filename", file.name);
-				formData.append("type", "Story");
-
-				for (const [key, value] of formData.entries()) {
-  console.log(`FormData: ${key} =`, value);
-}
-
-				const response = await fetch(
-					`https://api.familysearch.org/platform/tree/persons/${personId}/memories`,
-					{
-						method: "POST",
-						headers: {
-							Authorization: `Bearer ${accessToken}`,
-						},
-						body: formData,
+					for (const [key, value] of formData.entries()) {
+						console.log(`FormData: ${key} =`, value);
 					}
-				);
 
-				if (!response.ok) {
-					const errorText = await response.text();
-					return { memoryId: memory._id, success: false, error: errorText };
-				}
-				console.log(`✅ Upload succeeded for ${memory.title}`);
+					const response = await fetch(
+						`https://api.familysearch.org/platform/tree/persons/${personId}/memories`,
+						{
+							method: "POST",
+							headers: {
+								Authorization: `Bearer ${accessToken}`,
+							},
+							body: formData,
+						}
+					);
 
-				return { memoryId: memory._id, success: true };
-			})
-		);
+					if (!response.ok) {
+						const errorText = await response.text();
+						return { memoryId: memory._id, success: false, error: errorText };
+					}
+					console.log(`✅ Upload succeeded for ${memory.title}`);
 
-		return results;
-	} catch (err) {
-		console.error("Error during FamilySearch publishing:", err);
-		throw err;
+					return { memoryId: memory._id, success: true };
+				})
+			);
+
+			return results;
+		} catch (err) {
+			console.error("Error during FamilySearch publishing:", err);
+			throw err;
+		}
 	}
-}
 
-	
 	// MEMORIES
 	async getMemories(groupId: string) {
 		try {
@@ -183,6 +190,7 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 	//any because they add properties to them to fit the models
 	async addGroup(group: any, admin: any) {
 		let newGroupId = Math.random().toString(36).substring(2, 8);
+		newGroupId = newGroupId.toLowerCase();
 		try {
 			let existing;
 			do {
@@ -191,6 +199,7 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 				existing = res.ok ? await res.json() : null;
 				if (existing) {
 					newGroupId = Math.random().toString(36).substring(2, 8);
+					newGroupId = newGroupId.toLowerCase();
 				}
 			} while (existing);
 			console.log("got after fetch");
@@ -354,7 +363,4 @@ async publishMemoriesToFamilySearch(groupId: string, personId: string, token: st
 			throw new Error("Unable to check group status");
 		}
 	}
-	
 }
-
-
