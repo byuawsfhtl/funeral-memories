@@ -31,7 +31,7 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		const pageHeight = doc.internal.pageSize.getHeight();
 		const maxY = pageHeight - 20;
 
-		const finalY = renderTextWithAutoPagination(
+		const finalY = renderTextWithNaturalSpacing(
 			doc,
 			memory.memory,
 			10,
@@ -84,7 +84,7 @@ function loadImageDimensions(
 	});
 }
 
-function renderTextWithAutoPagination(
+function renderTextWithNaturalSpacing(
 	doc: jsPDF,
 	text: string,
 	x: number,
@@ -92,18 +92,26 @@ function renderTextWithAutoPagination(
 	maxY: number
 ): number {
 	const lines = doc.splitTextToSize(text, 180);
-	let currentY = startY;
-	const fontSize = doc.getFontSize();
-	const lineSpacing = fontSize * 1.15; // approximate natural spacing
+	const lineHeight = doc.getLineHeightFactor() * doc.getFontSize();
 	const pageHeight = doc.internal.pageSize.getHeight();
 
-	lines.forEach((line: string) => {
-		if (currentY + lineSpacing > maxY) {
-			doc.addPage();
-			currentY = 20;
+	let currentY = startY;
+	let buffer: string[] = [];
+
+	lines.forEach((line: string, index: number) => {
+		buffer.push(line);
+		if (
+			currentY + buffer.length * lineHeight > maxY ||
+			index === lines.length - 1
+		) {
+			doc.text(buffer, x, currentY);
+			currentY += buffer.length * lineHeight;
+			buffer = [];
+			if (currentY > maxY && index !== lines.length - 1) {
+				doc.addPage();
+				currentY = 20;
+			}
 		}
-		doc.text(line, x, currentY);
-		currentY += lineSpacing;
 	});
 
 	return currentY;
