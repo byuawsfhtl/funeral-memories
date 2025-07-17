@@ -1,26 +1,22 @@
 import jsPDF from "jspdf";
 import { Memory } from "../model/Memory";
 
-export function exportMemoriesAsPDF(name: string, memories: Memory[]) {
+export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	const doc = new jsPDF();
 
-	memories.forEach((memory, index) => {
+	for (const [index, memory] of memories.entries()) {
 		if (index > 0) {
 			doc.addPage();
 		} else {
-			// Add a centered title to the first page
 			const titleText = `Memories for ${name}`;
 			doc.setFontSize(20);
 			doc.setFont("helvetica", "bold");
-
 			const pageWidth = doc.internal.pageSize.getWidth();
 			const textWidth = doc.getTextWidth(titleText);
 			const x = (pageWidth - textWidth) / 2;
-
 			doc.text(titleText, x, 15);
 		}
 
-		// Reset font for memory content
 		doc.setFont("helvetica", "normal");
 		doc.setFontSize(16);
 		doc.text(memory.title, 10, 30);
@@ -35,10 +31,40 @@ export function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
 
 		if (memory.image) {
-			const format = memory.image.startsWith("data:image/png") ? "PNG" : "JPEG";
-			doc.addImage(memory.image, format, 10, textY + 40, 180, 100);
+			const imgProps = await loadImageDimensions(memory.image);
+			const maxWidth = 180;
+			const aspectRatio = imgProps.width / imgProps.height;
+			let imgWidth = maxWidth;
+			let imgHeight = imgWidth / aspectRatio;
+
+			if (imgHeight > 100) {
+				imgHeight = 100;
+				imgWidth = imgHeight * aspectRatio;
+			}
+
+			doc.addImage(
+				memory.image,
+				imgProps.format,
+				10,
+				textY + 40,
+				imgWidth,
+				imgHeight
+			);
 		}
-	});
+	}
 
 	doc.save(`${name}_memories.pdf`);
+}
+
+async function loadImageDimensions(
+	dataUrl: string
+): Promise<{ width: number; height: number; format: "PNG" | "JPEG" }> {
+	return new Promise((resolve) => {
+		const img = new Image();
+		img.src = dataUrl;
+		img.onload = () => {
+			const format = dataUrl.startsWith("data:image/png") ? "PNG" : "JPEG";
+			resolve({ width: img.width, height: img.height, format });
+		};
+	});
 }
