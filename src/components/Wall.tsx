@@ -739,7 +739,7 @@ export default function Wall() {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Return to top"
         >
-          Return To Top
+          <i className="bi bi-arrow-up"></i> {/* Bootstrap icon if you want */}
         </button>
       )}
     </div>
