@@ -92,14 +92,16 @@ async function addTextWithPagination(
 ): Promise<number> {
 	const lines = doc.splitTextToSize(text, 180);
 	let currentY = startY;
+	const fontSize = doc.getFontSize(); // dynamically get current font size
+	const lineSpacing = 1.2; // spacing multiplier
 
 	for (const line of lines) {
-		if (currentY + 10 > maxY) {
+		if (currentY + fontSize * lineSpacing > maxY) {
 			doc.addPage();
 			currentY = 20;
 		}
 		doc.text(line, x, currentY);
-		currentY += 10;
+		currentY += fontSize * lineSpacing;
 	}
 
 	return currentY;
