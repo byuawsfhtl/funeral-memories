@@ -31,7 +31,7 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		const pageHeight = doc.internal.pageSize.getHeight();
 		const maxY = pageHeight - 20;
 
-		const finalY = renderTextWithNaturalSpacing(
+		const finalY = renderTextWithNativeSpacing(
 			doc,
 			memory.memory,
 			10,
@@ -71,6 +71,42 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	doc.save(`${name}_memories.pdf`);
 }
 
+function renderTextWithNativeSpacing(
+	doc: jsPDF,
+	text: string,
+	x: number,
+	startY: number,
+	maxY: number
+): number {
+	const lines = doc.splitTextToSize(text, 180);
+	const fontSize = doc.getFontSize();
+	const lineHeight = fontSize * doc.getLineHeightFactor();
+	const pageHeight = doc.internal.pageSize.getHeight();
+
+	let currentY = startY;
+	let buffer: string[] = [];
+
+	for (const line of lines) {
+		if (currentY + lineHeight > maxY) {
+			if (buffer.length > 0) {
+				doc.text(buffer, x, currentY);
+				currentY += buffer.length * lineHeight;
+				buffer = [];
+			}
+			doc.addPage();
+			currentY = 20;
+		}
+		buffer.push(line);
+	}
+
+	if (buffer.length > 0) {
+		doc.text(buffer, x, currentY);
+		currentY += buffer.length * lineHeight;
+	}
+
+	return currentY;
+}
+
 function loadImageDimensions(
 	dataUrl: string
 ): Promise<{ width: number; height: number; format: "PNG" | "JPEG" }> {
@@ -82,37 +118,4 @@ function loadImageDimensions(
 			resolve({ width: img.width, height: img.height, format });
 		};
 	});
-}
-
-function renderTextWithNaturalSpacing(
-	doc: jsPDF,
-	text: string,
-	x: number,
-	startY: number,
-	maxY: number
-): number {
-	const lines = doc.splitTextToSize(text, 180);
-	const lineHeight = doc.getLineHeightFactor() * doc.getFontSize();
-	const pageHeight = doc.internal.pageSize.getHeight();
-
-	let currentY = startY;
-	let buffer: string[] = [];
-
-	lines.forEach((line: string, index: number) => {
-		buffer.push(line);
-		if (
-			currentY + buffer.length * lineHeight > maxY ||
-			index === lines.length - 1
-		) {
-			doc.text(buffer, x, currentY);
-			currentY += buffer.length * lineHeight;
-			buffer = [];
-			if (currentY > maxY && index !== lines.length - 1) {
-				doc.addPage();
-				currentY = 20;
-			}
-		}
-	});
-
-	return currentY;
 }
