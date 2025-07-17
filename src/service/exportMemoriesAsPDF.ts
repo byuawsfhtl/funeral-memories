@@ -30,13 +30,16 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
 		const pageHeight = doc.internal.pageSize.getHeight();
 
-		const finalY = await addTextWithPagination(
-			doc,
-			memory.memory,
-			10,
-			textY,
-			pageHeight - 20
-		);
+		// Use jsPDF's native multi-line rendering to handle spacing automatically
+		const textLines = doc.splitTextToSize(memory.memory, 180);
+		doc.text(textLines, 10, textY);
+
+		// Estimate the current Y position after rendering the text block
+		let finalY = textY + textLines.length * 5; // Approximate line height of 5
+		if (finalY > pageHeight - 20) {
+			doc.addPage();
+			finalY = 20;
+		}
 
 		if (memory.image) {
 			const imgProps = await loadImageDimensions(memory.image);
@@ -50,17 +53,16 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				imgWidth = imgHeight * aspectRatio;
 			}
 
-			let currentY = finalY + 10;
-			if (currentY + imgHeight > pageHeight - 20) {
+			if (finalY + imgHeight > pageHeight - 20) {
 				doc.addPage();
-				currentY = 20;
+				finalY = 20;
 			}
 
 			doc.addImage(
 				memory.image,
 				imgProps.format,
 				10,
-				currentY,
+				finalY + 10,
 				imgWidth,
 				imgHeight
 			);
@@ -81,28 +83,4 @@ function loadImageDimensions(
 			resolve({ width: img.width, height: img.height, format });
 		};
 	});
-}
-
-async function addTextWithPagination(
-	doc: jsPDF,
-	text: string,
-	x: number,
-	startY: number,
-	maxY: number
-): Promise<number> {
-	const lines = doc.splitTextToSize(text, 180);
-	let currentY = startY;
-	const fontSize = doc.getFontSize(); // dynamically get current font size
-	const lineSpacing = 1.2; // spacing multiplier
-
-	for (const line of lines) {
-		if (currentY + fontSize * lineSpacing > maxY) {
-			doc.addPage();
-			currentY = 20;
-		}
-		doc.text(line, x, currentY);
-		currentY += fontSize * lineSpacing;
-	}
-
-	return currentY;
 }
