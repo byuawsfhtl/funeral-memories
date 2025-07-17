@@ -93,16 +93,17 @@ function renderTextWithAutoPagination(
 ): number {
 	const lines = doc.splitTextToSize(text, 180);
 	let currentY = startY;
-	const lineHeight = doc.getLineHeight() as number;
+	const fontSize = doc.getFontSize();
+	const lineSpacing = fontSize * 1.15; // approximate natural spacing
 	const pageHeight = doc.internal.pageSize.getHeight();
 
 	lines.forEach((line: string) => {
-		if (currentY + lineHeight > maxY) {
+		if (currentY + lineSpacing > maxY) {
 			doc.addPage();
 			currentY = 20;
 		}
 		doc.text(line, x, currentY);
-		currentY += lineHeight;
+		currentY += lineSpacing;
 	});
 
 	return currentY;
