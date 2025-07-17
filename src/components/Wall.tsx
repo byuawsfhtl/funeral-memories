@@ -657,10 +657,7 @@ export default function Wall() {
             <h4 className="fw-bold">{selectedMemory.title}</h4>
             {selectedMemory.author && (
               <p className="fst-italic text-secondary">
-                Shared by:{" "}
-                {selectedMemory.author.length > 30
-                  ? selectedMemory.author.slice(0, 30) + "..."
-                  : selectedMemory.author}
+                Shared by: {selectedMemory.author}
               </p>
             )}
             {selectedMemory.image && (

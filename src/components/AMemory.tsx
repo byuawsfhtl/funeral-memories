@@ -64,7 +64,10 @@ export default function AMemory(props: MemoryProps) {
 
         {props.mem.author && (
           <p className="fst-italic mb-1 text-secondary">
-            Shared by: {props.mem.author}
+            Shared by:{" "}
+            {props.mem.author.length > 30
+              ? props.mem.author.slice(0, 30) + "..."
+              : props.mem.author}
           </p>
         )}
         {props.mem.image && (
