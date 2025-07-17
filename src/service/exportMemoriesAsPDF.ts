@@ -28,7 +28,15 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 
 		doc.setFontSize(11);
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
-		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
+		const pageHeight = doc.internal.pageSize.getHeight();
+
+		const finalY = await addTextWithPagination(
+			doc,
+			memory.memory,
+			10,
+			textY,
+			pageHeight - 20
+		);
 
 		if (memory.image) {
 			const imgProps = await loadImageDimensions(memory.image);
@@ -42,11 +50,17 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				imgWidth = imgHeight * aspectRatio;
 			}
 
+			let currentY = finalY + 10;
+			if (currentY + imgHeight > pageHeight - 20) {
+				doc.addPage();
+				currentY = 20;
+			}
+
 			doc.addImage(
 				memory.image,
 				imgProps.format,
 				10,
-				textY + 40,
+				currentY,
 				imgWidth,
 				imgHeight
 			);
@@ -56,7 +70,7 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	doc.save(`${name}_memories.pdf`);
 }
 
-async function loadImageDimensions(
+function loadImageDimensions(
 	dataUrl: string
 ): Promise<{ width: number; height: number; format: "PNG" | "JPEG" }> {
 	return new Promise((resolve) => {
@@ -67,4 +81,26 @@ async function loadImageDimensions(
 			resolve({ width: img.width, height: img.height, format });
 		};
 	});
+}
+
+async function addTextWithPagination(
+	doc: jsPDF,
+	text: string,
+	x: number,
+	startY: number,
+	maxY: number
+): Promise<number> {
+	const lines = doc.splitTextToSize(text, 180);
+	let currentY = startY;
+
+	for (const line of lines) {
+		if (currentY + 10 > maxY) {
+			doc.addPage();
+			currentY = 20;
+		}
+		doc.text(line, x, currentY);
+		currentY += 10;
+	}
+
+	return currentY;
 }
