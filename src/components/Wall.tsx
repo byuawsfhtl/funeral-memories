@@ -450,13 +450,6 @@ export default function Wall() {
         Add Memory
       </button>
 
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-20 right-4 z-50 bg-gray-800 text-white px-4 py-2 rounded-full shadow-md hover:bg-gray-700 transition"
-      >
-        Return To Top
-      </button>
-
       <TabbedMemoryWall
         myMemories={myMemories}
         otherMemories={memoryList}
@@ -739,6 +732,15 @@ export default function Wall() {
             </div>
           </div>
         </div>
+      )}
+      {showButton && (
+        <button
+          className="btn btn-secondary fixed-return-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Return to top"
+        >
+          <i className="bi bi-arrow-up"></i> {/* Bootstrap icon if you want */}
+        </button>
       )}
     </div>
   );
