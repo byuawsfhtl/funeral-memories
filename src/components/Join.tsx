@@ -13,7 +13,6 @@ export default function Join() {
 		event.preventDefault();
 
 		try {
-			setGroupId(groupId.toLowerCase());
 			const group = await service.getGroup(groupId);
 			console.log("Group fetched:", group);
 			if (group) {
@@ -66,7 +65,7 @@ export default function Join() {
 							className="form-control"
 							placeholder="XXXXX"
 							value={groupId}
-							onChange={(e) => setGroupId(e.target.value)}
+							onChange={(e) => setGroupId(e.target.value.toLowerCase())}
 							required
 						/>
 					</div>

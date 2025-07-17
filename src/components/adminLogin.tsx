@@ -17,8 +17,6 @@ export default function AdminLogin() {
 		e.preventDefault();
 		setError("");
 
-		setGroupId(groupId.toLowerCase());
-
 		if (!groupId.trim() || !username.trim() || !password.trim()) {
 			setError("Please fill in all fields.");
 			return;
@@ -84,7 +82,7 @@ export default function AdminLogin() {
 							type="text"
 							className="form-control"
 							value={groupId}
-							onChange={(e) => setGroupId(e.target.value)}
+							onChange={(e) => setGroupId(e.target.value.toLowerCase())}
 							placeholder="e.g., abc123"
 							required
 						/>
