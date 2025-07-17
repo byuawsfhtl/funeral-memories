@@ -35,6 +35,16 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowButton(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useFamilySearchResumePublish();
   const navigate = useNavigate();
@@ -439,6 +449,15 @@ export default function Wall() {
       >
         Add Memory
       </button>
+
+      {showButton && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="fixed bottom-20 right-4 z-50 bg-gray-800 text-white px-4 py-2 rounded-full shadow-md hover:bg-gray-700 transition"
+        >
+          ↑ Top
+        </button>
+      )}
 
       <TabbedMemoryWall
         myMemories={myMemories}
