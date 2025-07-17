@@ -28,16 +28,7 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 
 		doc.setFontSize(11);
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
-		const pageHeight = doc.internal.pageSize.getHeight();
-		const maxY = pageHeight - 20;
-
-		const finalY = renderTextWithNativeSpacing(
-			doc,
-			memory.memory,
-			10,
-			textY,
-			maxY
-		);
+		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
 
 		if (memory.image) {
 			const imgProps = await loadImageDimensions(memory.image);
@@ -51,17 +42,11 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				imgWidth = imgHeight * aspectRatio;
 			}
 
-			let currentY = finalY + 10;
-			if (currentY + imgHeight > maxY) {
-				doc.addPage();
-				currentY = 20;
-			}
-
 			doc.addImage(
 				memory.image,
 				imgProps.format,
 				10,
-				currentY,
+				textY + 40,
 				imgWidth,
 				imgHeight
 			);
@@ -71,43 +56,7 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	doc.save(`${name}_memories.pdf`);
 }
 
-function renderTextWithNativeSpacing(
-	doc: jsPDF,
-	text: string,
-	x: number,
-	startY: number,
-	maxY: number
-): number {
-	const lines = doc.splitTextToSize(text, 180);
-	const fontSize = doc.getFontSize();
-	const lineHeight = fontSize * doc.getLineHeightFactor();
-	const pageHeight = doc.internal.pageSize.getHeight();
-
-	let currentY = startY;
-	let buffer: string[] = [];
-
-	for (const line of lines) {
-		if (currentY + lineHeight > maxY) {
-			if (buffer.length > 0) {
-				doc.text(buffer, x, currentY);
-				currentY += buffer.length * lineHeight;
-				buffer = [];
-			}
-			doc.addPage();
-			currentY = 20;
-		}
-		buffer.push(line);
-	}
-
-	if (buffer.length > 0) {
-		doc.text(buffer, x, currentY);
-		currentY += buffer.length * lineHeight;
-	}
-
-	return currentY;
-}
-
-function loadImageDimensions(
+async function loadImageDimensions(
 	dataUrl: string
 ): Promise<{ width: number; height: number; format: "PNG" | "JPEG" }> {
 	return new Promise((resolve) => {
