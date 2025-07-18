@@ -63,6 +63,8 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				imgHeight
 			);
 			currentY += imgHeight + 10; // Add gap after image
+		} else {
+			currentY += 5;
 		}
 
 		// --- Memory Text ---
