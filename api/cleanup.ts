@@ -19,13 +19,14 @@ export async function generateMemoriesPDF(
   for (const memory of memories) {
     doc.addPage();
 
-    doc.fontSize(20).text(`Memory for ${name}`, { align: "center" }).moveDown();
+    doc
+      .fontSize(20)
+      .text(`Memories for ${name}`, { align: "center" })
+      .moveDown();
 
     // Memory title
     doc.fontSize(16).text(memory.title ?? "Untitled", { underline: true });
     doc.moveDown(0.5);
-
-    // Optional metadata
     doc.fontSize(12);
     if (memory.author) doc.text(`Shared by: ${memory.author}`);
     if (memory.date) doc.text(`Date: ${memory.date}`);
