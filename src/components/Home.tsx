@@ -34,7 +34,7 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="d-grid mb-4 pt-6">
+        <div className="d-grid mb-4 pt-3">
           <a href="/instructions" className="btn btn-primary">
             Click here if you're new! (Instructions)
           </a>
