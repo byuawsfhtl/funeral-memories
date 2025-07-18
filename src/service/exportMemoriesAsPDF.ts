@@ -22,9 +22,20 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 		doc.text(memory.title, 10, 30);
 
 		doc.setFontSize(12);
-		if (memory.author) doc.text(`Shared by: ${memory.author}`, 10, 38);
-		if (memory.date) doc.text(`Date: ${memory.date}`, 10, 46);
-		if (memory.place) doc.text(`Place: ${memory.place}`, 10, 54);
+		let metaY = 38;
+
+		if (memory.author) {
+			doc.text(`Shared by: ${memory.author}`, 10, metaY);
+			metaY += 6; // tighter spacing
+		}
+		if (memory.date) {
+			doc.text(`Date: ${memory.date}`, 10, metaY);
+			metaY += 6;
+		}
+		if (memory.place) {
+			doc.text(`Place: ${memory.place}`, 10, metaY);
+			metaY += 6;
+		}
 
 		doc.setFontSize(11);
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
