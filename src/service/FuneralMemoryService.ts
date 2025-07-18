@@ -100,12 +100,10 @@ export class FuneralMemoryService {
           formData.append("filename", file.name);
           formData.append("type", type);
 
-          if (!memory.image) {
-            const description = `Date: ${formattedDate}\nLocation: ${
-              memory.place || "N/A"
-            }\n\n${memory.memory}`;
-            formData.append("description", description);
-          }
+          const description = `Date: ${formattedDate}\nLocation: ${
+            memory.place || "N/A"
+          }\n\n${memory.memory}`;
+          formData.append("description", description);
 
           for (const [key, value] of formData.entries()) {
             console.log(`FormData: ${key} =`, value);
