@@ -70,7 +70,10 @@ export class FuneralMemoryService {
           let type = "Story";
 
           if (memory.image) {
-            file = this.base64ToFile(memory.image, "memory-photo.jpg");
+            const uniqueFilename = `memory-photo-${
+              memory._id || Date.now()
+            }.jpg`;
+            file = this.base64ToFile(memory.image, uniqueFilename);
             type = "Photo";
           } else {
             const description = `Date: ${formattedDate}\nLocation: ${
