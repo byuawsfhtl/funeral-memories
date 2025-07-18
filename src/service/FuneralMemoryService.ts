@@ -84,19 +84,6 @@ export class FuneralMemoryService {
             });
           }
 
-          //   const description = `Date: ${formattedDate}\nLocation: ${
-          //     memory.place || "N/A"
-          //   }\n\n${memory.memory}`;
-          //   console.log("decription");
-
-          //   const file = new File(
-          //     [description],
-          //     `${memory.title || "Memory"}.txt`,
-          //     {
-          //       type: "text/plain",
-          //     }
-          //   );
-
           const formData = new FormData();
           formData.append("artifact", file);
           formData.append("title", memory.title || "Untitled Memory");
