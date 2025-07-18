@@ -1,8 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { useLocation } from "react-router-dom";
 import logo from "../../placeholder_img/NewFuneralMemoriesLogo.png";
 
 export default function Header() {
@@ -32,21 +30,6 @@ export default function Header() {
                 Instructions
               </Nav.Link>
             </LinkContainer>
-            {/* <LinkContainer to="/confirmation" className="nav-link text-white">
-							<Nav.Link active={location.pathname === "/confirmation"}>
-								Family Confirmation
-							</Nav.Link>
-						</LinkContainer> */}
-            {/* <LinkContainer to="/wall" className="nav-link text-white">
-							<Nav.Link active={location.pathname === "/wall"}>
-								Memory Wall
-							</Nav.Link>
-						</LinkContainer>
-						<LinkContainer to="/find-relative" className="nav-link text-white">
-							<Nav.Link active={location.pathname === "/find-relative"}>
-								Find Relative
-							</Nav.Link>
-						</LinkContainer> */}
           </ul>
         </div>
       </Nav>

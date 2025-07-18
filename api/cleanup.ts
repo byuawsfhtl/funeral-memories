@@ -2,8 +2,6 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { MongoClient } from "mongodb";
 import PDFDocument from "pdfkit";
 import nodemailer from "nodemailer";
-
-// 🧾 Generate PDF from memory data
 import { PassThrough } from "stream";
 
 export async function generateMemoriesPDF(
@@ -98,7 +96,6 @@ async function sendMemoryEmail(
   });
 }
 
-// 🌐 Environment connection
 const uri = process.env.MONGODB_URI;
 if (!uri) throw new Error("MONGODB_URI environment variable is not set");
 
@@ -110,7 +107,7 @@ async function connect() {
   return client.db(dbName);
 }
 
-// 🔍 Get all groups with timestamps
+// Get all groups with timestamps
 async function getAllGroups(): Promise<
   { groupId: string; timestamp: number }[]
 > {
@@ -126,7 +123,7 @@ async function getAllGroups(): Promise<
   }));
 }
 
-// 🧽 Deletion helpers
+//Deletion helpers
 async function deleteMemories(groupId: string) {
   const db = await connect();
   const result = await db.collection("memories").deleteMany({ groupId });
@@ -151,7 +148,7 @@ async function deleteAdminSessions(groupId: string) {
   return { message: `${result.deletedCount} admin session(s) deleted` };
 }
 
-// 🧹 Main handler for cleanup
+//Main handler for cleanup
 export default async function handler(
   req: IncomingMessage & { method?: string },
   res: ServerResponse & {
@@ -163,8 +160,7 @@ export default async function handler(
     console.log("🚀 Cleanup cron job triggered");
 
     const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000; //2 weeks ago
-    //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
-    console.log("🕒 Cutoff timestamp:", cutoff);
+    //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago for testing
 
     const allGroups = await getAllGroups();
     console.log(`📦 Found ${allGroups.length} group(s)`);
