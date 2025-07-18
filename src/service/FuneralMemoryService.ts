@@ -66,46 +66,46 @@ export class FuneralMemoryService {
             sessionId: memory.sessionId,
           });
 
-          let artifactFile: File;
-          let artifactType: string;
+          let file: File;
+          let type = "Story";
 
           if (memory.image) {
-            artifactFile = await this.base64ToFile(
-              memory.image,
-              "memory-photo"
-            );
-            artifactType = "Photo";
+            file = this.base64ToFile(memory.image, "memory-photo.jpg");
+            type = "Photo";
           } else {
             const description = `Date: ${formattedDate}\nLocation: ${
               memory.place || "N/A"
             }\n\n${memory.memory}`;
-            artifactFile = new File(
-              [description],
-              `${memory.title || "Memory"}.txt`,
-              { type: "text/plain" }
-            );
-            artifactType = "Story";
+            file = new File([description], `${memory.title || "Memory"}.txt`, {
+              type: "text/plain",
+            });
           }
 
-          const description = `Date: ${formattedDate}\nLocation: ${
-            memory.place || "N/A"
-          }\n\n${memory.memory}`;
-          console.log("decription");
+          //   const description = `Date: ${formattedDate}\nLocation: ${
+          //     memory.place || "N/A"
+          //   }\n\n${memory.memory}`;
+          //   console.log("decription");
 
-          const file = new File(
-            [description],
-            `${memory.title || "Memory"}.txt`,
-            {
-              type: "text/plain",
-            }
-          );
+          //   const file = new File(
+          //     [description],
+          //     `${memory.title || "Memory"}.txt`,
+          //     {
+          //       type: "text/plain",
+          //     }
+          //   );
 
           const formData = new FormData();
-          formData.append("artifact", artifactFile);
-          formData.append("title", memory.title);
-          formData.append("description", description);
-          formData.append("filename", artifactFile.name);
-          formData.append("type", artifactType);
+          formData.append("artifact", file);
+          formData.append("title", memory.title || "Untitled Memory");
+          formData.append("filename", file.name);
+          formData.append("type", type);
+
+          if (!memory.image) {
+            const description = `Date: ${formattedDate}\nLocation: ${
+              memory.place || "N/A"
+            }\n\n${memory.memory}`;
+            formData.append("description", description);
+          }
 
           for (const [key, value] of formData.entries()) {
             console.log(`FormData: ${key} =`, value);

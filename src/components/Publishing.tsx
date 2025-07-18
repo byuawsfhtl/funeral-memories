@@ -50,7 +50,7 @@ export function useFamilySearchResumePublish() {
 
           setTimeout(() => {
             navigate("/", { replace: true });
-          }, 2000); // give user a moment to see cleaning finished
+          }, 4000); // give user a moment to see cleaning finished
         }
       })();
     }
