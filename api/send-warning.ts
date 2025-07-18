@@ -7,8 +7,7 @@ const client = new MongoClient(uri);
 const dbName = "FuneralMemories";
 
 // Constants 5 minutes for testing
-const THIRTEEN_DAYS_MS = 5 * 60 * 1000;
-
+const THIRTEEN_DAYS_MS = 13 * 24 * 60 * 60 * 1000;
 export default async function handler(_: any, res: any) {
   console.log("⚙️ send-warning function triggered");
 
@@ -19,7 +18,7 @@ export default async function handler(_: any, res: any) {
     const db = client.db(dbName);
     const now = Date.now();
 
-    const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago
+    const cutoff = Date.now() - THIRTEEN_DAYS_MS; // 5 minutes ago
 
     console.log(
       `🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`
