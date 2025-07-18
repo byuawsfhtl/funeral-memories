@@ -16,7 +16,7 @@ export default function Home() {
 
       <div className="d-grid mb-4">
         <a href="/instructions" className="btn btn-primary">
-          Click here if you're new! (instructions)
+          Click here if you're new! (Instructions)
         </a>
       </div>
 
