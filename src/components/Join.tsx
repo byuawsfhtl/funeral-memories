@@ -22,7 +22,7 @@ export default function Join() {
         localStorage.setItem("madeGroup", JSON.stringify(group));
       } else {
         console.log("no group");
-        alert("That group doesn't exist yet, double check the Group Id");
+        alert("That group doesn't exist yet, double check the Group ID");
       }
     } catch (err) {
       console.log("server error");
@@ -31,7 +31,7 @@ export default function Join() {
       } else {
         console.error("Error fetching group:", err);
       }
-      alert("That group doesn't exist yet, double check the Group Id");
+      alert("That group doesn't exist yet, double check the Group ID");
     }
   };
 

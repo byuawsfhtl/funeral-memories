@@ -1,12 +1,9 @@
-// PublishButton.tsx
-
 interface PublishProps {
   groupId: string;
   personId: string;
   token: string;
 }
 import React, { useState } from "react";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export const signin = () => {
   const redirectUri = `${window.location.origin}${location.pathname}`;
@@ -15,7 +12,6 @@ export const signin = () => {
 
 export default function PublishButton(props: PublishProps) {
   const [showConfirm, setShowConfirm] = useState(false);
-  const service = new FuneralMemoryService();
 
   const handlePublishClick = () => {
     setShowConfirm(true);
