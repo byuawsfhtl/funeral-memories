@@ -17,11 +17,6 @@ import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
-import usePlacesAutocomplete, {
-	getGeocode,
-	getLatLng,
-} from "use-places-autocomplete";
-
 interface MemErrors {
 	title: string;
 	memory: string;
@@ -376,28 +371,6 @@ export default function Wall() {
 		setEditingId(selectedMemory._id); // Track that we're editing
 	};
 
-	const {
-		ready: placesReady,
-		value: placeInput,
-		setValue: setPlaceInput,
-		suggestions: { status: placeStatus, data: placeSuggestions },
-		clearSuggestions,
-	} = usePlacesAutocomplete();
-
-	const handleSelectPlace = async (description: string) => {
-		setPlaceInput(description);
-		clearSuggestions();
-		setPlace(description); // this is your existing place state
-
-		try {
-			const results = await getGeocode({ address: description });
-			const { lat, lng } = await getLatLng(results[0]);
-			console.log("Selected Place Coordinates:", { lat, lng });
-		} catch (error) {
-			console.error("Error fetching coordinates for place:", error);
-		}
-	};
-
 	return (
 		<div>
 			{/* Title + dropdown */}
@@ -601,24 +574,9 @@ export default function Wall() {
 									type="text"
 									className="form-control"
 									placeholder="Enter a place"
-									value={placeInput}
-									onChange={(e) => setPlaceInput(e.target.value)}
-									disabled={!placesReady}
+									value={place}
+									onChange={(e) => setPlace(e.target.value)}
 								/>
-								{placeStatus === "OK" && (
-									<ul className="list-group mt-1">
-										{placeSuggestions.map(({ place_id, description }) => (
-											<li
-												key={place_id}
-												className="list-group-item list-group-item-action"
-												onClick={() => handleSelectPlace(description)}
-												style={{ cursor: "pointer" }}
-											>
-												{description}
-											</li>
-										))}
-									</ul>
-								)}
 							</div>
 
 							<div className="mb-3">
