@@ -28,7 +28,9 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 
 		doc.setFontSize(11);
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
+		let currentY = textY;
 
+		// Insert image BEFORE the memory text
 		if (memory.image) {
 			const imgProps = await loadImageDimensions(memory.image);
 			const maxWidth = 180;
@@ -45,14 +47,15 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				memory.image,
 				imgProps.format,
 				10,
-				textY + 40,
+				currentY,
 				imgWidth,
 				imgHeight
 			);
+			currentY += imgHeight + 10; // Add some spacing after the image
 		}
 
-		doc.setFontSize(11);
-		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
+		// Now render the memory text
+		doc.text(doc.splitTextToSize(memory.memory, 180), 10, currentY);
 	}
 
 	doc.save(`${name}_memories.pdf`);
