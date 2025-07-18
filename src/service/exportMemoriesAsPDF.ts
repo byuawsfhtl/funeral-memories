@@ -28,7 +28,6 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 
 		doc.setFontSize(11);
 		const textY = memory.place ? 66 : memory.date ? 60 : 54;
-		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
 
 		if (memory.image) {
 			const imgProps = await loadImageDimensions(memory.image);
@@ -51,6 +50,9 @@ export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 				imgHeight
 			);
 		}
+
+		doc.setFontSize(11);
+		doc.text(doc.splitTextToSize(memory.memory, 180), 10, textY);
 	}
 
 	doc.save(`${name}_memories.pdf`);
