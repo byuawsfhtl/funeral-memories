@@ -91,11 +91,11 @@ export default function AdminLogin() {
 					<div className="mb-3">
 						<label className="form-label">Admin Email</label>
 						<input
-							type="text"
+							type="email"
 							className="form-control"
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
-							placeholder="Enter admin username"
+							placeholder="Enter admin email"
 							required
 						/>
 					</div>
