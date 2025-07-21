@@ -812,6 +812,7 @@ export default function Wall() {
                     open={isLightboxOpen}
                     close={() => setIsLightboxOpen(false)}
                     slides={[{ src: selectedMemory.image }]}
+                    carousel={{ finite: true }}
                   />
                 )}
               </>
