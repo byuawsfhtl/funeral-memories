@@ -452,7 +452,9 @@ export default function Wall() {
               fgColor="black"
               style={{ borderRadius: 8 }}
             />
-            <small className="text-muted d-block mt-1">Click to enlarge</small>
+            <small className="text-muted d-block mt-1">
+              Click to enlarge/download QR Code
+            </small>
           </div>
 
           {isQRLightboxOpen && (
@@ -494,6 +496,27 @@ export default function Wall() {
                   onClick={downloadQR}
                 >
                   Download QR as Image
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary btn-sm mt-2"
+                  onClick={() => {
+                    const shareUrl = `${window.location.origin}/join?groupId=${groupId}`;
+                    if (navigator.share) {
+                      // Use the Web Share API if available (on most modern mobile browsers)
+                      navigator.share({
+                        title: "Join Memory Wall Group",
+                        text: "Join our Memory Wall group!",
+                        url: shareUrl,
+                      });
+                    } else {
+                      // Fallback: copy to clipboard
+                      navigator.clipboard.writeText(shareUrl);
+                      alert("Link copied to clipboard!");
+                    }
+                  }}
+                >
+                  Share Link
                 </button>
                 <button
                   type="button"
