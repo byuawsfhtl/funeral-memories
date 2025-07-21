@@ -14,6 +14,7 @@ import Publish from "./Publish";
 import { useFamilySearchResumePublish } from "./Publishing"; // or wherever you put it
 import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
 import QRCode from "qrcode.react";
+const QRCodeComponent = QRCode as unknown as React.FC<any>;
 
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -399,7 +400,7 @@ export default function Wall() {
 			{groupId && (
 				<div className="d-flex align-items-center justify-content-center gap-2 mt-1">
 					<div className="d-flex flex-column align-items-center gap-2">
-						<QRCode
+						<QRCodeComponent
 							value={`${window.location.origin}/join?groupId=${groupId}`}
 							size={128}
 							level="H"
