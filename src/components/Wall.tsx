@@ -888,7 +888,25 @@ export default function Wall() {
 
       <button
         className="help-button"
-        /* ...same styles... */
+        style={{
+          position: "fixed",
+          top: 24,
+          right: 24,
+          zIndex: 10010,
+          width: 48,
+          height: 48,
+          borderRadius: "50%",
+          background: "#3574d5",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: 26,
+          border: "none",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         aria-label="Help"
         title="Show instructions"
         onClick={() => setShowHelp(true)}
