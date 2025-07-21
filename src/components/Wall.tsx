@@ -504,7 +504,7 @@ export default function Wall() {
                       // Use the Web Share API if available (on most modern mobile browsers)
                       navigator.share({
                         title: "Join Memory Wall Group",
-                        text: "Join our Memory Wall group for ${person.name}!",
+                        text: `Join our Memory Wall group for ${person.name}!`,
                         url: shareUrl,
                       });
                     } else {
