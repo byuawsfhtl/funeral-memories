@@ -40,6 +40,39 @@ export default function Wall() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
+  const qrRef = useRef<SVGSVGElement>(null);
+  const qrWrapperRef = useRef<HTMLDivElement>(null);
+
+  const downloadQR = () => {
+    const svg = qrWrapperRef.current?.querySelector("svg");
+    if (!svg) return;
+
+    const serializer = new XMLSerializer();
+    const svgStr = serializer.serializeToString(svg);
+
+    const img = new window.Image();
+    const svg64 = btoa(unescape(encodeURIComponent(svgStr)));
+    img.src = "data:image/svg+xml;base64," + svg64;
+
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const pngUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = pngUrl;
+      link.download = "QR-group.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -415,6 +448,9 @@ export default function Wall() {
             <QRCode
               value={`${window.location.origin}/join?groupId=${groupId}`}
               size={128}
+              bgColor="white"
+              fgColor="black"
+              style={{ borderRadius: 8 }}
             />
             <small className="text-muted d-block mt-1">Click to enlarge</small>
           </div>
@@ -440,19 +476,28 @@ export default function Wall() {
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <QRCode
-                  value={`${window.location.origin}/join?groupId=${groupId}`}
-                  size={320} // much bigger than before!
-                  bgColor="white"
-                  fgColor="black"
-                  style={{ borderRadius: 8 }}
-                />
+                <div ref={qrWrapperRef}>
+                  <QRCode
+                    value={`${window.location.origin}/join?groupId=${groupId}`}
+                    size={320}
+                    bgColor="white"
+                    fgColor="black"
+                    style={{ borderRadius: 8 }}
+                  />
+                </div>
                 <small className="text-muted mt-3 mb-0">
                   Scan to join this group
                 </small>
                 <button
                   type="button"
-                  className="btn btn-secondary mt-4"
+                  className="btn btn-outline-primary mt-4"
+                  onClick={downloadQR}
+                >
+                  Download QR as Image
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary mt-2"
                   onClick={() => setIsQRLightboxOpen(false)}
                 >
                   Close
