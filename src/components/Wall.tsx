@@ -420,17 +420,45 @@ export default function Wall() {
           </div>
 
           {isQRLightboxOpen && (
-            <Lightbox
-              open={isQRLightboxOpen}
-              close={() => setIsQRLightboxOpen(false)}
-              slides={[
-                {
-                  src: `data:image/svg+xml;utf8,${encodeURIComponent(
-                    document.querySelector("svg")?.outerHTML ?? ""
-                  )}`,
-                },
-              ]}
-            />
+            <div
+              className="popup-overlay"
+              style={{ zIndex: 20000 }}
+              onClick={() => setIsQRLightboxOpen(false)}
+            >
+              <div
+                className="popup"
+                style={{
+                  background: "white",
+                  borderRadius: 12,
+                  padding: 32,
+                  maxWidth: 420,
+                  boxShadow: "0 8px 28px rgba(0,0,0,0.22)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  cursor: "default",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <QRCode
+                  value={`${window.location.origin}/join?groupId=${groupId}`}
+                  size={320} // much bigger than before!
+                  bgColor="white"
+                  fgColor="black"
+                  style={{ borderRadius: 8 }}
+                />
+                <small className="text-muted mt-3 mb-0">
+                  Scan to join this group
+                </small>
+                <button
+                  type="button"
+                  className="btn btn-secondary mt-4"
+                  onClick={() => setIsQRLightboxOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
           )}
 
           <div className="d-flex align-items-center justify-content-center gap-2">
