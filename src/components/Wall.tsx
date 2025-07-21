@@ -405,50 +405,53 @@ export default function Wall() {
 			</div>
 
 			{groupId && (
-				<div className="d-flex align-items-center justify-content-center gap-2 mt-1">
+				<div className="d-flex flex-column align-items-center mt-1 gap-2">
+					{/* QR Code centered */}
 					<QRCode
 						value={`${window.location.origin}/join?groupId=${groupId}`}
-						size={128} // via wrapping div or styling
+						size={128}
 					/>
-					<div className="d-flex flex-column align-items-center gap-2">
+
+					{/* Group ID + Admin Buttons in a row */}
+					<div className="d-flex align-items-center justify-content-center gap-2">
 						<p className="text-muted small mb-0">
 							Group ID: <strong>{groupId}</strong>
 						</p>
-					</div>
 
-					{isAdmin && (
-						<div className="dropdown">
-							<button
-								className="btn btn-light btn-sm"
-								type="button"
-								id="adminDropdown"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								<i className="bi bi-three-dots-vertical"></i>
-							</button>
-							<ul className="dropdown-menu" aria-labelledby="adminDropdown">
-								<li>
-									<button
-										className="dropdown-item"
-										onClick={() => setShowConfirmPublish(true)}
-									>
-										Publish
-									</button>
-								</li>
-								<li>
-									<button
-										className="dropdown-item"
-										onClick={async () => {
-											await exportMemoriesAsPDF(person.name, memoryList);
-										}}
-									>
-										Export Memories
-									</button>
-								</li>
-							</ul>
-						</div>
-					)}
+						{isAdmin && (
+							<div className="dropdown">
+								<button
+									className="btn btn-light btn-sm"
+									type="button"
+									id="adminDropdown"
+									data-bs-toggle="dropdown"
+									aria-expanded="false"
+								>
+									<i className="bi bi-three-dots-vertical"></i>
+								</button>
+								<ul className="dropdown-menu" aria-labelledby="adminDropdown">
+									<li>
+										<button
+											className="dropdown-item"
+											onClick={() => setShowConfirmPublish(true)}
+										>
+											Publish
+										</button>
+									</li>
+									<li>
+										<button
+											className="dropdown-item"
+											onClick={async () => {
+												await exportMemoriesAsPDF(person.name, memoryList);
+											}}
+										>
+											Export Memories
+										</button>
+									</li>
+								</ul>
+							</div>
+						)}
+					</div>
 				</div>
 			)}
 
