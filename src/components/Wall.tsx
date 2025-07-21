@@ -890,7 +890,7 @@ export default function Wall() {
         className="help-button"
         style={{
           position: "fixed",
-          top: 24,
+          top: 40,
           right: 24,
           zIndex: 10010,
           width: 48,
