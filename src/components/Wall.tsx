@@ -453,7 +453,7 @@ export default function Wall() {
               style={{ borderRadius: 8 }}
             />
             <small className="text-muted d-block mt-1">
-              Click to enlarge/download QR Code
+              Click to enlarge/download and share QR Code
             </small>
           </div>
 
