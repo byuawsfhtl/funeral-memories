@@ -15,6 +15,7 @@ import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
 import QRCode from "react-qr-code";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import Instructions from "./Instructions";
 
 interface MemErrors {
   title: string;
@@ -40,8 +41,8 @@ export default function Wall() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
-  const qrRef = useRef<SVGSVGElement>(null);
   const qrWrapperRef = useRef<HTMLDivElement>(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const downloadQR = () => {
     const svg = qrWrapperRef.current?.querySelector("svg");
@@ -883,6 +884,41 @@ export default function Wall() {
         >
           <i className="bi bi-arrow-up"></i> {/* Bootstrap icon if you want */}
         </button>
+      )}
+
+      <button
+        className="help-button"
+        /* ...same styles... */
+        aria-label="Help"
+        title="Show instructions"
+        onClick={() => setShowHelp(true)}
+      >
+        <i className="bi bi-question-circle"></i>
+      </button>
+
+      {showHelp && (
+        <div
+          className="popup-overlay"
+          style={overlayStyle}
+          onClick={() => setShowHelp(false)}
+        >
+          <div
+            className="popup text-start"
+            style={popupStyle}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Instructions />
+            <div style={{ textAlign: "right" }}>
+              <button
+                type="button"
+                className="btn btn-secondary mt-2"
+                onClick={() => setShowHelp(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
