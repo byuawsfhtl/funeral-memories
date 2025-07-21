@@ -406,13 +406,11 @@ export default function Wall() {
 
 			{groupId && (
 				<div className="d-flex flex-column align-items-center mt-1 gap-2">
-					{/* QR Code centered */}
 					<QRCode
 						value={`${window.location.origin}/join?groupId=${groupId}`}
 						size={128}
 					/>
 
-					{/* Group ID + Admin Buttons in a row */}
 					<div className="d-flex align-items-center justify-content-center gap-2">
 						<p className="text-muted small mb-0">
 							Group ID: <strong>{groupId}</strong>
