@@ -327,39 +327,37 @@ export default function Wall() {
           createdAt: new Date(),
           sessionId: sessionId.current,
         };
+        let submittedData = null;
 
         if (imageFile) {
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            const result1 = reader.result;
-            if (typeof result1 === "string") {
-              memoryData.image = result1;
-            } else {
-              memoryData.image = null;
-            }
-            console.log("Memory being submitted:", memoryData);
-            const result = await service.addMemory(memoryData);
-            setMyMemories((prev) => [...prev, result]);
-            resetFormFields();
-            setIsSubmitting(false);
-          };
-          reader.readAsDataURL(imageFile);
-          return;
+          // 💡 1. Promisify the reader so we can await it!
+          const imageBase64: string = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              if (typeof reader.result === "string") {
+                resolve(reader.result);
+              } else {
+                reject(new Error("Could not read image file"));
+              }
+            };
+            reader.onerror = (err) => reject(err);
+            reader.readAsDataURL(imageFile);
+          });
+
+          memoryData.image = imageBase64;
+          submittedData = await service.addMemory(memoryData);
         } else {
-          console.log("Memory being submitted:", memoryData);
-
-          const result = await service.addMemory(memoryData);
-          setMyMemories((prev) => [...prev, result]);
+          submittedData = await service.addMemory(memoryData);
         }
-      }
 
-      // Refresh after edit or add
-      const refreshed = await service.getMemories(groupId);
-      setMemoryList(refreshed);
-      setMyMemories(
-        refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
-      );
-      resetFormFields();
+        setMyMemories((prev) => [...prev, submittedData]);
+        const refreshed = await service.getMemories(groupId);
+        setMemoryList(refreshed);
+        setMyMemories(
+          refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
+        );
+        resetFormFields();
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error("Failed to submit:", error.message);
@@ -506,7 +504,7 @@ export default function Wall() {
                       // Use the Web Share API if available (on most modern mobile browsers)
                       navigator.share({
                         title: "Join Memory Wall Group",
-                        text: "Join our Memory Wall group!",
+                        text: "Join our Memory Wall group for ${person.name}!",
                         url: shareUrl,
                       });
                     } else {
