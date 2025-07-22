@@ -92,7 +92,7 @@ export class FuneralMemoryService {
 
           const description = `Date: ${formattedDate}\nLocation: ${
             memory.place || "N/A"
-          }\n\n${memory.memory}`;
+          }\n${memory.memory}`;
           formData.append("description", description);
 
           for (const [key, value] of formData.entries()) {

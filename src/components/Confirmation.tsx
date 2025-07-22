@@ -130,7 +130,9 @@ export default function Confirmation() {
             style={{ height: "100px", borderRadius: "50%" }}
             alt="Person Portrait"
           />
-          <h2>{person.name}</h2>
+          <h2>
+            {person.name} {person.id}
+          </h2>
           <div className="d-flex flex-row justify-content-center align-items-center">
             <p>
               Born {birthYear} - {person.birthPlace}
