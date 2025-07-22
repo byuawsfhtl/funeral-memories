@@ -131,8 +131,12 @@ export default function Confirmation() {
             alt="Person Portrait"
           />
           <h2>
-            {person.name} {person.id}
+            {person.name}{" "}
+            <small style={{ fontSize: "0.6em", color: "#888" }}>
+              {person.id}
+            </small>
           </h2>
+
           <div className="d-flex flex-row justify-content-center align-items-center">
             <p>
               Born {birthYear} - {person.birthPlace}
