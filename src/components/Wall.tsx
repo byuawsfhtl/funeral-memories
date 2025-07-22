@@ -15,7 +15,6 @@ import { exportMemoriesAsPDF } from "../service/exportMemoriesAsPDF";
 import QRCode from "react-qr-code";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import Instructions from "./Instructions";
 
 interface MemErrors {
 	title: string;
@@ -40,40 +39,6 @@ export default function Wall() {
 	const [showConfirmPublish, setShowConfirmPublish] = useState(false);
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 	const [showButton, setShowButton] = useState(false);
-	const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
-	const qrWrapperRef = useRef<HTMLDivElement>(null);
-	const [showHelp, setShowHelp] = useState(false);
-
-	const downloadQR = () => {
-		const svg = qrWrapperRef.current?.querySelector("svg");
-		if (!svg) return;
-
-		const serializer = new XMLSerializer();
-		const svgStr = serializer.serializeToString(svg);
-
-		const img = new window.Image();
-		const svg64 = btoa(unescape(encodeURIComponent(svgStr)));
-		img.src = "data:image/svg+xml;base64," + svg64;
-
-		img.onload = function () {
-			const canvas = document.createElement("canvas");
-			canvas.width = 512;
-			canvas.height = 512;
-			const ctx = canvas.getContext("2d");
-			if (!ctx) return;
-			ctx.fillStyle = "#fff";
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-			const pngUrl = canvas.toDataURL("image/png");
-			const link = document.createElement("a");
-			link.href = pngUrl;
-			link.download = "QR-group.png";
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		};
-	};
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -328,37 +293,39 @@ export default function Wall() {
 					createdAt: new Date(),
 					sessionId: sessionId.current,
 				};
-				let submittedData = null;
 
 				if (imageFile) {
-					// 💡 1. Promisify the reader so we can await it!
-					const imageBase64: string = await new Promise((resolve, reject) => {
-						const reader = new FileReader();
-						reader.onloadend = () => {
-							if (typeof reader.result === "string") {
-								resolve(reader.result);
-							} else {
-								reject(new Error("Could not read image file"));
-							}
-						};
-						reader.onerror = (err) => reject(err);
-						reader.readAsDataURL(imageFile);
-					});
-
-					memoryData.image = imageBase64;
-					submittedData = await service.addMemory(memoryData);
+					const reader = new FileReader();
+					reader.onloadend = async () => {
+						const result1 = reader.result;
+						if (typeof result1 === "string") {
+							memoryData.image = result1;
+						} else {
+							memoryData.image = null;
+						}
+						console.log("Memory being submitted:", memoryData);
+						const result = await service.addMemory(memoryData);
+						setMyMemories((prev) => [...prev, result]);
+						resetFormFields();
+						setIsSubmitting(false);
+					};
+					reader.readAsDataURL(imageFile);
+					return;
 				} else {
-					submittedData = await service.addMemory(memoryData);
-				}
+					console.log("Memory being submitted:", memoryData);
 
-				setMyMemories((prev) => [...prev, submittedData]);
-				const refreshed = await service.getMemories(groupId);
-				setMemoryList(refreshed);
-				setMyMemories(
-					refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
-				);
-				resetFormFields();
+					const result = await service.addMemory(memoryData);
+					setMyMemories((prev) => [...prev, result]);
+				}
 			}
+
+			// Refresh after edit or add
+			const refreshed = await service.getMemories(groupId);
+			setMemoryList(refreshed);
+			setMyMemories(
+				refreshed.filter((m: Memory) => m.sessionId === sessionId.current)
+			);
+			resetFormFields();
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Failed to submit:", error.message);
@@ -439,94 +406,10 @@ export default function Wall() {
 
 			{groupId && (
 				<div className="d-flex flex-column align-items-center mt-1 gap-2">
-					<div
-						style={{ cursor: "pointer" }}
-						onClick={() => setIsQRLightboxOpen(true)}
-						className="text-center"
-					>
-						<QRCode
-							value={`${window.location.origin}/join?groupId=${groupId}`}
-							size={128}
-							bgColor="white"
-							fgColor="black"
-							style={{ borderRadius: 8 }}
-						/>
-						<small className="text-muted d-block mt-1">
-							Click to enlarge/download and share QR Code
-						</small>
-					</div>
-
-					{isQRLightboxOpen && (
-						<div
-							className="popup-overlay"
-							style={{ zIndex: 20000 }}
-							onClick={() => setIsQRLightboxOpen(false)}
-						>
-							<div
-								className="popup"
-								style={{
-									background: "white",
-									borderRadius: 12,
-									padding: 32,
-									maxWidth: 420,
-									boxShadow: "0 8px 28px rgba(0,0,0,0.22)",
-									display: "flex",
-									flexDirection: "column",
-									alignItems: "center",
-									cursor: "default",
-								}}
-								onClick={(e) => e.stopPropagation()}
-							>
-								<div ref={qrWrapperRef}>
-									<QRCode
-										value={`${window.location.origin}/join?groupId=${groupId}`}
-										size={320}
-										bgColor="white"
-										fgColor="black"
-										style={{ borderRadius: 8 }}
-									/>
-								</div>
-								<small className="text-muted mt-3 mb-0">
-									Scan to join this group
-								</small>
-								<button
-									type="button"
-									className="btn btn-outline-primary mt-4"
-									onClick={downloadQR}
-								>
-									Download QR as Image
-								</button>
-								<button
-									type="button"
-									className="btn btn-outline-secondary btn-sm mt-2"
-									onClick={() => {
-										const shareUrl = `${window.location.origin}/join?groupId=${groupId}`;
-										if (navigator.share) {
-											// Use the Web Share API if available (on most modern mobile browsers)
-											navigator.share({
-												title: "Join Memory Wall Group",
-												text: `Join our Memory Wall group for ${person.name}!`,
-												url: shareUrl,
-											});
-										} else {
-											// Fallback: copy to clipboard
-											navigator.clipboard.writeText(shareUrl);
-											alert("Link copied to clipboard!");
-										}
-									}}
-								>
-									Share Link
-								</button>
-								<button
-									type="button"
-									className="btn btn-secondary mt-2"
-									onClick={() => setIsQRLightboxOpen(false)}
-								>
-									Close
-								</button>
-							</div>
-						</div>
-					)}
+					<QRCode
+						value={`${window.location.origin}/join?groupId=${groupId}`}
+						size={128}
+					/>
 
 					<div className="d-flex align-items-center justify-content-center gap-2">
 						<p className="text-muted small mb-0">
@@ -589,145 +472,145 @@ export default function Wall() {
 				<div className="popup-overlay">
 					<div className="popup text-start">
 						<h5>Write a Memory</h5>
-						<form
-							onSubmit={handleSubmit}
-							className="d-flex flex-column flex-grow-1"
-						>
-							<div className="form-body flex-grow-1 overflow-auto">
-								{/* Image Upload */}
-								<div className="mb-3">
-									<label className="form-label">
-										Image <span className="text-muted small">(optional)</span>
-									</label>
-									<input
-										type="file"
-										className="form-control"
-										accept="image/*"
-										onChange={async (e) => {
-											const files = e.target.files;
-											if (!files || files.length === 0) return;
-											const file = files[0];
+						<form onSubmit={handleSubmit}>
+							{/* Image Upload */}
+							<div className="mb-3">
+								<label className="form-label">
+									Image <span className="text-muted small">(optional)</span>
+								</label>
+								<input
+									type="file"
+									className="form-control"
+									accept="image/*"
+									onChange={async (e) => {
+										const files = e.target.files;
+										if (!files || files.length === 0) return;
+										const file = files[0];
 
-											try {
-												const compressedFile = await imageCompression(file, {
-													maxSizeMB: 1.5,
-													maxWidthOrHeight: 1024,
-													useWebWorker: true,
-												});
+										try {
+											const compressedFile = await imageCompression(file, {
+												maxSizeMB: 1.5,
+												maxWidthOrHeight: 1024,
+												useWebWorker: true,
+											});
 
-												setImageFile(compressedFile);
+											setImageFile(compressedFile);
 
-												const reader = new FileReader();
-												reader.onloadend = () => {
-													const result = reader.result;
-													setImagePreview(
-														typeof result === "string" ? result : null
-													);
-												};
-												reader.readAsDataURL(compressedFile);
-											} catch (error) {
-												console.error("Image compression failed:", error);
-											}
-										}}
-									/>
-									{imagePreview && (
-										<div className="position-relative mt-2">
-											<img
-												src={imagePreview}
-												alt="Preview"
-												className="img-fluid"
-												style={{ maxHeight: "150px", borderRadius: "8px" }}
-											/>
-											<button
-												type="button"
-												className="btn btn-sm btn-danger position-absolute top-0 end-0"
-												style={{ transform: "translate(50%, -50%)" }}
-												onClick={() => {
-													setImagePreview(null);
-													setImageFile(null);
-												}}
-											>
-												&times;
-											</button>
-										</div>
-									)}
-								</div>
-
-								<div className="mb-3">
-									<label className="form-label">Your Name</label>
-									<input
-										type="text"
-										className="form-control"
-										placeholder="Enter your full name"
-										value={author}
-										onChange={(e) => setAuthor(e.target.value)}
-									/>
-								</div>
-
-								<div className="mb-3">
-									<label className="form-label">
-										Title<span className="text-danger small">* (required)</span>
-									</label>
-									<input
-										type="text"
-										className={`form-control ${
-											errors?.title ? "is-invalid" : ""
-										}`}
-										placeholder="Story Title"
-										value={title}
-										onChange={(e) => setTitle(e.target.value)}
-									/>
-									{errors?.title && (
-										<div className="invalid-feedback">{errors.title}</div>
-									)}
-								</div>
-
-								<div className="mb-3">
-									<label className="form-label">
-										Story<span className="text-danger small">* (required)</span>
-									</label>
-									<textarea
-										className={`form-control ${
-											errors?.memory ? "is-invalid" : ""
-										}`}
-										placeholder="I remember a time when…"
-										rows={4}
-										value={memory}
-										onChange={(e) => setMemory(e.target.value)}
-									/>
-									{errors?.memory && (
-										<div className="invalid-feedback">{errors.memory}</div>
-									)}
-								</div>
-
-								<div className="mb-3">
-									<label className="form-label">Place</label>
-									<input
-										type="text"
-										className="form-control"
-										placeholder="Enter a place"
-										value={place}
-										onChange={(e) => setPlace(e.target.value)}
-									/>
-								</div>
-
-								<div className="mb-3">
-									<label className="form-label">Date</label>
-									<br />
-									<DatePicker
-										selected={date}
-										onChange={(d: Date | null) => setDate(d)}
-										className="form-control"
-										placeholderText="Select a date"
-										showMonthDropdown
-										showYearDropdown
-										dropdownMode="select"
-										maxDate={new Date()}
-									/>
-								</div>
+											const reader = new FileReader();
+											reader.onloadend = () => {
+												const result = reader.result;
+												if (typeof result === "string") {
+													setImagePreview(result); // ✅ Safe
+												} else {
+													setImagePreview(null); // or handle error
+												}
+											};
+											reader.readAsDataURL(compressedFile);
+										} catch (error) {
+											console.error("Image compression failed:", error);
+										}
+									}}
+								/>
+								{imagePreview && (
+									<div className="position-relative mt-2">
+										<img
+											src={imagePreview}
+											alt="Preview"
+											className="img-fluid"
+											style={{ maxHeight: "150px", borderRadius: "8px" }}
+										/>
+										<button
+											type="button"
+											className="btn btn-sm btn-danger position-absolute top-0 end-0"
+											style={{ transform: "translate(50%, -50%)" }}
+											onClick={() => {
+												setImagePreview(null);
+												setImageFile(null);
+											}}
+										>
+											&times;
+										</button>
+									</div>
+								)}
 							</div>
 
-							<div className="form-actions d-flex justify-content-between mt-3 pt-3 border-top">
+							{/* Form Fields */}
+							<div className="mb-3">
+								<label className="form-label">Your Name</label>
+								<input
+									type="text"
+									className="form-control"
+									placeholder="Enter your full name"
+									value={author}
+									onChange={(e) => setAuthor(e.target.value)}
+								/>
+							</div>
+
+							<div className="mb-3">
+								<label className="form-label">
+									Title<span className="text-danger small">* (required)</span>
+								</label>
+								<input
+									type="text"
+									className={`form-control ${
+										errors && errors.title ? "is-invalid" : ""
+									}`}
+									placeholder="Story Title"
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+								/>
+								{errors && errors.title && (
+									<div className="invalid-feedback">{errors.title}</div>
+								)}
+							</div>
+
+							<div className="mb-3">
+								<label className="form-label">
+									Story<span className="text-danger small">* (required)</span>
+								</label>
+								<textarea
+									className={`form-control ${
+										errors && errors.memory ? "is-invalid" : ""
+									}`}
+									placeholder="I remember a time when…"
+									rows={4}
+									value={memory}
+									onChange={(e) => setMemory(e.target.value)}
+								/>
+								{errors && errors.memory && (
+									<div className="invalid-feedback">{errors.memory}</div>
+								)}
+							</div>
+
+							<div className="mb-3">
+								<label className="form-label">Place</label>
+								<input
+									type="text"
+									className="form-control"
+									placeholder="Enter a place"
+									value={place}
+									onChange={(e) => setPlace(e.target.value)}
+								/>
+							</div>
+
+							<div className="mb-3">
+								<label className="form-label">Date</label>
+								<br></br>
+								<DatePicker
+									selected={date}
+									onChange={(d: Date | null) => {
+										setDate(d);
+									}}
+									className="form-control"
+									placeholderText="Select a date"
+									showMonthDropdown
+									showYearDropdown
+									dropdownMode="select" // Makes month/year dropdown scrollable!
+									maxDate={new Date()}
+								/>
+							</div>
+
+							<div className="d-flex justify-content-between mt-4">
 								<button
 									type="button"
 									className="btn btn-outline-secondary me-2"
@@ -813,7 +696,6 @@ export default function Wall() {
 										open={isLightboxOpen}
 										close={() => setIsLightboxOpen(false)}
 										slides={[{ src: selectedMemory.image }]}
-										carousel={{ finite: true }}
 									/>
 								)}
 							</>
@@ -884,59 +766,6 @@ export default function Wall() {
 				>
 					<i className="bi bi-arrow-up"></i> {/* Bootstrap icon if you want */}
 				</button>
-			)}
-
-			<button
-				className="help-button"
-				style={{
-					position: "fixed",
-					top: 44,
-					right: 24,
-					zIndex: 10010,
-					width: 48,
-					height: 48,
-					borderRadius: "50%",
-					background: "#3574d5",
-					color: "white",
-					fontWeight: "bold",
-					fontSize: 26,
-					border: "none",
-					boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-					cursor: "pointer",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-				aria-label="Help"
-				title="Show instructions"
-				onClick={() => setShowHelp(true)}
-			>
-				<i className="bi bi-question-circle"></i>
-			</button>
-
-			{showHelp && (
-				<div
-					className="popup-overlay"
-					style={overlayStyle}
-					onClick={() => setShowHelp(false)}
-				>
-					<div
-						className="popup text-start"
-						style={popupStyle}
-						onClick={(e) => e.stopPropagation()}
-					>
-						<Instructions />
-						<div style={{ textAlign: "right" }}>
-							<button
-								type="button"
-								className="btn btn-secondary mt-2"
-								onClick={() => setShowHelp(false)}
-							>
-								Close
-							</button>
-						</div>
-					</div>
-				</div>
 			)}
 		</div>
 	);
