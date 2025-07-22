@@ -33,7 +33,7 @@
 .popup {
 	background: white;
 	border-radius: 10px;
-	max-height: 90vh;
+	/*max-height: 90vh;*/
 	width: 100%;
 	max-width: 500px;
 	overflow-y: auto;
