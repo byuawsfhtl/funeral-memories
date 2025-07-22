@@ -96,7 +96,6 @@ export default function Wall() {
 
     if (token) {
       localStorage.setItem("fstoken", token);
-      console.log(token);
 
       // Optionally clean up the URL for aesthetics
       const cleanUrl = window.location.origin + window.location.pathname;
@@ -814,6 +813,10 @@ export default function Wall() {
                     close={() => setIsLightboxOpen(false)}
                     slides={[{ src: selectedMemory.image }]}
                     carousel={{ finite: true }}
+                    render={{
+                      buttonPrev: () => null, // Hide left arrow
+                      buttonNext: () => null, // Hide right arrow
+                    }}
                   />
                 )}
               </>
