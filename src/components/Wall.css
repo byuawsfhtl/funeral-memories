@@ -43,6 +43,16 @@
 	flex-direction: column;
 }
 
+@media (max-width: 576px) {
+	.popup-overlay {
+		align-items: flex-start;
+	}
+
+	.popup {
+		margin-top: 2rem; /* or however much space you want from the top */
+	}
+}
+
 .popup img {
 	max-width: 100%;
 	height: auto;
