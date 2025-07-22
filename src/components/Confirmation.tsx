@@ -131,7 +131,8 @@ export default function Confirmation() {
             alt="Person Portrait"
           />
           <h2>
-            {person.name}{" "}
+            {person.name}
+            <br />
             <small style={{ fontSize: "0.6em", color: "#888" }}>
               {person.id}
             </small>
