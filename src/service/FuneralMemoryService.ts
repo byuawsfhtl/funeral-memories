@@ -90,7 +90,7 @@ export class FuneralMemoryService {
           formData.append("filename", file.name);
           formData.append("type", type);
 
-          const description = `Date: ${formattedDate}\nLocation: ${
+          const description = `Date: ${formattedDate} Location: ${
             memory.place || "N/A"
           }\n\n${memory.memory}`;
           formData.append("description", description);
