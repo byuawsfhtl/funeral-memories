@@ -850,7 +850,20 @@ export default function Wall() {
               {selectedMemory.memory}
             </div>
             <small className="text-muted d-block mt-2">
-              {selectedMemory.place && <>📍 {selectedMemory.place} &nbsp;</>}
+              {selectedMemory.place && (
+                <>
+                  <div
+                    style={{
+                      maxHeight: "200px",
+                      overflowX: "auto",
+                      whiteSpace: "pre-wrap",
+                      paddingRight: "0.5rem",
+                    }}
+                  >
+                    📍 {selectedMemory.place} &nbsp;
+                  </div>
+                </>
+              )}
               {selectedMemory.date && (
                 <>
                   📅{" "}
