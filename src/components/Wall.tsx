@@ -787,12 +787,29 @@ export default function Wall() {
                 </button>
               )}
             </div>
-
-            <h4 className="fw-bold">{selectedMemory.title}</h4>
+            <div
+              style={{
+                maxHeight: "200px",
+                overflowX: "auto",
+                whiteSpace: "pre-wrap",
+                paddingRight: "0.5rem",
+              }}
+            >
+              <h4 className="fw-bold">{selectedMemory.title}</h4>
+            </div>
             {selectedMemory.author && (
-              <p className="fst-italic text-secondary">
-                Shared by: {selectedMemory.author}
-              </p>
+              <div
+                style={{
+                  maxHeight: "200px",
+                  overflowX: "auto",
+                  whiteSpace: "pre-wrap",
+                  paddingRight: "0.5rem",
+                }}
+              >
+                <p className="fst-italic text-secondary">
+                  Shared by: {selectedMemory.author}
+                </p>
+              </div>
             )}
             {selectedMemory.image && (
               <>
