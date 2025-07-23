@@ -851,18 +851,16 @@ export default function Wall() {
             </div>
             <small className="text-muted d-block mt-2">
               {selectedMemory.place && (
-                <>
-                  <div
-                    style={{
-                      maxHeight: "200px",
-                      overflowX: "auto",
-                      whiteSpace: "pre-wrap",
-                      paddingRight: "0.5rem",
-                    }}
-                  >
-                    📍{selectedMemory.place} &nbsp;
-                  </div>
-                </>
+                <div
+                  style={{
+                    maxHeight: "200px",
+                    overflowX: "auto",
+                    whiteSpace: "pre-wrap",
+                    paddingRight: "0.5rem",
+                  }}
+                >
+                  <>📍{selectedMemory.place} &nbsp;</>
+                </div>
               )}
               {selectedMemory.date && (
                 <>
