@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Instructions() {
   return (
-    <div className="container mt-2 mb-5 pt-0">
+    <div className="container mt-3 mb-5 pt-0">
       <h1 className="mb-4 text-center">🕊 How to Use Funeral Memories</h1>
 
       <p>
