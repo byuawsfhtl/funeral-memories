@@ -965,7 +965,6 @@ const popupStyle: React.CSSProperties = {
   boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
   maxWidth: "400px",
   width: "90%",
-  marginTop: "-50px",
 };
 
 const messageBoxStyle: React.CSSProperties = {
