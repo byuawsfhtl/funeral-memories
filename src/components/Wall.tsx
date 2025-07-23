@@ -960,7 +960,7 @@ const overlayStyle: React.CSSProperties = {
 
 const popupStyle: React.CSSProperties = {
   backgroundColor: "#fff",
-  padding: "1rem 2rem 2rem 2rem",
+  padding: "0rem 2rem 2rem 2rem",
   borderRadius: "8px",
   boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
   maxWidth: "400px",
