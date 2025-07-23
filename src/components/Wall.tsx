@@ -859,7 +859,30 @@ export default function Wall() {
                     paddingRight: "0.5rem",
                   }}
                 >
-                  <>📍{selectedMemory.place} &nbsp;</>
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      verticalAlign: "middle",
+                      whiteSpace: "nowrap",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    <span
+                      aria-label="place pin"
+                      role="img"
+                      style={{
+                        marginRight: 4,
+                        lineHeight: 1,
+                        verticalAlign: "middle",
+                      }}
+                    >
+                      📍
+                    </span>
+                    <span style={{ overflowWrap: "break-word" }}>
+                      {selectedMemory.place}
+                    </span>
+                  </span>
                 </div>
               )}
               {selectedMemory.date && (
