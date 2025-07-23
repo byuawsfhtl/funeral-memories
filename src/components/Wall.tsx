@@ -860,7 +860,7 @@ export default function Wall() {
                       paddingRight: "0.5rem",
                     }}
                   >
-                    📍 {selectedMemory.place} &nbsp;
+                    📍{selectedMemory.place} &nbsp;
                   </div>
                 </>
               )}
