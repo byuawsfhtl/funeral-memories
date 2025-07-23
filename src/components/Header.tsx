@@ -10,8 +10,8 @@ export default function Header() {
       className="container-fluid text-white d-none d-md-block"
       style={{ backgroundColor: "rgb(13 106 95)" }}
     >
-      <div className="d-flex align-items-center justify-content-center pt-3">
-        <Link to="/">
+      <Link to="/">
+        <div className="d-flex align-items-center justify-content-center pt-3">
           <img
             src={logo}
             alt="Funeral Memories Logo"
@@ -20,8 +20,9 @@ export default function Header() {
           <h1 className="m-0" style={{ fontFamily: '"Bodoni Moda SC", serif' }}>
             Funeral Memories
           </h1>
-        </Link>
-      </div>
+        </div>
+      </Link>
+
       <Nav className="navbar navbar-expand">
         <div className="container-fluid d-flex justify-content-center">
           {/* <ul className="navbar-nav">
