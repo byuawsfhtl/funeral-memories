@@ -10,7 +10,7 @@ export default function Header() {
       className="container-fluid text-white d-none d-md-block"
       style={{ backgroundColor: "rgb(13 106 95)" }}
     >
-      <Link to="/">
+      <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
         <div className="d-flex align-items-center justify-content-center pt-3">
           <img
             src={logo}
