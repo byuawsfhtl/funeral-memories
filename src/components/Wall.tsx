@@ -549,7 +549,7 @@ export default function Wall() {
                       className="dropdown-item"
                       onClick={() => setShowConfirmPublish(true)}
                     >
-                      Publish
+                      Publish Memories to FamilySearch
                     </button>
                   </li>
                   <li>
