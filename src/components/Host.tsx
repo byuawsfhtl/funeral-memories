@@ -78,8 +78,6 @@ export default function Host() {
               type="submit"
               className="btn btn-secondary btn-lg"
               style={{
-                height: "200px",
-                fontSize: "1.5rem",
                 backgroundColor: hostHover
                   ? "rgb(8, 82, 75)"
                   : "rgb(13, 106, 95)",
