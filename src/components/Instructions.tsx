@@ -66,7 +66,8 @@ export default function Instructions() {
       <h4 className="mt-4">🧱 Manage the Wall</h4>
       <ul>
         <li>
-          Admins can delete <strong>any memory</strong> by clicking on it.
+          Admins can delete <strong>any memory</strong> by clicking on the
+          memory, and then selecting the delete button.
         </li>
       </ul>
 
