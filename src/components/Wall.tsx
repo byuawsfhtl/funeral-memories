@@ -193,41 +193,30 @@ export default function Wall() {
 	}, [showPopup]);
 
 	useEffect(() => {
-		const run = async () => {
-			const verifyGroupId = async () => {
-				try {
-					await service.getGroup(groupId);
-					return true;
-				} catch (error) {
-					console.error("Error verifying group ID:", error);
-					return false;
-				}
-			};
+		let intervalId: NodeJS.Timeout;
 
-			if (!groupId || !(await verifyGroupId())) {
-				navigate("/");
-				return;
+		const verifyAndFetch = async () => {
+			try {
+				await service.getGroup(groupId); // Will throw if group is gone
+
+				const data = await service.getMemories(groupId);
+				setMemoryList(data);
+				const mine = data.filter(
+					(m: Memory) => m.sessionId === sessionId.current
+				);
+				setMyMemories(mine);
+			} catch (error) {
+				console.error("Group no longer exists or fetch failed:", error);
+				navigate("/"); // 🚨 Redirect to home if group is gone
 			}
-
-			const fetchMemories = async () => {
-				try {
-					const data = await service.getMemories(groupId);
-					setMemoryList(data);
-					const mine = data.filter(
-						(m: Memory) => m.sessionId === sessionId.current
-					);
-					setMyMemories(mine);
-				} catch (error) {
-					console.error("Error fetching memories:", error);
-				}
-			};
-
-			fetchMemories();
-			const intervalId = setInterval(fetchMemories, 10000);
-			return () => clearInterval(intervalId);
 		};
 
-		run();
+		if (groupId) {
+			verifyAndFetch(); // Run immediately
+			intervalId = setInterval(verifyAndFetch, 10000); // Run every 10s
+		}
+
+		return () => clearInterval(intervalId);
 	}, [groupId, navigate]);
 
 	useEffect(() => {
