@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React from "react";
+import React, { useState } from "react";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [hostHover, setHostHover] = useState(false);
 
   return (
     <main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
@@ -26,13 +27,20 @@ export default function Home() {
         </div>
         <div className="col-12 col-md-6">
           <button
-            className="btn btn-primary w-100"
+            className="btn btn-secondary w-100 custom-host-btn"
             style={{
               height: "200px",
               fontSize: "1.5rem",
-              backgroundColor: "rgb(13 106 95)",
+              backgroundColor: hostHover
+                ? "rgb(8, 82, 75)"
+                : "rgb(13, 106, 95)",
+              borderColor: hostHover ? "rgb(8, 82, 75)" : "rgb(13, 106, 95)",
+              color: "#fff",
+              transition: "background 0.2s, border-color 0.2s",
             }}
             onClick={() => navigate("/host")}
+            onMouseEnter={() => setHostHover(true)}
+            onMouseLeave={() => setHostHover(false)}
           >
             Host a New Group
           </button>
