@@ -67,7 +67,7 @@ export default function Instructions() {
       <ul>
         <li>
           Admins can delete <strong>any memory</strong> by clicking on the
-          memory, and then selecting the delete button.
+          memory, and then selecting the <strong>delete</strong> button.
         </li>
       </ul>
 
