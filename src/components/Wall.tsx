@@ -193,35 +193,34 @@ export default function Wall() {
 	}, [showPopup]);
 
 	useEffect(() => {
-		let intervalId: NodeJS.Timeout;
+		if (!groupId) {
+			navigate("/");
+			return;
+		}
 
-		const verifyAndFetch = async () => {
+		// Admin checker effect (add this at the bottom of your useEffects
+
+		const fetchMemories = async () => {
 			try {
-				await service.getGroup(groupId); // Will throw if deleted
-
 				const data = await service.getMemories(groupId);
 				setMemoryList(data);
 				const mine = data.filter(
 					(m: Memory) => m.sessionId === sessionId.current
 				);
-				setMyMemories(mine);
-			} catch (error) {
-				console.error("Group may have been deleted:", error);
 
-				// 🚨 Only redirect if user is NOT an admin
-				if (!isAdmin && localStorage.getItem("isPublishing") !== "true") {
-					navigate("/");
-				}
+				setMyMemories(mine); // you'll display this separately
+				setMemoryList(data);
+			} catch (error) {
+				console.error("Error fetching memories:", error);
 			}
 		};
 
-		if (groupId) {
-			verifyAndFetch(); // Initial
-			intervalId = setInterval(verifyAndFetch, 10000); // Every 10s
-		}
+		fetchMemories();
+
+		const intervalId = setInterval(fetchMemories, 10000);
 
 		return () => clearInterval(intervalId);
-	}, [groupId, navigate, isAdmin]); // 🧠 include isAdmin
+	}, [groupId, navigate]);
 
 	useEffect(() => {
 		if (groupId && sessionId.current) {
@@ -921,7 +920,6 @@ export default function Wall() {
 								onClick={() => {
 									localStorage.setItem("groupId", groupId);
 									localStorage.setItem("personId", person.id);
-									localStorage.setItem("isPublishing", "true");
 									const redirectUri = `${window.location.origin}${location.pathname}`;
 									window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 								}}

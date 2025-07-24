@@ -47,7 +47,6 @@ export function useFamilySearchResumePublish() {
 					localStorage.removeItem("personId");
 					localStorage.removeItem("fstoken");
 					localStorage.removeItem("madeGroup");
-					localStorage.removeItem("isPublishing");
 
 					setTimeout(() => {
 						navigate("/", { replace: true });
