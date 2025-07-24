@@ -209,7 +209,7 @@ export default function Wall() {
 				console.error("Group may have been deleted:", error);
 
 				// 🚨 Only redirect if user is NOT an admin
-				if (!isAdmin) {
+				if (!isAdmin && localStorage.getItem("isPublishing") !== "true") {
 					navigate("/");
 				}
 			}
@@ -921,6 +921,7 @@ export default function Wall() {
 								onClick={() => {
 									localStorage.setItem("groupId", groupId);
 									localStorage.setItem("personId", person.id);
+									localStorage.setItem("isPublishing", "true");
 									const redirectUri = `${window.location.origin}${location.pathname}`;
 									window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 								}}
