@@ -197,7 +197,7 @@ export default function Wall() {
 
 		const verifyAndFetch = async () => {
 			try {
-				await service.getGroup(groupId); // Will throw if group is gone
+				await service.getGroup(groupId); // Will throw if deleted
 
 				const data = await service.getMemories(groupId);
 				setMemoryList(data);
@@ -206,18 +206,22 @@ export default function Wall() {
 				);
 				setMyMemories(mine);
 			} catch (error) {
-				console.error("Group no longer exists or fetch failed:", error);
-				navigate("/"); // 🚨 Redirect to home if group is gone
+				console.error("Group may have been deleted:", error);
+
+				// 🚨 Only redirect if user is NOT an admin
+				if (!isAdmin) {
+					navigate("/");
+				}
 			}
 		};
 
 		if (groupId) {
-			verifyAndFetch(); // Run immediately
-			intervalId = setInterval(verifyAndFetch, 10000); // Run every 10s
+			verifyAndFetch(); // Initial
+			intervalId = setInterval(verifyAndFetch, 10000); // Every 10s
 		}
 
 		return () => clearInterval(intervalId);
-	}, [groupId, navigate]);
+	}, [groupId, navigate, isAdmin]); // 🧠 include isAdmin
 
 	useEffect(() => {
 		if (groupId && sessionId.current) {
