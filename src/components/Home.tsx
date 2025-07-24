@@ -26,8 +26,12 @@ export default function Home() {
         </div>
         <div className="col-12 col-md-6">
           <button
-            className="btn btn-secondary w-100"
-            style={{ height: "200px", fontSize: "1.5rem" }}
+            className="btn btn-primary w-100"
+            style={{
+              height: "200px",
+              fontSize: "1.5rem",
+              backgroundColor: "rgb(13 106 95)",
+            }}
             onClick={() => navigate("/host")}
           >
             Host a New Group
