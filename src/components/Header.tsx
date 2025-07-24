@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Nav } from "react-bootstrap";
 import logo from "../../placeholder_img/NewFuneralMemoriesLogo.png";
 import { Link } from "react-router-dom";
 
@@ -24,18 +23,7 @@ export default function Header() {
       </Link>
 
       <Nav className="navbar navbar-expand">
-        <div className="container-fluid d-flex justify-content-center">
-          {/* <ul className="navbar-nav">
-            <LinkContainer to="/" className="nav-link text-white">
-              <Nav.Link active={location.pathname === "/"}>Home</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/instructions" className="nav-link text-white">
-              <Nav.Link active={location.pathname === "/instructions"}>
-                Instructions
-              </Nav.Link>
-            </LinkContainer>
-          </ul> */}
-        </div>
+        <div className="container-fluid d-flex justify-content-center"></div>
       </Nav>
     </header>
   );

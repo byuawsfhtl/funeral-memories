@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const navigate = useNavigate();

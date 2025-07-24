@@ -1,5 +1,3 @@
-import React from "react";
-import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import { Memory } from "../model/Memory";
 
 interface MemoryProps {

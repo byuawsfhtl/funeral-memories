@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
@@ -12,7 +12,7 @@ export default function Confirmation() {
   const formData = location.state?.formData;
   const ancestors = location.state?.ancestors;
   const service = new FuneralMemoryService();
-  const [loading, setLoading] = useState(false); // 🆕 loading state
+  const [loading, setLoading] = useState(false);
 
   if (!person) {
     return (

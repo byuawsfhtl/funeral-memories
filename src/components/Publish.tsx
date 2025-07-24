@@ -24,8 +24,6 @@ export default function PublishButton(props: PublishProps) {
     localStorage.setItem("groupId", props.groupId);
     localStorage.setItem("personId", props.personId);
 
-    // Save groupId for after redirect
-
     const redirectUri = `${window.location.origin}${location.pathname}`;
     window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
     return;
