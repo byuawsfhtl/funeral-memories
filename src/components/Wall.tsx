@@ -198,29 +198,32 @@ export default function Wall() {
 			return;
 		}
 
-		// Admin checker effect (add this at the bottom of your useEffects
-
-		const fetchMemories = async () => {
+		const fetchMemoriesAndVerify = async () => {
 			try {
+				// Check if group still exists
+				await service.getGroup(groupId); // This throws if deleted
+
+				// Then fetch memories
 				const data = await service.getMemories(groupId);
 				setMemoryList(data);
 				const mine = data.filter(
 					(m: Memory) => m.sessionId === sessionId.current
 				);
-
-				setMyMemories(mine); // you'll display this separately
-				setMemoryList(data);
+				setMyMemories(mine);
 			} catch (error) {
-				console.error("Error fetching memories:", error);
+				console.error("Group no longer exists or fetch failed:", error);
+				// ✅ Only kick out if not admin
+				if (!isAdmin) {
+					navigate("/", { replace: true });
+				}
 			}
 		};
 
-		fetchMemories();
-
-		const intervalId = setInterval(fetchMemories, 10000);
+		fetchMemoriesAndVerify();
+		const intervalId = setInterval(fetchMemoriesAndVerify, 10000);
 
 		return () => clearInterval(intervalId);
-	}, [groupId, navigate]);
+	}, [groupId, navigate, isAdmin]);
 
 	useEffect(() => {
 		if (groupId && sessionId.current) {
