@@ -531,7 +531,24 @@ export default function Wall() {
 					)}
 
 					<div className="d-flex align-items-center justify-content-center gap-2">
-						<p className="text-muted small mb-0">
+						<p
+							className="text-muted small mb-0"
+							style={{ cursor: "pointer" }}
+							title="Click to copy"
+							onClick={() => {
+								if (groupId) {
+									navigator.clipboard
+										.writeText(groupId)
+										.then(() => {
+											console.log("Copied to clipboard");
+											// Optionally give feedback (like a toast or visual change)
+										})
+										.catch((err) => {
+											console.error("Failed to copy: ", err);
+										});
+								}
+							}}
+						>
 							Group ID: <strong>{groupId}</strong>
 						</p>
 
