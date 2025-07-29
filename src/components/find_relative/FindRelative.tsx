@@ -154,7 +154,7 @@ export default function FindRelative() {
   return (
     <div className="find-relative">
       <div className="title">
-        <h1>Find a Relative</h1>
+        <h1>Search and Select a Relative for the Funeral Memory Wall</h1>
       </div>
 
       <form onSubmit={handleSubmit}>
