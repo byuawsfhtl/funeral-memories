@@ -95,6 +95,7 @@ export default function FindRelative() {
   //const handleAncestorClick = (personData) => {
   const handleAncestorClick = async (personData: any) => {
     // Navigate to confirmation with all needed state
+    console.log("Clicked person:", personData);
     setSelectedPerson(personData);
     setShowConfirmation(true);
   };
