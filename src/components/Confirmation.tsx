@@ -72,6 +72,13 @@ export default function Confirmation({
         localStorage.getItem("sessionId") || crypto.randomUUID();
       localStorage.setItem("sessionId", sessionId);
 
+      console.log("Logging in admin with:", {
+        groupId: madeGroup.groupId,
+        username,
+        password,
+        sessionId,
+      });
+
       const loginRes = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
