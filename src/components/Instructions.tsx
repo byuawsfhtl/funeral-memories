@@ -57,6 +57,12 @@ export default function Instructions() {
           <strong>password</strong>.
         </li>
         <li>
+          Type in a name in the search bars (only last name required) to search
+          through the FamilySearch database to find the person you are having
+          the funeral for. Make sure they are marked as deceased in FamilySearch
+          or else they won't show up when searched.
+        </li>
+        <li>
           Select the <strong>person</strong> you're making the wall for — this
           generates a Group ID.
         </li>
