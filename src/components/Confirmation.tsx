@@ -2,15 +2,32 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
+type ConfirmationProps = {
+  person: any;
+  username: string;
+  password: string;
+  formData: any;
+  ancestors: any[];
+  personId: string;
+  onClose: () => void;
+};
 
-export default function Confirmation() {
+export default function Confirmation({
+  person,
+  username,
+  password,
+  formData,
+  ancestors,
+  personId,
+  onClose,
+}: ConfirmationProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const person = location.state?.person;
-  const username = location.state?.username;
-  const password = location.state?.password;
-  const formData = location.state?.formData;
-  const ancestors = location.state?.ancestors;
+  // const person = location.state?.person;
+  // const username = location.state?.username;
+  // const password = location.state?.password;
+  // const formData = location.state?.formData;
+  // const ancestors = location.state?.ancestors;
   const service = new FuneralMemoryService();
   const [loading, setLoading] = useState(false);
 

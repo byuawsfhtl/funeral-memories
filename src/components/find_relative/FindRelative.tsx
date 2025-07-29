@@ -4,11 +4,14 @@ import axios from "axios";
 import FsService from "./FsService";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../../service/FuneralMemoryService";
+import Confirmation from "../Confirmation";
 
 export default function FindRelative() {
   const location = useLocation();
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState<any>(null);
 
   type FormData = {
     firstName: string;
@@ -92,16 +95,8 @@ export default function FindRelative() {
   //const handleAncestorClick = (personData) => {
   const handleAncestorClick = async (personData: any) => {
     // Navigate to confirmation with all needed state
-    navigate("/confirmation", {
-      state: {
-        person: personData,
-        formData,
-        ancestors,
-        username,
-        password,
-        personId: personData.id,
-      },
-    });
+    setSelectedPerson(personData);
+    setShowConfirmation(true);
   };
   // };
 
@@ -154,7 +149,7 @@ export default function FindRelative() {
   return (
     <div className="find-relative">
       <div className="title">
-        <h1>Search and Select a Relative for the Funeral Memory Wall</h1>
+        <h1>Search and Select a Relative for Your Funeral Memory Wall</h1>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -249,6 +244,18 @@ export default function FindRelative() {
             <div key={index}>{printAncestor(ancestor)}</div>
           ))}
         </div>
+      )}
+
+      {showConfirmation && selectedPerson && (
+        <Confirmation
+          person={selectedPerson}
+          formData={formData}
+          ancestors={ancestors}
+          username={username}
+          password={password}
+          personId={selectedPerson.id}
+          onClose={() => setShowConfirmation(false)}
+        />
       )}
     </div>
   );
