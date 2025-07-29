@@ -63,8 +63,9 @@ export default function Instructions() {
           or else they won't show up when searched.
         </li>
         <li>
-          Select the <strong>person</strong> you're making the wall for — this
-          generates a Group ID.
+          Select the <strong>person</strong> you're making the wall for and
+          confirm — this generates a Group ID and the starting blank memory
+          wall.
         </li>
       </ul>
 
