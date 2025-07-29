@@ -43,6 +43,7 @@ export default function Wall() {
   const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
   const qrWrapperRef = useRef<HTMLDivElement>(null);
   const [showHelp, setShowHelp] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const downloadQR = () => {
     const svg = qrWrapperRef.current?.querySelector("svg");
@@ -615,6 +616,7 @@ export default function Wall() {
                   Image <span className="text-muted small">(optional)</span>
                 </label>
                 <input
+                  ref={fileInputRef}
                   type="file"
                   className="form-control"
                   accept="image/*"
@@ -662,6 +664,8 @@ export default function Wall() {
                       onClick={() => {
                         setImagePreview(null);
                         setImageFile(null);
+                        if (fileInputRef.current)
+                          fileInputRef.current.value = "";
                       }}
                     >
                       &times;
