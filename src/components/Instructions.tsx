@@ -1,8 +1,23 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
-export default function Instructions() {
+type InstructionsProps = {
+  isPopup?: boolean;
+};
+
+export default function Instructions({ isPopup }: InstructionsProps) {
+  const navigate = useNavigate();
   return (
     <div className="container mt-3 mb-5 pt-0">
+      {!isPopup && (
+        <button
+          className="btn btn-link mb-3"
+          style={{ fontSize: "1.2rem" }}
+          onClick={() => navigate("/")}
+        >
+          ← Back to Home
+        </button>
+      )}
       <h1 className="mb-4 text-center">🕊 How to Use Funeral Memories</h1>
 
       <p>
