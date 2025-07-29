@@ -11,7 +11,7 @@ export default function Instructions({ isPopup }: InstructionsProps) {
     <div className="container mt-3 mb-5 pt-0">
       {!isPopup && (
         <button
-          className="btn btn-link mb-3"
+          className="btn btn-primary mb-3"
           style={{ fontSize: "1.2rem" }}
           onClick={() => navigate("/")}
         >
