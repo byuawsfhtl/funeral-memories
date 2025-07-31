@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ClipboardCheck, Clipboard } from "react-bootstrap-icons";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
@@ -16,6 +17,68 @@ import QRCode from "react-qr-code";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Instructions from "./Instructions";
+
+type CopyableGroupIdProps = {
+  groupId: string;
+};
+
+function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (groupId) {
+      try {
+        await navigator.clipboard.writeText(groupId);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      } catch (err) {
+        setCopied(false);
+        alert("Failed to copy Group ID");
+      }
+    }
+  };
+
+  return (
+    <span
+      className="text-muted small mb-0 d-flex align-items-center"
+      style={{
+        cursor: "pointer",
+        userSelect: "all",
+        border: "1px dashed #888",
+        borderRadius: "5px",
+        padding: "6px 10px",
+        transition: "background 0.15s",
+        background: copied ? "#e6ffee" : "transparent",
+        color: copied ? "#177e5b" : undefined,
+      }}
+      title={copied ? "Copied!" : "Click to copy"}
+      onClick={handleCopy}
+    >
+      Group ID:{" "}
+      <strong
+        style={{ fontFamily: "monospace", fontSize: "1.12em", marginLeft: 6 }}
+      >
+        {groupId}
+      </strong>
+      <span style={{ marginLeft: 8, fontSize: 18 }}>
+        {copied ? <ClipboardCheck color="#177e5b" /> : <Clipboard />}
+      </span>
+      {copied && (
+        <span
+          style={{
+            marginLeft: 10,
+            color: "#177e5b",
+            fontWeight: 600,
+            fontSize: "0.93em",
+            letterSpacing: 0.3,
+          }}
+        >
+          Copied!
+        </span>
+      )}
+    </span>
+  );
+}
 
 interface MemErrors {
   title: string;
@@ -532,26 +595,7 @@ export default function Wall() {
           )}
 
           <div className="d-flex align-items-center justify-content-center gap-2">
-            <p
-              className="text-muted small mb-0"
-              style={{ cursor: "pointer" }}
-              title="Click to copy"
-              onClick={() => {
-                if (groupId) {
-                  navigator.clipboard
-                    .writeText(groupId)
-                    .then(() => {
-                      console.log("Copied to clipboard");
-                      // Optionally give feedback (like a toast or visual change)
-                    })
-                    .catch((err) => {
-                      console.error("Failed to copy: ", err);
-                    });
-                }
-              }}
-            >
-              Group ID: <strong>{groupId}</strong>
-            </p>
+            <CopyableGroupId groupId={groupId} />
 
             {isAdmin && (
               <div className="dropdown">
