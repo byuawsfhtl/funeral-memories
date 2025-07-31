@@ -129,10 +129,10 @@ export default function Wall() {
       const pngUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = pngUrl;
-      link.download = `QR-group-${groupId}-${person.name.replace(
+      link.download = `${person.name.replace(
         /\s+/g,
         "_"
-      )}.png`;
+      )}'s_Funeral_Wall_QR.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
