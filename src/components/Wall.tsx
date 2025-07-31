@@ -52,11 +52,7 @@ function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
       onClick={handleCopy}
     >
       Group ID:{" "}
-      <strong
-        style={{ fontFamily: "monospace", fontSize: "1.12em", marginLeft: 6 }}
-      >
-        {groupId}
-      </strong>
+      <strong style={{ fontSize: "1.12em", marginLeft: 6 }}>{groupId}</strong>
       <span style={{ marginLeft: 8, fontSize: 18 }}>
         {copied ? <ClipboardCheck color="#177e5b" /> : <Clipboard />}
       </span>
