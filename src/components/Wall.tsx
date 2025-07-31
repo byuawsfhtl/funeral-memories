@@ -498,20 +498,29 @@ export default function Wall() {
                   day: "numeric",
                 }
               )}
-              <span
-                className="float-end"
-                style={{
-                  fontSize: "0.75rem",
-                  color: "#b22222",
-                  fontWeight: 400,
-                  marginLeft: 8,
-                }}
-              >
-                (On this date, this group and all submitted memories will be
-                permanently deleted.)
-              </span>{" "}
+              {" at "}
+              {new Date(madeGroup.expirationDate).toLocaleTimeString(
+                undefined,
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true, // or false for 24-hour time
+                  timeZoneName: "short", // optional, shows "MDT" etc.
+                }
+              )}
             </p>
           )}{" "}
+          <p
+            className="mb-0 text-center w-100 text-danger"
+            style={{
+              fontSize: "0.75rem",
+              color: "#b22222",
+              fontWeight: 400,
+              marginLeft: 8,
+            }}
+          >
+            (This group and all memories will be deleted on this date)
+          </p>
         </div>
 
         {/* Portrait on its own row below */}
