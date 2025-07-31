@@ -163,9 +163,8 @@ export default function Confirmation({
               </p>
             </div>
             <p>
-              This information was found using FamilySearch records. If this
-              looks like the correct person, click "Yes" to continue or "No" to
-              cancel.
+              This information was found using FamilySearch records. If this is
+              the correct person, click "Yes" to continue or "No" to cancel.
             </p>
             <div className="d-flex justify-content-center gap-2 mt-3">
               <button
