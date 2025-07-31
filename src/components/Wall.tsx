@@ -484,6 +484,22 @@ export default function Wall() {
           >
             {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
           </h2>
+          {madeGroup?.expirationDate && (
+            <h3
+              className="mb-0 text-center w-100 text-danger"
+              style={{ fontWeight: 400 }}
+            >
+              Memory Wall will expire on{" "}
+              {new Date(madeGroup.expirationDate).toLocaleDateString(
+                undefined,
+                {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )}
+            </h3>
+          )}{" "}
         </div>
 
         {/* Portrait on its own row below */}
