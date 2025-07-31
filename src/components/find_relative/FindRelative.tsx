@@ -385,6 +385,17 @@ export default function FindRelative() {
           </p>
         )}
       </div>
+      {showConfirmation && selectedPerson && (
+        <Confirmation
+          person={selectedPerson}
+          formData={formData}
+          ancestors={ancestors}
+          username={username}
+          password={password}
+          personId={selectedPerson.id}
+          onClose={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   );
 }
