@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./FindRelative.css";
 import axios from "axios";
 import FsService from "./FsService";
@@ -12,6 +12,8 @@ export default function FindRelative() {
   const service = new FuneralMemoryService();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState<any>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   type FormData = {
     firstName: string;
@@ -102,26 +104,116 @@ export default function FindRelative() {
   // };
 
   function printAncestor(ancestor: any) {
-    const p = ancestor.content.gedcomx.persons[0].display;
+    var p = ancestor.content.gedcomx.persons[0].display;
     p.id = ancestor.content.gedcomx.persons[0].id;
 
-    const birthYear = p.birthDate ? new Date(p.birthDate).getUTCFullYear() : "";
-    const deathYear = p.deathDate ? new Date(p.deathDate).getUTCFullYear() : "";
-    const age = birthYear && deathYear ? `(Age ${deathYear - birthYear})` : "";
-    const portrait = `https://api.familysearch.org/platform/tree/persons/${
-      p.id
-    }/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=${sessionStorage.getItem(
-      "yourKey"
-    )}`;
+    if (p.birthPlace == undefined) p.birthPlace = "";
+    if (p.deathPlace == undefined) p.deathPlace = "";
+
+    var portrait =
+      "https://api.familysearch.org/platform/tree/persons/" +
+      p.id +
+      "/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=" +
+      sessionStorage.getItem("yourKey");
+    var birthYear: any = p.birthDate
+      ? new Date(p.birthDate).getUTCFullYear()
+      : "";
+    var deathYear: any = p.deathDate
+      ? new Date(p.deathDate).getUTCFullYear()
+      : "";
+    var age =
+      birthYear && deathYear
+        ? "(Age " + Math.abs(deathYear - birthYear) + ")"
+        : "";
+
+    function getName(pid: any) {
+      for (let k = 0; k < ancestor.content.gedcomx.persons.length; k++) {
+        if (ancestor.content.gedcomx.persons[k].id == pid) {
+          return ancestor.content.gedcomx.persons[k].display.name;
+        }
+      }
+    }
+
+    var spouseId = "";
+    var spouse = "";
+    var spousePortrait =
+      "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
+    var parent1 = "";
+    var parent2 = "";
+    var parentPortrait1 =
+      "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
+    var parentPortrait2 =
+      "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
+    if (ancestor.content.gedcomx.relationships) {
+      for (let j = 0; j < ancestor.content.gedcomx.relationships.length; j++) {
+        // Find spouse
+        if (
+          ancestor.content.gedcomx.relationships[j].type ==
+          "http://gedcomx.org/Couple"
+        ) {
+          spouseId =
+            ancestor.content.gedcomx.relationships[j].person2.resourceId;
+          if (
+            p.id != ancestor.content.gedcomx.relationships[j].person1.resourceId
+          ) {
+            spouseId =
+              ancestor.content.gedcomx.relationships[j].person1.resourceId;
+          } else {
+            spouseId =
+              ancestor.content.gedcomx.relationships[j].person2.resourceId;
+          }
+          spousePortrait =
+            "https://api.familysearch.org/platform/tree/persons/" +
+            spouseId +
+            "/portrait?default=https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png&access_token=" +
+            sessionStorage.getItem("yourKey");
+          spouse = getName(spouseId);
+        }
+        // Find parent1
+        if (
+          ancestor.content.gedcomx.relationships[j].type ==
+          "http://gedcomx.org/ParentChild"
+        ) {
+          if (
+            ancestor.content.gedcomx.relationships[j].person2.resourceId ==
+              p.id &&
+            parent1 == ""
+          ) {
+            parent1 = getName(
+              ancestor.content.gedcomx.relationships[j].person1.resourceId
+            );
+            continue;
+          }
+        }
+        // Find parent2
+        if (
+          ancestor.content.gedcomx.relationships[j].type ==
+          "http://gedcomx.org/ParentChild"
+        ) {
+          if (
+            ancestor.content.gedcomx.relationships[j].person2.resourceId ==
+              p.id &&
+            parent2 == ""
+          ) {
+            parent2 = getName(
+              ancestor.content.gedcomx.relationships[j].person1.resourceId
+            );
+            break;
+          }
+        }
+      }
+    }
 
     return (
       <li
-        className="search-result"
+        className="search-result slide-in"
         onClick={() => handleAncestorClick(p)}
-        style={{ cursor: "pointer" }}
+        style={{
+          cursor: "pointer",
+        }}
       >
         <div style={{ margin: "auto", width: "fit-content" }}>
-          <img className="portrait" src={portrait} alt="Portrait" />
+          <img className="portrait" src={portrait} />
         </div>
         <div className="person-name">
           <div className="overflowDiv">{p.name}</div>
@@ -143,121 +235,156 @@ export default function FindRelative() {
             {p.deathPlace}
           </div>
         </div>
+        <div className="spouse">
+          <div className="overflow-div">
+            Spouse
+            <br />
+            <img className="spouse-portrait" src={spousePortrait} />
+            {spouse}
+          </div>
+        </div>
+        <div className="parent">
+          <div className="overflow-div">
+            Parents
+            <br />
+            <img className="parent-portrait" src={parentPortrait1} />
+            {parent1}
+          </div>
+        </div>
+        <div className="parent">
+          <div className="overflow-div">
+            <img className="parent-portrait" src={parentPortrait2} />
+            {parent2}
+          </div>
+        </div>
       </li>
     );
   }
 
   return (
-    <div className="find-relative">
-      <div className="title">
-        <h1>Search and Select a Relative for Your Funeral Memory Wall</h1>
+    <div>
+      <div className={`container ${isLoading ? "loading" : ""}`}>
+        {isLoading}
+
+        <div className="title">
+          <h1>Find a Relative</h1>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-row">
+            <div className="form-col">
+              <label className="form-label">Ancestor's First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.firstName ? "black-text" : "gray-text"}
+              />
+            </div>
+            <div className="form-col">
+              <label className="form-label">
+                Ancestor's Last Name (or maiden name)
+                <span className="form-required"> (Required)</span>
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.lastName ? "black-text" : "gray-text"}
+                required
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-col">
+              <label className="form-label">
+                Birth Place<span className="form-optional"> (Optional)</span>
+              </label>
+              <input
+                type="text"
+                name="birthPlace"
+                value={formData.birthPlace}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.birthPlace ? "black-text" : "gray-text"}
+              />
+            </div>
+            <div className="form-col">
+              <label className="form-label">
+                Birth Year<span className="form-optional"> (Optional)</span>
+              </label>
+              <input
+                type="text"
+                name="birthYear"
+                value={formData.birthYear}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.birthYear ? "black-text" : "gray-text"}
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-col">
+              <label className="form-label">
+                Death Place<span className="form-optional"> (Optional)</span>
+              </label>
+              <input
+                type="text"
+                name="deathPlace"
+                value={formData.deathPlace}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.deathPlace ? "black-text" : "gray-text"}
+              />
+            </div>
+            <div className="form-col">
+              <label className="form-label">
+                Death Year<span className="form-optional"> (Optional)</span>
+              </label>
+              <input
+                type="text"
+                name="deathYear"
+                value={formData.deathYear}
+                onChange={handleChange}
+                placeholder="Enter text here"
+                className={formData.deathYear ? "black-text" : "gray-text"}
+              />
+            </div>
+          </div>
+          <div className="form-col">
+            <button
+              type="submit"
+              className="form-search button button-green"
+              style={{ width: "150px" }}
+            >
+              Search
+            </button>
+          </div>
+        </form>
+
+        <br />
+
+        {/*This div is for the ancestors results*/}
+        {ancestors.length > 0 ? (
+          <div className="results" ref={resultsRef} tabIndex={-1}>
+            {ancestors.map((ancestor: any, index: any) => (
+              <div key={index}>{printAncestor(ancestor)}</div>
+            ))}
+          </div>
+        ) : (
+          <p></p>
+        )}
+        {ancestors.length > 0 && (
+          <p className="results-hint">
+            If you don't see your ancestor listed, please enter more information
+            and search again.
+          </p>
+        )}
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-row">
-          <div className="form-col">
-            <label className="form-label">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className={formData.firstName ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-            />
-          </div>
-          <div className="form-col">
-            <label className="form-label">
-              Last Name <span className="form-required">(Required)</span>
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className={formData.lastName ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-col">
-            <label className="form-label">Birth Place</label>
-            <input
-              type="text"
-              name="birthPlace"
-              value={formData.birthPlace}
-              onChange={handleChange}
-              className={formData.birthPlace ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-            />
-          </div>
-          <div className="form-col">
-            <label className="form-label">Birth Year</label>
-            <input
-              type="text"
-              name="birthYear"
-              value={formData.birthYear}
-              onChange={handleChange}
-              className={formData.birthYear ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-col">
-            <label className="form-label">Death Place</label>
-            <input
-              type="text"
-              name="deathPlace"
-              value={formData.deathPlace}
-              onChange={handleChange}
-              className={formData.deathPlace ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-            />
-          </div>
-          <div className="form-col">
-            <label className="form-label">Death Year</label>
-            <input
-              type="text"
-              name="deathYear"
-              value={formData.deathYear}
-              onChange={handleChange}
-              className={formData.deathYear ? "black-text" : "gray-text"}
-              placeholder="Enter text here"
-            />
-          </div>
-        </div>
-
-        <div className="form-col">
-          <button type="submit" className="form-search">
-            Search
-          </button>
-        </div>
-      </form>
-
-      {ancestors.length > 0 && (
-        <div className="results">
-          {ancestors.map((ancestor, index) => (
-            <div key={index}>{printAncestor(ancestor)}</div>
-          ))}
-        </div>
-      )}
-
-      {showConfirmation && selectedPerson && (
-        <Confirmation
-          person={selectedPerson}
-          formData={formData}
-          ancestors={ancestors}
-          username={username}
-          password={password}
-          personId={selectedPerson.id}
-          onClose={() => setShowConfirmation(false)}
-        />
-      )}
     </div>
   );
 }
