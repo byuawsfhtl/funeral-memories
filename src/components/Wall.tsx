@@ -485,11 +485,11 @@ export default function Wall() {
             {person ? `Memory Wall for ${person.name}` : "Memory Wall"}
           </h2>
           {madeGroup?.expirationDate && (
-            <h3
+            <p
               className="mb-0 text-center w-100 text-danger"
-              style={{ fontWeight: 400 }}
+              style={{ fontWeight: 400, fontSize: "0.85rem" }}
             >
-              Memory Wall will expire on{" "}
+              Expiration Date{" "}
               {new Date(madeGroup.expirationDate).toLocaleDateString(
                 undefined,
                 {
@@ -498,7 +498,7 @@ export default function Wall() {
                   day: "numeric",
                 }
               )}
-            </h3>
+            </p>
           )}{" "}
         </div>
 
