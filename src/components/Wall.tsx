@@ -43,8 +43,6 @@ function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
       className="text-muted small mb-0 d-flex align-items-center"
       style={{
         cursor: "pointer",
-        border: "1px dashed #888",
-        borderRadius: "5px",
         padding: "6px 10px",
         transition: "background 0.15s",
         background: copied ? "#e6ffee" : "transparent",
