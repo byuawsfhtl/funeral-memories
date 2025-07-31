@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export function useFamilySearchResumePublish() {
-  console.log("publishing");
   const location = useLocation();
   const navigate = useNavigate();
 

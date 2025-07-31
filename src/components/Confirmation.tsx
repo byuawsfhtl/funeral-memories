@@ -57,12 +57,17 @@ export default function Confirmation({
       );
       const data = await response.json();
       const portraitBase64 = data.base64;
+      const expire = new Date();
+      expire.setMonth(expire.getMonth() + 1);
+
+      console.log("Expire date:", expire);
 
       const group = {
         ancestor: person,
         portrait: portraitBase64,
         closed: false,
         timestamp: Date.now(),
+        expirationDate: expire,
       };
       const admin = { admin: username, password: password };
 
