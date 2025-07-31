@@ -489,7 +489,7 @@ export default function Wall() {
               className="mb-0 text-center w-100 text-danger"
               style={{ fontWeight: 400, fontSize: "0.85rem" }}
             >
-              Expiration Date{" "}
+              This Memory Wall will Expire On{" "}
               {new Date(madeGroup.expirationDate).toLocaleDateString(
                 undefined,
                 {
@@ -498,6 +498,18 @@ export default function Wall() {
                   day: "numeric",
                 }
               )}
+              <span
+                className="float-end"
+                style={{
+                  fontSize: "0.75rem",
+                  color: "#b22222",
+                  fontWeight: 400,
+                  marginLeft: 8,
+                }}
+              >
+                (On this date, this group and all submitted memories will be
+                permanently deleted.)
+              </span>{" "}
             </p>
           )}{" "}
         </div>
