@@ -129,7 +129,10 @@ export default function Wall() {
       const pngUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = pngUrl;
-      link.download = "QR-group.png";
+      link.download = `QR-group-${groupId}-${person.name.replace(
+        /\s+/g,
+        "_"
+      )}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
