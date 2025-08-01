@@ -94,6 +94,7 @@ export default function Wall() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmPublish, setShowConfirmPublish] = useState(false);
+  const [showSecondConfirm, setShowSecondConfirm] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
@@ -1019,16 +1020,53 @@ export default function Wall() {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  localStorage.setItem("groupId", groupId);
-                  localStorage.setItem("personId", person.id);
-                  const redirectUri = `${window.location.origin}${location.pathname}`;
-                  window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
+                  setShowSecondConfirm(true);
                 }}
               >
                 Yes, Continue
               </button>
             </div>
           </div>
+          {showSecondConfirm && (
+            <div className="popup-overlay" style={overlayStyle}>
+              <div className="popup text-center" style={publishPopupStyle}>
+                <h5 className="text-danger">
+                  After publishing, this group will be deleted with all
+                  associated memories.
+                </h5>
+                <p>
+                  Are you <strong>really</strong> sure you want to publish?
+                </p>
+                <p className="text-muted">
+                  You’ll be redirected to sign in with FamilySearch.
+                </p>
+                <div className="d-flex justify-content-center gap-3 mt-3">
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => {
+                      setShowSecondConfirm(false);
+                      setShowConfirmPublish(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setShowSecondConfirm(false);
+                      setShowConfirmPublish(false);
+                      localStorage.setItem("groupId", groupId);
+                      localStorage.setItem("personId", person.id);
+                      const redirectUri = `${window.location.origin}${location.pathname}`;
+                      window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
+                    }}
+                  >
+                    Yes, Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {showButton && (
