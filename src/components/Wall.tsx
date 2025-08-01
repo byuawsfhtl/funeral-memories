@@ -1000,7 +1000,7 @@ export default function Wall() {
       )}
       {showConfirmPublish && (
         <div className="popup-overlay" style={overlayStyle}>
-          <div className="popup text-center" style={popupStyle}>
+          <div className="popup text-center" style={publishPopupStyle}>
             <h5>Are you sure you want to publish?</h5>
             <p className="text-danger">
               After publishing, this group will be deleted with all associated
@@ -1135,4 +1135,9 @@ const messageBoxStyle: React.CSSProperties = {
   maxWidth: "400px",
   width: "90%",
   textAlign: "center",
+};
+
+const publishPopupStyle: React.CSSProperties = {
+  ...popupStyle,
+  paddingTop: "3rem", // increase as desired for extra top padding
 };
