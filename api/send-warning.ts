@@ -16,10 +16,13 @@ export default async function handler(_: any, res: any) {
     console.log("✅ Connected to MongoDB");
 
     const db = client.db(dbName);
-    const now = Date.now();
 
-    const cutoff = Date.now() - THIRTEEN_DAYS_MS; // 5 minutes ago
+    const now = new Date();
+    const cutoffDate = new Date(now); // copy current date
+    cutoffDate.setMonth(cutoffDate.getMonth() - 1); // subtract 1 calendar month
+    cutoffDate.setDate(cutoffDate.getDate() - 1); // subtract 1 day
 
+    const cutoff = cutoffDate.getTime();
     console.log(
       `🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`
     );
@@ -50,7 +53,6 @@ export default async function handler(_: any, res: any) {
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
       await sendEmail(email, groupId, groupPersonName, db);
-     
     }
 
     console.log("✅ All warning emails processed");
@@ -65,7 +67,12 @@ export default async function handler(_: any, res: any) {
 }
 
 // Email sender
-async function sendEmail(to: string, groupId: string, groupPersonName: string, db: Db) {
+async function sendEmail(
+  to: string,
+  groupId: string,
+  groupPersonName: string,
+  db: Db
+) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -90,7 +97,7 @@ The Funeral Memories Team`,
 
   await transporter.sendMail(mailOptions);
   console.log(`✅ Email sent to ${to} for group ${groupId}`);
-   await db
-        .collection("groups")
-        .updateOne({ groupId }, { $set: { emailSent: true } });
+  await db
+    .collection("groups")
+    .updateOne({ groupId }, { $set: { emailSent: true } });
 }

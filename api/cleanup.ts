@@ -159,7 +159,12 @@ export default async function handler(
   try {
     console.log("🚀 Cleanup cron job triggered");
 
-    const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000; //2 weeks ago
+    const now = new Date();
+    const cutoffDate = new Date(now); // copy current date
+    cutoffDate.setMonth(cutoffDate.getMonth() - 1); // subtract 1 calendar month
+    // cutoffDate now represents exactly one month ago (e.g., Aug 1 → Jul 1)
+
+    const cutoff = cutoffDate.getTime(); // timestamp in milliseconds
     //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago for testing
 
     const allGroups = await getAllGroups();
