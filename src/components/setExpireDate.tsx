@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 export default function SetExpireDate() {
-  const [groupId, setGroupId] = useState("");
   const [expirationDateTime, setExpirationDateTime] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ export default function SetExpireDate() {
     e.preventDefault();
     setError("");
 
-    if (!groupId.trim() || !expirationDateTime.trim()) {
+    if (!expirationDateTime.trim()) {
       setError("Please fill in all fields.");
       return;
     }
