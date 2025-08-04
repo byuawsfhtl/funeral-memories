@@ -63,7 +63,7 @@ export default function Confirmation({
       const expire = new Date();
       expire.setMonth(expire.getMonth() + 1);
 
-      console.log("Expire date:", expire);
+      console.log(typeof expirationDate);
 
       const group = {
         ancestor: person,
