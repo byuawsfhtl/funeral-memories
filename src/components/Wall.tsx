@@ -281,7 +281,7 @@ export default function Wall() {
 		};
 
 		fetchMemoriesAndVerify();
-		const intervalId = setInterval(fetchMemoriesAndVerify, 10000);
+		const intervalId = setInterval(fetchMemoriesAndVerify, 5000);
 
 		return () => clearInterval(intervalId);
 	}, [groupId, navigate, isAdmin]);
