@@ -63,7 +63,7 @@ export default function Confirmation({
       const expire = new Date();
       expire.setMonth(expire.getMonth() + 1);
 
-      console.log(typeof expirationDate);
+      console.log(expirationDate);
 
       const group = {
         ancestor: person,
@@ -73,6 +73,7 @@ export default function Confirmation({
         expirationDate: expirationDate,
       };
       const admin = { admin: username, password: password };
+      console.log(group);
 
       const madeGroup = await service.addGroup(group, admin);
 
