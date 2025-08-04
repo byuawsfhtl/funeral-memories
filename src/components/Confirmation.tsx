@@ -27,6 +27,7 @@ export default function Confirmation({
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
   const [loading, setLoading] = useState(false);
+  console.log(expirationDate);
 
   if (!person) {
     return (

@@ -15,6 +15,7 @@ export default function FindRelative() {
   const resultsRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { expirationDateTime } = location.state?.expirationDateTime || {};
+  console.log(expirationDateTime);
 
   type FormData = {
     firstName: string;
