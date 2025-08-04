@@ -14,6 +14,7 @@ export default function FindRelative() {
   const [selectedPerson, setSelectedPerson] = useState<any>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { expirationDateTime } = location.state?.expirationDateTime || {};
 
   type FormData = {
     firstName: string;
@@ -267,7 +268,7 @@ export default function FindRelative() {
         {isLoading}
 
         <div className="title">
-          <h1>Find a Relative</h1>
+          <h1>Search and Select a Relative for the Memory Wall</h1>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -285,7 +286,7 @@ export default function FindRelative() {
             </div>
             <div className="form-col">
               <label className="form-label">
-                Ancestor's Last Name (or maiden name)
+                Ancestor's Last Name
                 <span className="form-required"> (Required)</span>
               </label>
               <input
@@ -394,6 +395,7 @@ export default function FindRelative() {
           password={password}
           personId={selectedPerson.id}
           onClose={() => setShowConfirmation(false)}
+          expirationDate={expirationDateTime}
         />
       )}
     </div>

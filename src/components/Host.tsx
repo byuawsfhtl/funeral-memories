@@ -16,7 +16,7 @@ export default function Host() {
     }
 
     // Just navigate, no group created here
-    navigate("/find-relative", {
+    navigate("/setExpirationDate", {
       state: {
         username,
         password,

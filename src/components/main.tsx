@@ -12,29 +12,31 @@ import Host from "./Host";
 import RoleSelect from "./RoleSelect.js";
 import AdminLogin from "./adminLogin";
 import FindRelative from "./find_relative/FindRelative";
+import SetExpireDate from "./setExpireDate";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
-	createRoot(rootElement).render(
-		<React.StrictMode>
-			<Router>
-				<Header />
-				<Routes>
-					<Route path="/" Component={Home} />
-					<Route path="/instructions" Component={Instructions} />
-					<Route path="/confirmation" Component={Confirmation} />
-					<Route path="/wall" Component={Wall} />
-					<Route path="/find-relative" Component={FindRelative} />
-					<Route path="/join" element={<Join />} />
-					<Route path="/host" element={<Host />} />
-					<Route path="/roleSelect" Component={RoleSelect}></Route>
-					<Route path="/admin" Component={AdminLogin}></Route>
-					<Route path="*" Component={Home} />
-				</Routes>
-				<Footer />
-			</Router>
-		</React.StrictMode>
-	);
+  createRoot(rootElement).render(
+    <React.StrictMode>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" Component={Home} />
+          <Route path="/instructions" Component={Instructions} />
+          <Route path="/wall" Component={Wall} />
+          <Route path="/find-relative" Component={FindRelative} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/host" element={<Host />} />
+          <Route path="/roleSelect" Component={RoleSelect}></Route>
+          <Route path="/admin" Component={AdminLogin}></Route>
+          <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
+
+          <Route path="*" Component={Home} />
+        </Routes>
+        <Footer />
+      </Router>
+    </React.StrictMode>
+  );
 } else {
-	console.error("Root element not found");
+  console.error("Root element not found");
 }

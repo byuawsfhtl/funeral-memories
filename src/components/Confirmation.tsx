@@ -11,6 +11,7 @@ type ConfirmationProps = {
   ancestors: any[];
   personId: string;
   onClose: () => void;
+  expirationDate: string;
 };
 
 export default function Confirmation({
@@ -21,6 +22,7 @@ export default function Confirmation({
   ancestors,
   personId,
   onClose,
+  expirationDate,
 }: ConfirmationProps) {
   const navigate = useNavigate();
   const service = new FuneralMemoryService();
@@ -67,7 +69,7 @@ export default function Confirmation({
         portrait: portraitBase64,
         closed: false,
         timestamp: Date.now(),
-        expirationDate: expire,
+        expirationDate: expirationDate,
       };
       const admin = { admin: username, password: password };
 
