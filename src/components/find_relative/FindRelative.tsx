@@ -82,7 +82,7 @@ export default function FindRelative() {
     event.preventDefault();
 
     if (!sessionStorage.getItem("yourKey")) {
-      alert("Missing FamilySearch token");
+      alert("Missing FamilySearch token\nPlease refresh the page.");
       return;
     }
 
