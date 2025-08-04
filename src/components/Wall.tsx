@@ -588,7 +588,10 @@ export default function Wall() {
                     style={{ borderRadius: 8 }}
                   />
                 </div>
-                <small className="mt-3 mb-0" style={{ fontSize: "2rem" }}>
+                <small
+                  className="text-muted mt-3 mb-0"
+                  style={{ fontSize: "1rem" }}
+                >
                   Scan to join this group
                 </small>
                 <button
