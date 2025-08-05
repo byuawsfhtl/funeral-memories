@@ -272,7 +272,7 @@ export default function FindRelative() {
 					<h1>Search and Select a Relative for the Memory Wall</h1>
 				</div>
 
-				<p className="text-danger text-center mb-4">
+				<p className="text-danger text-center mb-1">
 					<strong>
 						Note: Please ensure that the relative has been marked as deceased on
 						Family Search.
