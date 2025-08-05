@@ -10,13 +10,13 @@ export default async function handler(req: any, res: any) {
 
   const expirationDateString = new Date(expirationDate);
 
-  const formattedDate = expirationDate.toLocaleDateString(undefined, {
+  const formattedDate = expirationDateString.toLocaleDateString(undefined, {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
 
-  const formattedTime = expirationDate.toLocaleTimeString(undefined, {
+  const formattedTime = expirationDateString.toLocaleTimeString(undefined, {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
