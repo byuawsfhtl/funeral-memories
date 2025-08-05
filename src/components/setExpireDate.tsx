@@ -27,6 +27,31 @@ export default function SetExpireDate() {
     });
   };
 
+  // Helper to pad numbers
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  // Build datetime string for <input type="datetime-local" />
+  function toDatetimeLocalString(date: Date) {
+    return (
+      date.getFullYear() +
+      "-" +
+      pad(date.getMonth() + 1) +
+      "-" +
+      pad(date.getDate()) +
+      "T" +
+      pad(date.getHours()) +
+      ":" +
+      pad(date.getMinutes())
+    );
+  }
+
+  const now = new Date();
+  const minDateStr = toDatetimeLocalString(now);
+
+  const oneMonthLater = new Date(now);
+  oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+  const maxDateStr = toDatetimeLocalString(oneMonthLater);
+
   return (
     <main
       className="container my-5 d-flex justify-content-center align-items-center flex-column"
@@ -51,6 +76,8 @@ export default function SetExpireDate() {
               value={expirationDateTime}
               onChange={(e) => setExpirationDateTime(e.target.value)}
               required
+              min={minDateStr}
+              max={maxDateStr}
             />
           </div>
           <div className="d-grid mt-4">
