@@ -286,7 +286,10 @@ export default function FindRelative() {
 				<form onSubmit={handleSubmit}>
 					<div className="form-row">
 						<div className="form-col">
-							<label className="form-label">Ancestor's First Name</label>
+							<label className="form-label">
+								Ancestor's First Name
+								<span className="form-optional"> (Optional)</span>
+							</label>
 							<input
 								type="text"
 								name="firstName"
