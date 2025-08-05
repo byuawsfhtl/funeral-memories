@@ -242,7 +242,22 @@ export class FuneralMemoryService {
         body: JSON.stringify({ groupId: newGroupId, ...group }),
       });
       if (!res.ok) throw new Error("Failed to add group");
-      return await res.json();
+      const newGroup = await res.json();
+
+      // Send email after group and admin created:
+      await fetch("/api/send-admin-credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: admin.username, // assuming username is the admin email
+          username: admin.username,
+          password: admin.password,
+          groupId: newGroupId,
+          ancestorName: group.ancestor?.name || "Unknown",
+        }),
+      });
+
+      return newGroup;
     } catch (err) {
       if (err instanceof Error) {
         console.error("Error adding group:", err.message);
