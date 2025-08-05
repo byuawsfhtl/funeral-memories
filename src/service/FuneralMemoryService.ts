@@ -249,8 +249,8 @@ export class FuneralMemoryService {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: admin.username, // assuming username is the admin email
-          username: admin.username,
+          email: admin.admin, // assuming username is the admin email
+          username: admin.admin,
           password: admin.password,
           groupId: newGroupId,
           ancestorName: group.ancestor?.name || "Unknown",
