@@ -72,7 +72,7 @@ export default function SetExpireDate() {
         <p className="text-danger text-center mb-4">
           <strong>
             {" "}
-            Note: The expiration must be within one month from today.
+            Note: The expiration date must be within one month from today.
           </strong>
         </p>
 
