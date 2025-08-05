@@ -18,19 +18,13 @@ export default async function handler(_: any, res: any) {
     const db = client.db(dbName);
 
     const now = new Date();
-    const cutoffDate = new Date(now); // copy current date
-    cutoffDate.setMonth(cutoffDate.getMonth() - 1); // subtract 1 calendar month
-    cutoffDate.setDate(cutoffDate.getDate() - 1); // subtract 1 day
+    const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
-    const cutoff = cutoffDate.getTime();
-    console.log(
-      `🕒 Searching for groups created before ${new Date(cutoff).toISOString()}`
-    );
-
+    // Find groups expiring in the next 2 hours
     const groupsToWarn = await db
       .collection("groups")
       .find({
-        timestamp: { $lte: cutoff },
+        expirationDate: { $gt: now, $lte: twoHoursLater },
         emailSent: { $ne: true },
       })
       .toArray();

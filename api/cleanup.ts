@@ -167,61 +167,53 @@ export default async function handler(
     const cutoff = cutoffDate.getTime(); // timestamp in milliseconds
     //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago for testing
 
-    const allGroups = await getAllGroups();
-    console.log(`📦 Found ${allGroups.length} group(s)`);
+    const db = await connect();
+    const expiredGroups = await db
+      .collection("groups")
+      .find({ expirationDate: { $lte: new Date() } })
+      .toArray();
+    console.log(`📦 Found ${expiredGroups.length} expired group(s)`);
 
-    for (const group of allGroups) {
-      const { groupId, timestamp } = group;
-
+    for (const group of expiredGroups) {
+      const groupId = group.groupId;
       try {
-        console.log(`🔍 Checking group ${groupId} (timestamp: ${timestamp})`);
+        console.log(`⚠️ Deleting expired group ${groupId}`);
 
-        if (timestamp < cutoff) {
-          console.log(`⚠️ Group ${groupId} is older than 5 minutes — deleting`);
-          const db = await connect();
-          console.log("got to getting emails");
+        const adminDoc = await db.collection("admin").findOne({ groupId });
+        const memories = await db
+          .collection("memories")
+          .find({ groupId })
+          .toArray();
+        const personName = group.ancestor?.name || "Your Loved One";
 
-          const adminDoc = await db.collection("admin").findOne({ groupId });
-          const memories = await db
-            .collection("memories")
-            .find({ groupId })
-            .toArray();
-          const fullGroupDoc = await db
-            .collection("groups")
-            .findOne({ groupId });
-          const personName = fullGroupDoc?.ancestor?.name ?? "Your Loved One";
-
-          if (adminDoc?.admin) {
-            try {
-              const pdf = await generateMemoriesPDF(personName, memories);
-              await sendMemoryEmail(adminDoc.admin, pdf, personName);
-              console.log(`📧 Sent PDF to ${adminDoc.admin}`);
-            } catch (err) {
-              console.warn(
-                `⚠️ Failed to email memories to ${adminDoc.admin}:`,
-                err
-              );
-            }
-          }
-
-          const mems = await deleteMemories(groupId);
-          console.log("🗑️ Memories:", mems.message);
-
-          const admin = await deleteAdmin(groupId);
-          console.log("🗑️ Admin:", admin.message);
-
+        if (adminDoc?.admin) {
           try {
-            const sessions = await deleteAdminSessions(groupId);
-            console.log("🗑️ Admin sessions:", sessions.message);
+            const pdf = await generateMemoriesPDF(personName, memories);
+            await sendMemoryEmail(adminDoc.admin, pdf, personName);
+            console.log(`📧 Sent PDF to ${adminDoc.admin}`);
           } catch (err) {
-            console.warn("⚠️ Admin sessions deletion failed (optional):", err);
+            console.warn(
+              `⚠️ Failed to email memories to ${adminDoc.admin}:`,
+              err
+            );
           }
-
-          const grp = await deleteGroup(groupId);
-          console.log("✅ Group:", grp.message);
-        } else {
-          console.log(`⏭️ Group ${groupId} is newer. Skipping.`);
         }
+
+        const mems = await deleteMemories(groupId);
+        console.log("🗑️ Memories:", mems.message);
+
+        const admin = await deleteAdmin(groupId);
+        console.log("🗑️ Admin:", admin.message);
+
+        try {
+          const sessions = await deleteAdminSessions(groupId);
+          console.log("🗑️ Admin sessions:", sessions.message);
+        } catch (err) {
+          console.warn("⚠️ Admin sessions deletion failed (optional):", err);
+        }
+
+        const grp = await deleteGroup(groupId);
+        console.log("✅ Group:", grp.message);
       } catch (err) {
         console.error(`❌ Error processing group ${groupId}:`, err);
       }
