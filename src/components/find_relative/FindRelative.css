@@ -89,6 +89,14 @@
 	gap: 15px;
 }
 
+.results-hint {
+	text-align: center;
+	width: 100%;
+	margin-top: 10px;
+	font-size: 14px;
+	color: gray;
+}
+
 .search-result {
 	cursor: pointer;
 	background-color: #ececec;
