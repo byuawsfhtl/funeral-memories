@@ -67,7 +67,10 @@ export default function SetExpireDate() {
 
         <p className="text-muted text-center mb-4">
           Please enter a date and time for when you want this group to expire.
-          The expiration must be within one month from today.
+        </p>
+
+        <p className="text-danger text-center mb-4">
+          <strong>The expiration must be within one month from today.</strong>
         </p>
 
         {error && (
