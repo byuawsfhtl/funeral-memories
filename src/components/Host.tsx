@@ -38,8 +38,7 @@ export default function Host() {
 				</h1>
 
 				<p className="text-muted text-center mb-4">
-					Enter your email and password to create a group and continue to select
-					a relative.
+					Enter your email and password to create a group
 				</p>
 
 				<p className="text-danger text-center mb-4">
@@ -94,7 +93,7 @@ export default function Host() {
 							onMouseEnter={() => setHostHover(true)}
 							onMouseLeave={() => setHostHover(false)}
 						>
-							Continue to Select Relative
+							Continue
 						</button>
 					</div>
 				</form>
