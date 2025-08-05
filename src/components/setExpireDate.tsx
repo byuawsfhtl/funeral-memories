@@ -64,10 +64,12 @@ export default function SetExpireDate() {
         >
           Set Group Expiration Date
         </h2>
-        <p>
+
+        <p className="text-muted text-center mb-4">
           Please enter a date and time for when you want this group to expire.
           The expiration must be within one month from today.
         </p>
+
         {error && (
           <div className="alert alert-danger text-center py-2">{error}</div>
         )}
