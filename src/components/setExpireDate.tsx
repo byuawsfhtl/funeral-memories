@@ -62,8 +62,12 @@ export default function SetExpireDate() {
           className="text-center mb-4"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
         >
-          Set Group Expiration
+          Set Group Expiration Date
         </h2>
+        <p>
+          Please enter a date and time for when you want this group to expire.
+          The expiration must be within one month from today.
+        </p>
         {error && (
           <div className="alert alert-danger text-center py-2">{error}</div>
         )}
