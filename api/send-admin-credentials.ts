@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req: any, res: any) {
-  const { email, username, password, groupId, ancestorName } = req.body;
+  const { email, username, password, groupId, ancestorName, expirationDate } =
+    req.body;
 
   if (!email || !username || !password || !groupId) {
     return res.status(400).json({ error: "Missing fields" });
@@ -22,7 +23,7 @@ export default async function handler(req: any, res: any) {
       subject: `Your Funeral Memories Group Credentials`,
       text: `Hello,
 
-Your Funeral Memories group has been created for ancestor "${ancestorName}".
+Your Funeral Memories group has been created for "${ancestorName}".
 
 Here are your access details:
 
@@ -30,10 +31,31 @@ Group ID: ${groupId}
 Username: ${username}
 Password: ${password}
 
+Your group and corresponding Memory Wall and memories will expire on ${expirationDate}. Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.
+
 Please keep this information safe.
 
 Thank you,
 Funeral Memories Team`,
+      html: `
+    <p>Hello,</p>
+
+    <p>Your Funeral Memories group has been created for "<strong>${ancestorName}</strong>".</p>
+
+    <p>Here are your access details:</p>
+
+    <ul>
+      <li><strong>Group ID:</strong> ${groupId}</li>
+      <li><strong>Username:</strong> ${username}</li>
+      <li><strong>Password:</strong> ${password}</li>
+    </ul>
+
+    <p><strong>Your group and corresponding Memory Wall and memories will expire on ${expirationDate}.</strong> Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.</p>
+
+    <p>Please keep this information safe.</p>
+
+    <p>Thank you,<br/>Funeral Memories Team</p>
+  `,
     };
 
     await transporter.sendMail(mailOptions);

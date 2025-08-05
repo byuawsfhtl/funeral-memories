@@ -254,6 +254,7 @@ export class FuneralMemoryService {
           password: admin.password,
           groupId: newGroupId,
           ancestorName: group.ancestor?.name || "Unknown",
+          expirationDate: group.expirationDate,
         }),
       });
 
