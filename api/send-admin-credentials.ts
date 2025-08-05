@@ -8,6 +8,17 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
+  const expirationDateObj = new Date(expirationDate);
+  const formattedExpirationDate = expirationDateObj.toLocaleString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // or false for 24-hour time
+    timeZoneName: "short", // optional, shows timezone like MDT
+  });
+
   try {
     const transporter = nodemailer.createTransport({
       service: "Gmail",
@@ -31,7 +42,7 @@ Group ID: ${groupId}
 Username: ${username}
 Password: ${password}
 
-Your group and corresponding Memory Wall and memories will expire on ${expirationDate}. Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.
+Your group and corresponding Memory Wall and memories will expire on ${formattedExpirationDate}. Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.
 
 Please keep this information safe.
 
@@ -50,7 +61,7 @@ Funeral Memories Team`,
       <li><strong>Password:</strong> ${password}</li>
     </ul>
 
-    <p><strong>Your group and corresponding Memory Wall and memories will expire on ${expirationDate}.</strong> Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.</p>
+    <p><strong>Your group and corresponding Memory Wall and memories will expire on ${formattedExpirationDate}. Please make sure to publish your memories to FamilySearch or export them to a PDF before this time.</strong></p>
 
     <p>Please keep this information safe.</p>
 
