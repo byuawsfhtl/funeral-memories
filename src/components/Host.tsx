@@ -38,7 +38,7 @@ export default function Host() {
 				</h1>
 
 				<p className="text-muted text-center mb-4">
-					Enter your email and password to create a group
+					Enter your email and password to create a group.
 				</p>
 
 				<p className="text-danger text-center mb-4">
