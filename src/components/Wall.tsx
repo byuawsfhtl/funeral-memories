@@ -74,6 +74,7 @@ function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
 }
 
 interface MemErrors {
+  author: string;
   title: string;
   memory: string;
 }
@@ -320,10 +321,11 @@ export default function Wall() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    let newErrors: MemErrors = { title: "", memory: "" };
+    let newErrors: MemErrors = { author: "", title: "", memory: "" };
+    if (!author.trim()) newErrors.author = "Your name is required.";
     if (!title.trim()) newErrors.title = "Title is required.";
     if (!memory.trim()) newErrors.memory = "Story is required.";
-    if (newErrors.title || newErrors.memory) {
+    if (newErrors.author || newErrors.title || newErrors.memory) {
       setErrors(newErrors);
       setIsSubmitting(false);
       return;
@@ -756,7 +758,10 @@ export default function Wall() {
 
               {/* Form Fields */}
               <div className="mb-3">
-                <label className="form-label">Your Name</label>
+                <label className="form-label">
+                  Your Name
+                  <span className="text-danger small">* (required)</span>
+                </label>
                 <input
                   type="text"
                   className="form-control"
