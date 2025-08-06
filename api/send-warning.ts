@@ -18,23 +18,58 @@ export default async function handler(_: any, res: any) {
     const db = client.db(dbName);
 
     const now = new Date();
-    const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const oneHourLater = new Date(now.getTime() + 1 * 60 * 60 * 1000);
     const nowIso = now.toISOString();
-    const twoHoursLaterIso = twoHoursLater.toISOString();
-    console.log(twoHoursLater);
+    const oneHourLaterIso = oneHourLater.toISOString();
+    console.log(oneHourLater);
 
-    // Find groups expiring in the next 2 hours
-    const groupsToWarn = await db
+    const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+    const groupsToWarnOne = await db
       .collection("groups")
       .find({
-        expirationDate: { $gt: nowIso, $lte: twoHoursLaterIso },
-        emailSent: { $ne: true },
+        $expr: {
+          $gt: [
+            {
+              $subtract: [
+                { $toLong: { $toDate: "$expirationDate" } }, // convert expirationDate string to Date, then to long ms
+                "$timestamp", // timestamp already number, use directly
+              ],
+            },
+            ONE_WEEK_MS,
+          ],
+        },
       })
       .toArray();
 
-    console.log(`📦 Found ${groupsToWarn.length} group(s) to warn`);
+    console.log(
+      `📦 Found ${groupsToWarnOne.length} group(s) where expiration - timestamp is more than a week.`
+    );
 
-    for (const group of groupsToWarn) {
+    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+    const groupsToWarnTwo = await db
+      .collection("groups")
+      .find({
+        $expr: {
+          $gt: [
+            {
+              $subtract: [
+                { $toLong: { $toDate: "$expirationDate" } }, // convert expirationDate string to Date, then to long ms
+                "$timestamp", // timestamp already number, use directly
+              ],
+            },
+            ONE_DAY_MS,
+          ],
+        },
+      })
+      .toArray();
+
+    console.log(
+      `📦 Found ${groupsToWarnTwo.length} group(s) where expiration - timestamp is more than a day.`
+    );
+
+    for (const group of groupsToWarnTwo) {
       const groupId = group.groupId;
       const groupPerson = group.ancestor;
       const groupPersonName = groupPerson.name;
@@ -49,7 +84,54 @@ export default async function handler(_: any, res: any) {
       }
 
       console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
-      await sendEmail(email, groupId, groupPersonName, db);
+      await sendEmail(email, groupId, groupPersonName, db, "2");
+    }
+
+    for (const group of groupsToWarnOne) {
+      const groupId = group.groupId;
+      const groupPerson = group.ancestor;
+      const groupPersonName = groupPerson.name;
+      console.log(`🔍 Looking up admin for groupId: ${groupId}`);
+
+      const admin = await db.collection("admin").findOne({ groupId });
+      const email = admin?.admin;
+
+      if (!email) {
+        console.warn(`⚠️ No admin email found for groupId: ${groupId}`);
+        continue;
+      }
+
+      console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
+      await sendEmail(email, groupId, groupPersonName, db, "1");
+    }
+
+    // Find groups expiring in the next 2 hours
+    const groupsToWarnThree = await db
+      .collection("groups")
+      .find({
+        expirationDate: { $gt: nowIso, $lte: oneHourLaterIso },
+        emailSent: { $ne: true },
+      })
+      .toArray();
+
+    console.log(`📦 Found ${groupsToWarnThree.length} group(s) to warn`);
+
+    for (const group of groupsToWarnThree) {
+      const groupId = group.groupId;
+      const groupPerson = group.ancestor;
+      const groupPersonName = groupPerson.name;
+      console.log(`🔍 Looking up admin for groupId: ${groupId}`);
+
+      const admin = await db.collection("admin").findOne({ groupId });
+      const email = admin?.admin;
+
+      if (!email) {
+        console.warn(`⚠️ No admin email found for groupId: ${groupId}`);
+        continue;
+      }
+
+      console.log(`📧 Sending email to ${email} for groupId: ${groupId}`);
+      await sendEmail(email, groupId, groupPersonName, db, "3");
     }
 
     console.log("✅ All warning emails processed");
@@ -68,8 +150,17 @@ async function sendEmail(
   to: string,
   groupId: string,
   groupPersonName: string,
-  db: Db
+  db: Db,
+  numberEmailSent: string
 ) {
+  var timeExpiration = "0";
+  if (numberEmailSent == "1") {
+    timeExpiration = "one week";
+  } else if (numberEmailSent == "2") {
+    timeExpiration = "one day";
+  } else if (numberEmailSent == "3") {
+    timeExpiration = "one hour";
+  }
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -84,9 +175,9 @@ async function sendEmail(
     subject: `⏳ Your Funeral Memories group "${groupId}" will be deleted soon!`,
     text: `Hi,
 
-This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in two hours.
+This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in "${timeExpiration}".
 
-If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so today.
+If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so before it expires.
 
 Thank you,
 The Funeral Memories Team`,
