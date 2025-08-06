@@ -28,6 +28,7 @@ export default async function handler(_: any, res: any) {
     const groupsToWarnOne = await db
       .collection("groups")
       .find({
+        emailSentOne: { $ne: true },
         $expr: {
           $gt: [
             {
@@ -51,6 +52,7 @@ export default async function handler(_: any, res: any) {
     const groupsToWarnTwo = await db
       .collection("groups")
       .find({
+        emailSentTwo: { $ne: true },
         $expr: {
           $gt: [
             {
@@ -110,7 +112,7 @@ export default async function handler(_: any, res: any) {
       .collection("groups")
       .find({
         expirationDate: { $gt: nowIso, $lte: oneHourLaterIso },
-        emailSent: { $ne: true },
+        emailSentThree: { $ne: true },
       })
       .toArray();
 
@@ -153,13 +155,17 @@ async function sendEmail(
   db: Db,
   numberEmailSent: string
 ) {
-  var timeExpiration = "0";
+  let timeExpiration = "0";
+  let emailFlagField = "";
   if (numberEmailSent == "1") {
     timeExpiration = "one week";
+    numberEmailSent = "emailSentOne";
   } else if (numberEmailSent == "2") {
     timeExpiration = "one day";
+    numberEmailSent = "emailSentTwo";
   } else if (numberEmailSent == "3") {
     timeExpiration = "one hour";
+    numberEmailSent = "emailSentThree";
   }
   const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -175,7 +181,7 @@ async function sendEmail(
     subject: `⏳ Your Funeral Memories group "${groupId}" will be deleted soon!`,
     text: `Hi,
 
-This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in "${timeExpiration}".
+This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in ${timeExpiration}.
 
 If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so before it expires.
 
@@ -187,5 +193,5 @@ The Funeral Memories Team`,
   console.log(`✅ Email sent to ${to} for group ${groupId}`);
   await db
     .collection("groups")
-    .updateOne({ groupId }, { $set: { emailSent: true } });
+    .updateOne({ groupId }, { $set: { [emailFlagField]: true } });
 }
