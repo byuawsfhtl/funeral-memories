@@ -51,6 +51,7 @@ export default function SetExpireDate() {
   console.log(minDateStr);
 
   const oneMonthLater = new Date(now);
+  oneMonthLater.setHours(23, 59, 59, 999); // 11:59:59.999 PM
   oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
   const maxDateStr = toDatetimeLocalString(oneMonthLater);
 
@@ -74,7 +75,8 @@ export default function SetExpireDate() {
         <p className="text-danger text-center mb-4">
           <strong>
             {" "}
-            Note: The expiration date must be within one month from today.
+            Note: The expiration date must be within one month from today and a
+            minimum of 2 hours from the current time.
           </strong>
         </p>
 
