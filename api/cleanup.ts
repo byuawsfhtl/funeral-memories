@@ -168,9 +168,10 @@ export default async function handler(
     //const cutoff = Date.now() - 5 * 60 * 1000; // 5 minutes ago for testing
 
     const db = await connect();
+    const nowIso = new Date().toISOString();
     const expiredGroups = await db
       .collection("groups")
-      .find({ expirationDate: { $lte: new Date() } })
+      .find({ expirationDate: { $lte: nowIso } })
       .toArray();
     console.log(`📦 Found ${expiredGroups.length} expired group(s)`);
 

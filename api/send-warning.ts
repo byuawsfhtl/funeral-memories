@@ -19,12 +19,15 @@ export default async function handler(_: any, res: any) {
 
     const now = new Date();
     const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const nowIso = now.toISOString();
+    const twoHoursLaterIso = twoHoursLater.toISOString();
+    console.log(twoHoursLater);
 
     // Find groups expiring in the next 2 hours
     const groupsToWarn = await db
       .collection("groups")
       .find({
-        expirationDate: { $gt: now, $lte: twoHoursLater },
+        expirationDate: { $gt: nowIso, $lte: twoHoursLaterIso },
         emailSent: { $ne: true },
       })
       .toArray();

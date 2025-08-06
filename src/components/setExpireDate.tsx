@@ -46,7 +46,8 @@ export default function SetExpireDate() {
   }
 
   const now = new Date();
-  const minDateStr = toDatetimeLocalString(now);
+  const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+  const minDateStr = toDatetimeLocalString(twoHoursLater);
 
   const oneMonthLater = new Date(now);
   oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
