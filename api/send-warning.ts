@@ -81,10 +81,10 @@ async function sendEmail(
   const mailOptions = {
     from: `"Funeral Memories" <${process.env.EMAIL_USER}>`,
     to,
-    subject: `⏳ Your Funeral Memories group "${groupId}" will be deleted tomorrow`,
+    subject: `⏳ Your Funeral Memories group "${groupId}" will be deleted soon!`,
     text: `Hi,
 
-This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted tomorrow, 14 days after creation.
+This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in two hours.
 
 If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so today.
 
