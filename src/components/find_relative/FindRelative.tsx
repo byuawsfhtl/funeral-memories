@@ -7,6 +7,7 @@ import { FuneralMemoryService } from "../../service/FuneralMemoryService";
 import Confirmation from "../Confirmation";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { ProgressBar } from "react-step-progress-bar";
 
 export default function FindRelative() {
   const location = useLocation();
@@ -273,15 +274,9 @@ export default function FindRelative() {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
             {" "}
-            <CircularProgressbar
-              value={percentage}
-              text={`${percentage}% complete`}
-              styles={buildStyles({
-                pathColor: "#007bff", // Bootstrap primary blue
-                textColor: "#007bff", // If you want the percentage text to match
-                trailColor: "#e6e6e6",
-                backgroundColor: "#fff",
-              })}
+            <ProgressBar
+              percent={75}
+              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
             />{" "}
           </div>
         </div>

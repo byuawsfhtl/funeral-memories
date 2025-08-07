@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { ProgressBar } from "react-step-progress-bar";
 import "react-circular-progressbar/dist/styles.css";
 
 export default function Host() {
@@ -36,15 +37,9 @@ export default function Host() {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
             {" "}
-            <CircularProgressbar
-              value={percentage}
-              text={`${percentage}%\ncomplete`}
-              styles={buildStyles({
-                pathColor: "#007bff", // Bootstrap primary blue
-                textColor: "#007bff", // If you want the percentage text to match
-                trailColor: "#e6e6e6",
-                backgroundColor: "#fff",
-              })}
+            <ProgressBar
+              percent={25}
+              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
             />{" "}
           </div>
         </div>
