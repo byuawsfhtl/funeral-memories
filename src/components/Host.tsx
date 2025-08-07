@@ -33,7 +33,9 @@ export default function Host() {
       style={{ minHeight: "100vh", padding: "2rem" }}
     >
       <div style={{ width: "100%", maxWidth: "500px" }}>
-        <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        <div style={{ width: 200, height: 200 }}>
+          <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        </div>{" "}
         <h1
           className="text-center mb-3"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}

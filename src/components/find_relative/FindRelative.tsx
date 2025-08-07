@@ -270,7 +270,9 @@ export default function FindRelative() {
     <div>
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
-        <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        <div style={{ width: 200, height: 200 }}>
+          <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        </div>{" "}
         <div className="title">
           <h1>Search and Select a Relative for the Memory Wall</h1>
         </div>

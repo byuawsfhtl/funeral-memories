@@ -64,7 +64,10 @@ export default function SetExpireDate() {
       style={{ minHeight: "80vh" }}
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
-        <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        <div style={{ width: 200, height: 200 }}>
+          <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+        </div>
+
         <h2
           className="text-center mb-4"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
