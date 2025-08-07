@@ -38,7 +38,7 @@ export default function Host() {
             {" "}
             <CircularProgressbar
               value={percentage}
-              text={`${percentage}% complete`}
+              text={`${percentage}%\ncomplete`}
               styles={buildStyles({
                 pathColor: "#007bff", // Bootstrap primary blue
                 textColor: "#007bff", // If you want the percentage text to match
