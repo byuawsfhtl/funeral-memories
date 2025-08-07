@@ -271,7 +271,7 @@ export default function FindRelative() {
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ paddingBottom: "50px", width: 100, height: 100 }}>
+          <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
             {" "}
             <CircularProgressbar value={percentage} text={`${percentage}%`} />
           </div>
