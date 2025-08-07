@@ -159,13 +159,13 @@ async function sendEmail(
   let emailFlagField = "";
   if (numberEmailSent == "1") {
     timeExpiration = "one week";
-    numberEmailSent = "emailSentOne";
+    emailFlagField = "emailSentOne";
   } else if (numberEmailSent == "2") {
     timeExpiration = "one day";
-    numberEmailSent = "emailSentTwo";
+    emailFlagField = "emailSentTwo";
   } else if (numberEmailSent == "3") {
     timeExpiration = "one hour";
-    numberEmailSent = "emailSentThree";
+    emailFlagField = "emailSentThree";
   }
   const transporter = nodemailer.createTransport({
     service: "Gmail",
