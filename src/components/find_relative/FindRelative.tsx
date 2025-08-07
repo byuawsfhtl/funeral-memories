@@ -269,12 +269,12 @@ export default function FindRelative() {
 				<div
 					className="progress-bar"
 					role="progressbar"
-					style={{ width: "50%" }}
-					aria-valuenow={50}
+					style={{ width: "75%" }}
+					aria-valuenow={75}
 					aria-valuemin={0}
 					aria-valuemax={100}
 				>
-					50%
+					75%
 				</div>
 			</div>
 
