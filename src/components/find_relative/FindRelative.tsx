@@ -275,7 +275,7 @@ export default function FindRelative() {
             {" "}
             <CircularProgressbar
               value={percentage}
-              text={`${percentage}%`}
+              text={`${percentage}% complete`}
               styles={buildStyles({
                 pathColor: "#007bff", // Bootstrap primary blue
                 textColor: "#007bff", // If you want the percentage text to match
