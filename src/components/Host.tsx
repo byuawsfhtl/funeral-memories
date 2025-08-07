@@ -38,9 +38,10 @@ export default function Host() {
           <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
             {" "}
             <ProgressBar
-              percent={25}
+              percent={percentage}
               filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-            />{" "}
+              text={`${percentage}%`} // This shows the percent text inside the progress bar
+            />
           </div>
         </div>
         <h1
