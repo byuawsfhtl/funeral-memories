@@ -65,8 +65,9 @@ export default function SetExpireDate() {
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ width: 100, height: 100 }}>
-            <CircularProgressbar value={percentage} text={`${percentage}%`} />;
+          <div style={{ paddingBottom: "15px", width: 100, height: 100 }}>
+            {" "}
+            <CircularProgressbar value={percentage} text={`${percentage}%`} />
           </div>
         </div>
 
