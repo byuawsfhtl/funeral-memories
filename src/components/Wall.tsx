@@ -765,7 +765,7 @@ export default function Wall() {
 								<input
 									type="text"
 									className={`form-control ${
-										errors && errors.title ? "is-invalid" : ""
+										errors && errors.author ? "is-invalid" : ""
 									}`}
 									placeholder="Enter your full name"
 									value={author}
