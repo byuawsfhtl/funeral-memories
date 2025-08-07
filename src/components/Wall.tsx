@@ -771,6 +771,9 @@ export default function Wall() {
 									value={author}
 									onChange={(e) => setAuthor(e.target.value)}
 								/>
+								{errors && errors.title && (
+									<div className="invalid-feedback">{errors.author}</div>
+								)}
 							</div>
 
 							<div className="mb-3">
