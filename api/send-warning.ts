@@ -183,7 +183,7 @@ async function sendEmail(
 
 This is a friendly reminder that your Funeral Memories group "${groupId}" for "${groupPersonName}" is scheduled to be deleted in ${timeExpiration}.
 
-If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please got to funeral-memories.fhtl.org and do so before it expires.
+If you would like to publish it to FamilySearch and/or export all the memories as a PDF, please go to funeral-memories.fhtl.org and do so before it expires.
 
 Thank you,
 The Funeral Memories Team`,
