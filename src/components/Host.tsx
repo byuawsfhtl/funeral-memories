@@ -28,7 +28,10 @@ export default function Host() {
   };
 
   return (
-    <main className="d-flex flex-grow-1 justify-content-center align-items-center flex-column">
+    <main
+      className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
+      style={{ padding: "2rem" }}
+    >
       <div style={{ width: "100%", maxWidth: "500px" }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
