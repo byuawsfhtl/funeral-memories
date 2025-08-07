@@ -34,7 +34,10 @@ export default function Host() {
       style={{ padding: "2rem" }}
     >
       <div style={{ width: "100%", maxWidth: "500px" }}>
-        <small className="text-muted align-items-center">
+        <small
+          className="text-muted align-items-center"
+          style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
+        >
           Progress toward creating your memory wall
         </small>
         <div style={{ display: "flex", justifyContent: "center" }}>
