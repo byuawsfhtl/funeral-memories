@@ -35,7 +35,7 @@ export default function Host() {
     >
       <div style={{ width: "100%", maxWidth: "500px" }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ marginBottom: "0px", width: 500, height: 500 }}>
+          <div style={{ marginBottom: "0px", width: 500, height: 20 }}>
             {" "}
             <ProgressBar
               percent={percentage}
