@@ -34,8 +34,11 @@ export default function Host() {
       style={{ padding: "2rem" }}
     >
       <div style={{ width: "100%", maxWidth: "500px" }}>
+        <small className="text-muted">
+          Progress toward creating your memory wall
+        </small>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ marginBottom: "0px", width: 500, height: 20 }}>
+          <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
             {" "}
             <ProgressBar
               percent={percentage}
