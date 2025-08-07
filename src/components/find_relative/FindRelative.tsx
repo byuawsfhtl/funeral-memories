@@ -265,19 +265,6 @@ export default function FindRelative() {
 
 	return (
 		<div>
-			<div className="progress mb-3">
-				<div
-					className="progress-bar"
-					role="progressbar"
-					style={{ width: "75%" }}
-					aria-valuenow={75}
-					aria-valuemin={0}
-					aria-valuemax={100}
-				>
-					75%
-				</div>
-			</div>
-
 			<div className={`container ${isLoading ? "loading" : ""}`}>
 				{isLoading}
 

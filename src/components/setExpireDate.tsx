@@ -60,19 +60,6 @@ export default function SetExpireDate() {
 			className="container my-5 d-flex justify-content-center align-items-center flex-column"
 			style={{ minHeight: "80vh" }}
 		>
-			<div className="progress mb-3">
-				<div
-					className="progress-bar"
-					role="progressbar"
-					style={{ width: "50%" }}
-					aria-valuenow={50}
-					aria-valuemin={0}
-					aria-valuemax={100}
-				>
-					50%
-				</div>
-			</div>
-
 			<div className="w-100" style={{ maxWidth: 400 }}>
 				<h2
 					className="text-center mb-4"

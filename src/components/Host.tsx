@@ -29,18 +29,6 @@ export default function Host() {
 			className="d-flex justify-content-center align-items-center flex-column"
 			style={{ minHeight: "100vh", padding: "2rem" }}
 		>
-			<div className="progress mb-3">
-				<div
-					className="progress-bar"
-					role="progressbar"
-					style={{ width: "25%" }}
-					aria-valuenow={25}
-					aria-valuemin={0}
-					aria-valuemax={100}
-				>
-					25%
-				</div>
-			</div>
 			<div style={{ width: "100%", maxWidth: "500px" }}>
 				<h1
 					className="text-center mb-3"
