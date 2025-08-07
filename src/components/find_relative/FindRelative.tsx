@@ -5,7 +5,7 @@ import FsService from "./FsService";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../../service/FuneralMemoryService";
 import Confirmation from "../Confirmation";
-import { CircularProgressbar } from "react-circular-progressbar";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 export default function FindRelative() {
@@ -273,7 +273,16 @@ export default function FindRelative() {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
             {" "}
-            <CircularProgressbar value={percentage} text={`${percentage}%`} />
+            <CircularProgressbar
+              value={percentage}
+              text={`${percentage}%`}
+              styles={buildStyles({
+                pathColor: "#007bff", // Bootstrap primary blue
+                textColor: "#007bff", // If you want the percentage text to match
+                trailColor: "#e6e6e6",
+                backgroundColor: "#fff",
+              })}
+            />{" "}
           </div>
         </div>
 
