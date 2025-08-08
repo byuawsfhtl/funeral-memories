@@ -15,12 +15,12 @@ export default function Home() {
 				Welcome to Funeral Memories!
 			</h1>
 
-			<div className="d-grid mb-4 pt-3">
-				<a href="/instructions" className="btn btn-primary">
-					Click here if you're new! (Instructions)
-				</a>
-			</div>
 			<div className="row w-100" style={{ maxWidth: "800px" }}>
+				<div className="d-grid mb-4 pt-3">
+					<a href="/instructions" className="btn btn-primary">
+						Click here if you're new! (Instructions)
+					</a>
+				</div>
 				<div className="col-12 col-md-6 mb-3 mb-md-0">
 					<button
 						className="btn btn-primary w-100"
