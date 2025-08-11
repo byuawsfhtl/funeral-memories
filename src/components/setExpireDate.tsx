@@ -68,7 +68,7 @@ export default function SetExpireDate() {
         flexDirection: "column", // stack elements vertically
         alignItems: "center", // horizontal center
         justifyContent: "center", // vertical center
-        minHeight: "100vh", // fill the viewport height
+        height: "100vh", // fill the viewport height
         // remove top/bottom margins
       }}
     >
