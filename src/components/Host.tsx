@@ -99,6 +99,7 @@ export default function Host() {
               id="confirmUsername"
               name="confirmUsername"
               className="form-control"
+              autoComplete="off"
               placeholder="Enter your email again to confirm"
               value={confirmUsername}
               onChange={(e) => setConfirmUsername(e.target.value)}
