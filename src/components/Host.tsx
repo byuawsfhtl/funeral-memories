@@ -26,6 +26,7 @@ export default function Host() {
 
     if (username != confirmUsername) {
       alert("Email's do not match");
+      return;
     }
 
     // Just navigate, no group created here
