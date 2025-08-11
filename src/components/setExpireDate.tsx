@@ -61,10 +61,7 @@ export default function SetExpireDate() {
   const maxDateStr = toDatetimeLocalString(oneMonthLater);
 
   return (
-    <main
-      className="container my-5 d-flex justify-content-center align-items-center flex-column"
-      style={{ minHeight: "80vh" }}
-    >
+    <main className="container my-5 d-flex justify-content-center align-items-center flex-column">
       <div className="w-100" style={{ maxWidth: 400 }}>
         <small
           className="text-muted align-items-center"
