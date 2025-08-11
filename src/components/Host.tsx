@@ -97,7 +97,7 @@ export default function Host() {
               id="username"
               className="form-control"
               placeholder="Enter your email again to confirm"
-              value={username}
+              value={confirmUsername}
               onChange={(e) => setConfirmUsername(e.target.value)}
               required
             />
