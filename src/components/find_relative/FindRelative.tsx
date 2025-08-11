@@ -278,7 +278,13 @@ export default function FindRelative() {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center", // center horizontally
+      }}
+    >
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
 
