@@ -88,46 +88,49 @@ export default function SetExpireDate() {
               text={`${percentage}%`} // This shows the percent text inside the progress bar
             />
           </div>
-        </div>
 
-        <h2
-          className="text-center mb-4"
-          style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-        >
-          Set Group Expiration Date
-        </h2>
-        <p className="text-muted text-center mb-4">
-          Please enter a date and time for when you want this group to expire.
-        </p>
-        <p className="text-danger text-center mb-4">
-          <strong>
-            {" "}
-            Note: The expiration date must be within one month from today and a
-            minimum of 2 hours from the current time.
-          </strong>
-        </p>
-        {error && (
-          <div className="alert alert-danger text-center py-2">{error}</div>
-        )}
-        <form onSubmit={handleSetExpiration}>
-          <div className="mb-3">
-            <label className="form-label"> Group Expiration Date & Time</label>
-            <input
-              type="datetime-local"
-              className="form-control"
-              value={expirationDateTime}
-              onChange={(e) => setExpirationDateTime(e.target.value)}
-              required
-              min={minDateStr}
-              max={maxDateStr}
-            />
-          </div>
-          <div className="d-grid mt-4">
-            <button type="submit" className="btn btn-primary">
-              Set Expiration & Continue
-            </button>
-          </div>
-        </form>
+          <h2
+            className="text-center mb-4"
+            style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
+          >
+            Set Group Expiration Date
+          </h2>
+          <p className="text-muted text-center mb-4">
+            Please enter a date and time for when you want this group to expire.
+          </p>
+          <p className="text-danger text-center mb-4">
+            <strong>
+              {" "}
+              Note: The expiration date must be within one month from today and
+              a minimum of 2 hours from the current time.
+            </strong>
+          </p>
+          {error && (
+            <div className="alert alert-danger text-center py-2">{error}</div>
+          )}
+          <form onSubmit={handleSetExpiration}>
+            <div className="mb-3">
+              <label className="form-label">
+                {" "}
+                Group Expiration Date & Time
+              </label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                value={expirationDateTime}
+                onChange={(e) => setExpirationDateTime(e.target.value)}
+                required
+                min={minDateStr}
+                max={maxDateStr}
+              />
+            </div>
+            <div className="d-grid mt-4">
+              <button type="submit" className="btn btn-primary">
+                Set Expiration & Continue
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </main>
   );
