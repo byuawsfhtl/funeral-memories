@@ -82,6 +82,7 @@ export default function Host() {
             <input
               type="email"
               id="username"
+              name="username"
               className="form-control"
               placeholder="Enter your email"
               value={username}
@@ -94,8 +95,9 @@ export default function Host() {
               Confirm Email<span className="text-danger">*</span>
             </label>
             <input
-              type="confirmEmail"
+              type="email"
               id="confirmUsername"
+              name="confirmUsername"
               className="form-control"
               placeholder="Enter your email again to confirm"
               value={confirmUsername}
