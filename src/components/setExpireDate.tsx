@@ -71,16 +71,7 @@ export default function SetExpireDate() {
         maxHeight: "100vh", // center horizontallH
       }} // optional padding
     >
-      <div
-        className="w-100"
-        style={{
-          maxWidth: 400,
-          display: "flex",
-          flexDirection: "column", // keep label above bar
-          alignItems: "center", // horizontal center
-          justifyContent: "center",
-        }}
-      >
+      <div className="w-100" style={{ maxWidth: 400 }}>
         <small
           className="text-muted align-items-center"
           style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
