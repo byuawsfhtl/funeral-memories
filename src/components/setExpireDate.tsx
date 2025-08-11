@@ -66,10 +66,9 @@ export default function SetExpireDate() {
         minHeight: "100vh",
         height: "100vh",
         display: "flex",
-        justifyContent: "flex -start", // center vertically
+        justifyContent: "center", // center vertically
         alignItems: "center", // center horizontally
         transform: "translateY(-20%)",
-        paddingTop: "80px",
       }}
     >
       <div style={{ width: "100%", maxWidth: 400 }}>
