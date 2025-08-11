@@ -282,15 +282,24 @@ export default function FindRelative() {
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
 
-        <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
-          <ProgressBar
-            percent={percentage}
-            filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-            text={`${percentage}%`}
-          />
-        </div>
-
         <div className="title">
+          <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
+            <small
+              className="text-muted align-items-center"
+              style={{
+                display: "block",
+                textAlign: "center",
+                marginBottom: "8px",
+              }}
+            >
+              Progress toward creating your memory wall
+            </small>
+            <ProgressBar
+              percent={percentage}
+              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+              text={`${percentage}%`}
+            />
+          </div>
           <h1>Search and Select a Relative for the Memory Wall</h1>
         </div>
         <p className="text-danger text-center mb-1">
