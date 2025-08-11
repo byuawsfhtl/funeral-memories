@@ -69,7 +69,7 @@ export default function SetExpireDate() {
         alignItems: "center", // horizontal center
         justifyContent: "center", // vertical center
         minHeight: "100vh", // fill the viewport height
-        margin: 0, // remove top/bottom margins
+        // remove top/bottom margins
       }}
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
