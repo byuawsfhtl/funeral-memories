@@ -293,6 +293,16 @@ export default function FindRelative() {
           <div
             style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}
           >
+            <small
+              className="text-muted align-items-center"
+              style={{
+                display: "block",
+                textAlign: "center",
+                marginBottom: "8px",
+              }}
+            >
+              Progress toward creating your memory wall
+            </small>
             <ProgressBar
               percent={percentage}
               filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
