@@ -62,75 +62,66 @@ export default function SetExpireDate() {
 
   return (
     <main
-      className="container d-flex justify-content-center align-items-center flex-column"
       style={{
+        minHeight: "100vh",
+        height: "100vh",
         display: "flex",
-        flexDirection: "column", // stack elements vertically
-        alignItems: "center", // horizontal center
-        justifyContent: "space-around", // vertical center
-        maxHeight: "100vh", // fill the viewport height
-        // remove top/bottom margins
+        justifyContent: "center", // center vertically
+        alignItems: "center", // center horizontally
       }}
     >
-      <div className="w-100" style={{ maxWidth: 400 }}>
+      <div style={{ width: "100%", maxWidth: 400 }}>
+        {/* ALL OF THE FOLLOWING GOES INSIDE THIS DIV: */}
         <small
-          className="text-muted align-items-center"
+          className="text-muted"
           style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
         >
           Progress toward creating your memory wall
         </small>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ marginBottom: "10px", width: "100%", height: 20 }}>
-            {" "}
-            <ProgressBar
-              percent={percentage}
-              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-              text={`${percentage}%`} // This shows the percent text inside the progress bar
+        <div style={{ marginBottom: "16px", width: "100%", height: 20 }}>
+          <ProgressBar
+            percent={percentage}
+            filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+            text={`${percentage}%`}
+          />
+        </div>
+        <h2
+          className="text-center mb-3"
+          style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
+        >
+          Set Group Expiration Date
+        </h2>
+        <p className="text-muted text-center mb-2">
+          Please enter a date and time for when you want this group to expire.
+        </p>
+        <p className="text-danger text-center mb-2">
+          <strong>
+            Note: The expiration date must be within one month from today and a
+            minimum of 2 hours from the current time.
+          </strong>
+        </p>
+        {error && (
+          <div className="alert alert-danger text-center py-2">{error}</div>
+        )}
+        <form onSubmit={handleSetExpiration}>
+          <div className="mb-3">
+            <label className="form-label"> Group Expiration Date & Time</label>
+            <input
+              type="datetime-local"
+              className="form-control"
+              value={expirationDateTime}
+              onChange={(e) => setExpirationDateTime(e.target.value)}
+              required
+              min={minDateStr}
+              max={maxDateStr}
             />
           </div>
-
-          <h2
-            className="text-center mb-4"
-            style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-          >
-            Set Group Expiration Date
-          </h2>
-          <p className="text-muted text-center mb-4">
-            Please enter a date and time for when you want this group to expire.
-          </p>
-          <p className="text-danger text-center mb-4">
-            <strong>
-              {" "}
-              Note: The expiration date must be within one month from today and
-              a minimum of 2 hours from the current time.
-            </strong>
-          </p>
-          {error && (
-            <div className="alert alert-danger text-center py-2">{error}</div>
-          )}
-          <form onSubmit={handleSetExpiration}>
-            <div className="mb-3">
-              <label className="form-label">
-                {" "}
-                Group Expiration Date & Time
-              </label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                value={expirationDateTime}
-                onChange={(e) => setExpirationDateTime(e.target.value)}
-                required
-                min={minDateStr}
-                max={maxDateStr}
-              />
-            </div>
-            <div className="d-grid mt-4">
-              <button type="submit" className="btn btn-primary">
-                Set Expiration & Continue
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="d-grid mt-4">
+            <button type="submit" className="btn btn-primary">
+              Set Expiration & Continue
+            </button>
+          </div>
+        </form>
       </div>
     </main>
   );
