@@ -83,6 +83,7 @@ export default function Host() {
               type="email"
               id="username"
               name="username"
+              autoComplete="email"
               className="form-control"
               placeholder="Enter your email"
               value={username}
