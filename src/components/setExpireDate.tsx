@@ -77,7 +77,14 @@ export default function SetExpireDate() {
           >
             Progress toward creating your memory wall
           </small>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
               {" "}
               <ProgressBar
