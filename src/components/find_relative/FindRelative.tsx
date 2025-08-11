@@ -290,7 +290,14 @@ export default function FindRelative() {
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
 
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column", // keep label above bar
+            alignItems: "center", // horizontal center
+            justifyContent: "center", // vertical center
+          }}
+        >
           {/* Progress bar above title */}
           <div
             style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}
