@@ -282,16 +282,13 @@ export default function FindRelative() {
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
 
-        {/* Progress bar above title */}
-        {titleWidth && (
-          <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
-            <ProgressBar
-              percent={percentage}
-              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-              text={`${percentage}%`}
-            />
-          </div>
-        )}
+        <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
+          <ProgressBar
+            percent={percentage}
+            filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+            text={`${percentage}%`}
+          />
+        </div>
 
         <div className="title">
           <h1>Search and Select a Relative for the Memory Wall</h1>
