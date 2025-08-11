@@ -73,7 +73,7 @@ export default function SetExpireDate() {
           Progress toward creating your memory wall
         </small>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
+          <div style={{ marginBottom: "10px", width: "100%", height: 20 }}>
             {" "}
             <ProgressBar
               percent={percentage}
