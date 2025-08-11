@@ -95,7 +95,7 @@ export default function Host() {
             </label>
             <input
               type="email"
-              id="username"
+              id="confirmUsername"
               className="form-control"
               placeholder="Enter your email again to confirm"
               value={confirmUsername}
