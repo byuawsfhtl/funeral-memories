@@ -90,11 +90,11 @@ export default function Host() {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="username" className="form-label">
+            <label htmlFor="confirmUsername" className="form-label">
               Confirm Email<span className="text-danger">*</span>
             </label>
             <input
-              type="email"
+              type="confirmEmail"
               id="confirmUsername"
               className="form-control"
               placeholder="Enter your email again to confirm"
