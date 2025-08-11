@@ -62,7 +62,16 @@ export default function SetExpireDate() {
 
   return (
     <main className="container my-5 d-flex justify-content-center align-items-center flex-column">
-      <div className="w-100" style={{ maxWidth: 400 }}>
+      <div
+        className="w-100"
+        style={{
+          display: "flex",
+          flexDirection: "column", // keep label above bar
+          alignItems: "center", // horizontal center
+          justifyContent: "center", // vertical center
+          height: "100vh", // center horizontally
+        }}
+      >
         <small
           className="text-muted align-items-center"
           style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
