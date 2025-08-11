@@ -64,9 +64,12 @@ export default function SetExpireDate() {
     <main
       className="container d-flex justify-content-center align-items-center flex-column"
       style={{
-        maxHeight: "100vh", // full viewport height
-        padding: "20px", // optional padding
-      }}
+        display: "flex",
+        flexDirection: "column", // keep label above bar
+        alignItems: "center", // horizontal center
+        justifyContent: "center", // vertical center
+        height: "100vh", // center horizontally
+      }} // optional padding
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
         <small
