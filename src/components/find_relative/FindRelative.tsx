@@ -282,27 +282,36 @@ export default function FindRelative() {
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
 
-        <div className="title">
-          <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
-            <small
-              className="text-muted align-items-center"
-              style={{
-                display: "block",
-                textAlign: "center",
-                marginBottom: "8px",
-              }}
-            >
-              Progress toward creating your memory wall
-            </small>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center", // center horizontally
+          }}
+        >
+          {/* Progress bar above title */}
+          <div
+            style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}
+          >
             <ProgressBar
               percent={percentage}
               filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
               text={`${percentage}%`}
             />
           </div>
-          <br></br>
-          <h1>Search and Select a Relative for the Memory Wall</h1>
+
+          {/* Title */}
+          <h1
+            style={{
+              textAlign: "center",
+              maxWidth: "600px", // same max as bar
+              width: "100%",
+            }}
+          >
+            Search and Select a Relative for the Memory Wall
+          </h1>
         </div>
+
         <p className="text-danger text-center mb-1">
           <strong>
             Note: Please ensure that the relative has been marked as deceased on
