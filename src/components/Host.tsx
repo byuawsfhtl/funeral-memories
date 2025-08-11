@@ -8,6 +8,7 @@ import "react-circular-progressbar/dist/styles.css";
 export default function Host() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmUsername, setConfirmUsername] = useState("");
   const navigate = useNavigate();
   const [hostHover, setHostHover] = useState(false);
   const percentage = 25;
@@ -15,8 +16,16 @@ export default function Host() {
   const handleHost = (e: any) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) {
-      alert("Username and password are required.");
+      alert("Email and password are required.");
       return;
+    }
+    if (!confirmUsername.trim()) {
+      alert("Email needs to be confirmed");
+      return;
+    }
+
+    if (username != confirmUsername) {
+      alert("Email's do not match");
     }
 
     // Just navigate, no group created here
@@ -76,6 +85,20 @@ export default function Host() {
               placeholder="Enter your email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">
+              Confirm Email<span className="text-danger">*</span>
+            </label>
+            <input
+              type="email"
+              id="username"
+              className="form-control"
+              placeholder="Enter your email again to confirm"
+              value={username}
+              onChange={(e) => setConfirmUsername(e.target.value)}
               required
             />
           </div>
