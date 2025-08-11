@@ -64,7 +64,7 @@ export default function SetExpireDate() {
     <main
       className="container d-flex justify-content-center align-items-center flex-column"
       style={{
-        minHeight: "100vh", // full viewport height
+        maxHeight: "100vh", // full viewport height
         padding: "20px", // optional padding
       }}
     >
