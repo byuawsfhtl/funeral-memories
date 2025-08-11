@@ -68,6 +68,7 @@ export default function SetExpireDate() {
         display: "flex",
         justifyContent: "center", // center vertically
         alignItems: "center", // center horizontally
+        transform: "translateY(-10%)",
       }}
     >
       <div style={{ width: "100%", maxWidth: 400 }}>
