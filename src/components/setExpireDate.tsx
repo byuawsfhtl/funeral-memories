@@ -66,33 +66,20 @@ export default function SetExpireDate() {
       style={{ minHeight: "80vh" }}
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
+        <small
+          className="text-muted align-items-center"
+          style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
+        >
+          Progress toward creating your memory wall
+        </small>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <small
-            className="text-muted align-items-center"
-            style={{
-              display: "block",
-              textAlign: "center",
-              marginBottom: "8px",
-            }}
-          >
-            Progress toward creating your memory wall
-          </small>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
-              {" "}
-              <ProgressBar
-                percent={percentage}
-                filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                text={`${percentage}%`} // This shows the percent text inside the progress bar
-              />
-            </div>
+          <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
+            {" "}
+            <ProgressBar
+              percent={percentage}
+              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+              text={`${percentage}%`} // This shows the percent text inside the progress bar
+            />
           </div>
         </div>
 
