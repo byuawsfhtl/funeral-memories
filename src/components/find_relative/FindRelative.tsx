@@ -100,6 +100,16 @@ export default function FindRelative() {
     }
   };
 
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [titleWidth, setTitleWidth] = useState<number | undefined>();
+
+  useEffect(() => {
+    if (titleRef.current) {
+      // Measure the title width after render
+      setTitleWidth(titleRef.current.offsetWidth);
+    }
+  }, []);
+
   //const handleAncestorClick = (personData) => {
   const handleAncestorClick = async (personData: any) => {
     // Navigate to confirmation with all needed state
@@ -271,30 +281,17 @@ export default function FindRelative() {
     <div>
       <div className={`container ${isLoading ? "loading" : ""}`}>
         {isLoading}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ marginBottom: "25px", width: 100, height: 100 }}>
-            <small
-              className="text-muted align-items-center"
-              style={{
-                display: "block",
-                textAlign: "center",
-                marginBottom: "8px",
-              }}
-            >
-              Progress toward creating your memory wall
-            </small>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <div style={{ marginBottom: "10px", width: 500, height: 20 }}>
-                {" "}
-                <ProgressBar
-                  percent={percentage}
-                  filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-                  text={`${percentage}%`} // This shows the percent text inside the progress bar
-                />
-              </div>
-            </div>
+
+        {/* Progress bar above title */}
+        {titleWidth && (
+          <div style={{ margin: "0 auto 15px", width: titleWidth, height: 20 }}>
+            <ProgressBar
+              percent={percentage}
+              filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+              text={`${percentage}%`}
+            />
           </div>
-        </div>
+        )}
 
         <div className="title">
           <h1>Search and Select a Relative for the Memory Wall</h1>
