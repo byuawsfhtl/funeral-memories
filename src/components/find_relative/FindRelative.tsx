@@ -300,7 +300,7 @@ export default function FindRelative() {
               text={`${percentage}%`}
             />
           </div>
-          <div></div>
+          <br></br>
           <h1>Search and Select a Relative for the Memory Wall</h1>
         </div>
         <p className="text-danger text-center mb-1">
