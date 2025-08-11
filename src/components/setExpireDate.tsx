@@ -68,7 +68,7 @@ export default function SetExpireDate() {
         flexDirection: "column", // keep label above bar
         alignItems: "center", // horizontal center
         justifyContent: "center", // vertical center
-        height: "100vh", // center horizontally
+        maxHeight: "100vh", // center horizontallH
       }} // optional padding
     >
       <div className="w-100" style={{ maxWidth: 400 }}>
