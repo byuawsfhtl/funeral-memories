@@ -66,7 +66,6 @@ export default function SetExpireDate() {
         display: "flex",
         justifyContent: "center", // vertical align
         alignItems: "center", // horizontal align
-        transform: "translateY(-20%)",
         marginBottom: 0,
       }}
     >
