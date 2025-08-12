@@ -5,6 +5,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
 import "react-circular-progressbar/dist/styles.css";
+import "./SetExpireDate.css";
 
 export default function SetExpireDate() {
   const [expirationDateTime, setExpirationDateTime] = useState("");
@@ -63,14 +64,14 @@ export default function SetExpireDate() {
   return (
     <main
       style={{
-        marginTop: "80px",
-        minHeight: "100vh",
         padding: "40px 20px",
+        margin: "80px auto 0 auto",
         display: "flex",
-        justifyContent: "center", // vertical align
-        alignItems: "center", // horizontal align
-        marginBottom: 0,
+        justifyContent: "center",
+        width: "100%",
+        boxSizing: "border-box",
       }}
+      className="set-expire-main"
     >
       <div style={{ width: "100%", maxWidth: 400 }}>
         {/* ALL OF THE FOLLOWING GOES INSIDE THIS DIV: */}

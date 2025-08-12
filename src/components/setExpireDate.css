@@ -1,0 +1,20 @@
+/* Desktop / default styles */
+.set-expire-main {
+  display: flex;                 /* enable flexbox */
+  flex-direction: column;        /* stack content vertically */
+  justify-content: flex-start;   /* start from the top */
+  align-items: center;           /* horizontal centering */
+  padding: 40px 20px;            /* breathing room on sides */
+  margin: 80px auto 0 auto;      /* top margin for desktop */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile: center vertically and adjust margins */
+@media (max-width: 768px) {
+  .set-expire-main {
+    min-height: 100vh;           /* fill screen height */
+    justify-content: center;     /* vertical centering */
+    margin-top: 0;                /* remove desktop top margin */
+  }
+}
