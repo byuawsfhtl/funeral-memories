@@ -63,13 +63,11 @@ export default function SetExpireDate() {
   return (
     <main
       style={{
-        maxHeight: "100vh",
-        height: "100vh",
         display: "flex",
-        justifyContent: "center", // center vertically
-        alignItems: "center", // center horizontally
+        justifyContent: "center", // vertical align
+        alignItems: "center", // horizontal align
         transform: "translateY(-20%)",
-        marginBottom: "0px",
+        marginBottom: 0,
       }}
     >
       <div style={{ width: "100%", maxWidth: 400, marginBottom: "5px" }}>
