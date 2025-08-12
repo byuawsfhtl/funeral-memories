@@ -71,7 +71,7 @@ export default function SetExpireDate() {
         transform: "translateY(-20%)",
       }}
     >
-      <div style={{ width: "100%", maxWidth: 400 }}>
+      <div style={{ width: "100%", maxWidth: 400, marginBottom: "5px" }}>
         {/* ALL OF THE FOLLOWING GOES INSIDE THIS DIV: */}
         <small
           className="text-muted"
