@@ -71,7 +71,7 @@ export default function SetExpireDate() {
         marginBottom: 0,
       }}
     >
-      <div style={{ width: "100%", maxWidth: 400, marginBottom: "5px" }}>
+      <div style={{ width: "100%", maxWidth: 400 }}>
         {/* ALL OF THE FOLLOWING GOES INSIDE THIS DIV: */}
         <small
           className="text-muted"
