@@ -63,6 +63,8 @@ export default function SetExpireDate() {
   return (
     <main
       style={{
+        marginTop: "40px",
+        padding: "40px 20px",
         display: "flex",
         justifyContent: "center", // vertical align
         alignItems: "center", // horizontal align
