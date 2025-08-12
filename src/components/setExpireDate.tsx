@@ -63,24 +63,17 @@ export default function SetExpireDate() {
 
   return (
     <main
-      style={{
-        padding: "40px 20px",
-        margin: "80px auto 0 auto",
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-        boxSizing: "border-box",
-      }}
-      className="set-expire-main"
+      className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
+      style={{ padding: "2rem" }}
     >
-      <div style={{ width: "100%", maxWidth: 400 }}>
-        {/* ALL OF THE FOLLOWING GOES INSIDE THIS DIV: */}
+      <div style={{ width: "100%", maxWidth: "500px" }}>
         <small
           className="text-muted"
           style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
         >
           Progress toward creating your memory wall
         </small>
+
         <div style={{ marginBottom: "16px", width: "100%", height: 20 }}>
           <ProgressBar
             percent={percentage}
@@ -88,12 +81,14 @@ export default function SetExpireDate() {
             text={`${percentage}%`}
           />
         </div>
+
         <h2
           className="text-center mb-3"
           style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
         >
           Set Group Expiration Date
         </h2>
+
         <p className="text-muted text-center mb-2">
           Please enter a date and time for when you want this group to expire.
         </p>
@@ -103,12 +98,14 @@ export default function SetExpireDate() {
             minimum of 2 hours from the current time.
           </strong>
         </p>
+
         {error && (
           <div className="alert alert-danger text-center py-2">{error}</div>
         )}
+
         <form onSubmit={handleSetExpiration}>
           <div className="mb-3">
-            <label className="form-label"> Group Expiration Date & Time</label>
+            <label className="form-label">Group Expiration Date & Time</label>
             <input
               type="datetime-local"
               className="form-control"
