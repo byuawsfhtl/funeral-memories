@@ -63,7 +63,7 @@ export default function SetExpireDate() {
   return (
     <main
       style={{
-        minHeight: "100vh",
+        maxHeight: "100vh",
         height: "100vh",
         display: "flex",
         justifyContent: "center", // center vertically
