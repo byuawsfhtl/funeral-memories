@@ -13,6 +13,7 @@ import RoleSelect from "./RoleSelect.js";
 import AdminLogin from "./adminLogin";
 import FindRelative from "./find_relative/FindRelative";
 import SetExpireDate from "./setExpireDate";
+import AddPerson from "./AddPerson";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -30,7 +31,7 @@ if (rootElement) {
           <Route path="/roleSelect" Component={RoleSelect}></Route>
           <Route path="/admin" Component={AdminLogin}></Route>
           <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
-
+          <Route path="/addPerson" Component={AddPerson} />
           <Route path="*" Component={Home} />
         </Routes>
         <Footer />
