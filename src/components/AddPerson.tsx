@@ -4,6 +4,7 @@ export default function AddPerson() {
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [sex, setSex] = useState<string>("");
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -84,6 +85,46 @@ export default function AddPerson() {
               onChange={handlePhotoChange}
               required
             />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="sex" className="form-label">
+              Sex<span className="text-danger">*</span>
+            </label>
+            <div
+              className="btn-group w-100"
+              role="group"
+              aria-label="Select sex"
+            >
+              <input
+                type="radio"
+                className="btn-check"
+                name="sex"
+                id="sexMale"
+                autoComplete="off"
+                value="Male"
+                checked={sex === "Male"}
+                onChange={() => setSex("Male")}
+                required
+              />
+              <label className="btn btn-outline-primary" htmlFor="sexMale">
+                Male
+              </label>
+
+              <input
+                type="radio"
+                className="btn-check"
+                name="sex"
+                id="sexFemale"
+                autoComplete="off"
+                value="Female"
+                checked={sex === "Female"}
+                onChange={() => setSex("Female")}
+                required
+              />
+              <label className="btn btn-outline-primary" htmlFor="sexFemale">
+                Female
+              </label>
+            </div>
           </div>
           {previewUrl && (
             <div className="mb-3 text-center">
