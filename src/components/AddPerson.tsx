@@ -5,9 +5,19 @@ export default function AddPerson() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [sex, setSex] = useState<string>("");
+  const [birthDate, setBirthDate] = useState("");
+  const [deathDate, setDeathDate] = useState("");
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setBirthDate(e.target.value);
+  };
+
+  const handleDeathChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDeathDate(e.target.value);
   };
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +47,10 @@ export default function AddPerson() {
     if (!photo) {
       alert("Please upload a photo.");
       return;
+
+      //post person with whatever info
+      //get back PID from response
+      //use person portrait api with that id
     }
 
     // Here you can handle the form submission, e.g., send data to backend
@@ -74,6 +88,34 @@ export default function AddPerson() {
             />
           </div>
           <div className="mb-3">
+            <label htmlFor="birthDate" className="form-label">
+              Birth Date
+            </label>
+            <input
+              type="text"
+              id="birthDate"
+              className="form-control"
+              placeholder="Enter Birth Date"
+              value={name}
+              onChange={handleBirthChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="deathDate" className="form-label">
+              Death Date
+            </label>
+            <input
+              type="text"
+              id="deathDate"
+              className="form-control"
+              placeholder="Enter Death Date"
+              value={name}
+              onChange={handleDeathChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
             <label htmlFor="personPhoto" className="form-label">
               Upload Photo<span className="text-danger">*</span>
             </label>
@@ -86,6 +128,7 @@ export default function AddPerson() {
               required
             />
           </div>
+
           <div className="mb-3">
             <label htmlFor="sex" className="form-label">
               Sex<span className="text-danger">*</span>
