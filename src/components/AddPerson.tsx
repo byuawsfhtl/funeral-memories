@@ -130,6 +130,43 @@ export default function AddPerson() {
               ref={fileInputRef}
             />
           </div>
+          {previewUrl && (
+            <div
+              className="position-relative mt-2"
+              style={{ display: "inline-block" }}
+            >
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="img-fluid"
+                style={{ maxHeight: "150px", borderRadius: "8px" }}
+              />
+              <button
+                type="button"
+                className="btn btn-sm btn-danger position-absolute"
+                style={{
+                  top: 0,
+                  right: 0,
+                  transform: "translate(50%, -50%)",
+                  borderRadius: "50%",
+                  padding: 0,
+                  width: 28,
+                  height: 28,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  setPreviewUrl(null);
+                  setPhoto(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                aria-label="Remove photo"
+              >
+                &times;
+              </button>
+            </div>
+          )}
 
           <div className="mb-3">
             <label htmlFor="sex" className="form-label">
@@ -171,43 +208,6 @@ export default function AddPerson() {
               </label>
             </div>
           </div>
-          {previewUrl && (
-            <div
-              className="position-relative mt-2"
-              style={{ display: "inline-block" }}
-            >
-              <img
-                src={previewUrl}
-                alt="Preview"
-                className="img-fluid"
-                style={{ maxHeight: "150px", borderRadius: "8px" }}
-              />
-              <button
-                type="button"
-                className="btn btn-sm btn-danger position-absolute"
-                style={{
-                  top: 0,
-                  right: 0,
-                  transform: "translate(50%, -50%)",
-                  borderRadius: "50%",
-                  padding: 0,
-                  width: 28,
-                  height: 28,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onClick={() => {
-                  setPreviewUrl(null);
-                  setPhoto(null);
-                  if (fileInputRef.current) fileInputRef.current.value = "";
-                }}
-                aria-label="Remove photo"
-              >
-                &times;
-              </button>
-            </div>
-          )}
 
           <div className="d-grid mt-4">
             <button type="submit" className="btn btn-primary btn-lg">
