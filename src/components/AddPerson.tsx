@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, useRef, ChangeEvent, FormEvent } from "react";
 
 export default function AddPerson() {
   const [name, setName] = useState("");
@@ -7,6 +7,7 @@ export default function AddPerson() {
   const [sex, setSex] = useState<string>("");
   const [birthDate, setBirthDate] = useState("");
   const [deathDate, setDeathDate] = useState("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -117,7 +118,7 @@ export default function AddPerson() {
           </div>
           <div className="mb-3">
             <label htmlFor="personPhoto" className="form-label">
-              Upload Photo<span className="text-danger">*</span>
+              Upload Photo
             </label>
             <input
               type="file"
@@ -126,6 +127,7 @@ export default function AddPerson() {
               className="form-control"
               onChange={handlePhotoChange}
               required
+              ref={fileInputRef}
             />
           </div>
 
@@ -170,19 +172,43 @@ export default function AddPerson() {
             </div>
           </div>
           {previewUrl && (
-            <div className="mb-3 text-center">
-              <p>Preview:</p>
+            <div
+              className="position-relative mt-2"
+              style={{ display: "inline-block" }}
+            >
               <img
                 src={previewUrl}
-                alt="Photo preview"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: 300,
-                  objectFit: "contain",
-                }}
+                alt="Preview"
+                className="img-fluid"
+                style={{ maxHeight: "150px", borderRadius: "8px" }}
               />
+              <button
+                type="button"
+                className="btn btn-sm btn-danger position-absolute"
+                style={{
+                  top: 0,
+                  right: 0,
+                  transform: "translate(50%, -50%)",
+                  borderRadius: "50%",
+                  padding: 0,
+                  width: 28,
+                  height: 28,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  setPreviewUrl(null);
+                  setPhoto(null);
+                  if (fileInputRef.current) fileInputRef.current.value = "";
+                }}
+                aria-label="Remove photo"
+              >
+                &times;
+              </button>
             </div>
           )}
+
           <div className="d-grid mt-4">
             <button type="submit" className="btn btn-primary btn-lg">
               Add Person
