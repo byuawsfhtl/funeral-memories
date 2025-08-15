@@ -72,17 +72,24 @@ export async function uploadPersonAndPortrait({
   }
 
   // 3. Upload photo to Memories
+  // 3. Upload photo to Memories using FormData
+  const formData = new FormData();
+  formData.append("artifact", photo);
+  formData.append("title", "Portrait Photo");
+  formData.append("filename", photo.name);
+
   const memoryResponse = await fetch(
     "https://api.familysearch.org/platform/memories/memories",
     {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        // Don't set Content-Type for FormData in browser
+        // DO NOT SET 'Content-Type' for FormData!
       },
-      body: photo,
+      body: formData,
     }
   );
+
   if (!memoryResponse.ok) {
     throw new Error(`Memory upload failed: ${memoryResponse.statusText}`);
   }
