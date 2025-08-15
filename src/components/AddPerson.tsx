@@ -1,4 +1,6 @@
 import React, { useState, useRef, ChangeEvent, FormEvent } from "react";
+import { uploadPersonAndPortrait } from "../../api/uploadPerson";
+import { fetchAndStoreToken } from "../../api/auth";
 
 export default function AddPerson() {
   const [name, setName] = useState("");
@@ -8,6 +10,7 @@ export default function AddPerson() {
   const [birthDate, setBirthDate] = useState("");
   const [deathDate, setDeathDate] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -38,9 +41,8 @@ export default function AddPerson() {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     if (!name.trim()) {
       alert("Please enter a name.");
       return;
@@ -48,22 +50,40 @@ export default function AddPerson() {
     if (!photo) {
       alert("Please upload a photo.");
       return;
-
-      //post person with whatever info
-      //get back PID from response
-      //use person portrait api with that id
     }
+    try {
+      setLoading(true);
+      //TODO: Add real token"
+      let token = sessionStorage.getItem("yourKey");
+      if (!token) token = await fetchAndStoreToken();
+      if (!token) {
+        alert("Could not get an access token. Please try again.");
+        return;
+      }
 
-    // Here you can handle the form submission, e.g., send data to backend
-    // For now, just log the inputs
-    console.log({ name, photo });
+      const { pid, memoryUrl } = await uploadPersonAndPortrait({
+        name,
+        sex,
+        birthDate,
+        deathDate,
+        photo,
+        token,
+      });
 
-    alert("Person added!");
+      alert("Person and portrait uploaded successfully! PID: " + pid);
 
-    // Reset form
-    setName("");
-    setPhoto(null);
-    setPreviewUrl(null);
+      // reset form state here
+      setName("");
+      setPhoto(null);
+      setPreviewUrl(null);
+      setSex("");
+      setBirthDate("");
+      setDeathDate("");
+    } catch (error: any) {
+      alert(error.message || "Error uploading person and portrait.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,7 +117,7 @@ export default function AddPerson() {
               id="birthDate"
               className="form-control"
               placeholder="Enter Birth Date"
-              value={name}
+              value={birthDate}
               onChange={handleBirthChange}
               required
             />
@@ -111,14 +131,14 @@ export default function AddPerson() {
               id="deathDate"
               className="form-control"
               placeholder="Enter Death Date"
-              value={name}
+              value={deathDate}
               onChange={handleDeathChange}
               required
             />
           </div>
           <div className="mb-3">
             <label htmlFor="personPhoto" className="form-label">
-              Upload Photo
+              Add Portrait
             </label>
             <input
               type="file"
