@@ -7,6 +7,7 @@ export interface UploadPersonParams {
 	deathDate?: string;
 	photo: File;
 	token: string;
+	fstoken: string;
 }
 
 export async function uploadPersonAndPortrait({
@@ -16,6 +17,7 @@ export async function uploadPersonAndPortrait({
 	deathDate,
 	photo,
 	token,
+	fstoken,
 }: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
 	// 1. Format gender and names
 	const genderType = sex
@@ -88,7 +90,7 @@ export async function uploadPersonAndPortrait({
 		{
 			method: "POST",
 			headers: {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${fstoken}`,
 				// DO NOT SET 'Content-Type' for FormData!
 			},
 			body: formData,

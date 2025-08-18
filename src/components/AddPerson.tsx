@@ -24,9 +24,9 @@ export default function AddPerson() {
 	useEffect(() => {
 		const run = async () => {
 			const params = new URLSearchParams(location.search);
-			const token = params.get("fstoken");
+			const fstoken = params.get("fstoken");
 
-			if (token) {
+			if (fstoken) {
 				setName(localStorage.getItem("addName") || "");
 				setSex(localStorage.getItem("addSex") || "");
 				setBirthDate(localStorage.getItem("addBirthDate") || "");
@@ -39,6 +39,8 @@ export default function AddPerson() {
 					setPreviewUrl(base64Photo);
 				}
 
+				let token = await fetchAndStoreToken();
+
 				const { pid, memoryUrl } = await uploadPersonAndPortrait({
 					name,
 					sex,
@@ -46,6 +48,7 @@ export default function AddPerson() {
 					deathDate,
 					photo: photo as File,
 					token,
+					fstoken,
 				});
 
 				alert("Person and portrait uploaded successfully! PID: " + pid);
