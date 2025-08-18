@@ -143,31 +143,31 @@ export default function AddPerson() {
 			const redirectUri = `${window.location.origin}${location.pathname}`;
 			window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
 
-			let token = sessionStorage.getItem("yourKey");
-			if (!token) token = await fetchAndStoreToken();
-			if (!token) {
-				alert("Could not get an access token. Please try again.");
-				return;
-			}
+			// let token = sessionStorage.getItem("yourKey");
+			// if (!token) token = await fetchAndStoreToken();
+			// if (!token) {
+			// 	alert("Could not get an access token. Please try again.");
+			// 	return;
+			// }
 
-			const { pid, memoryUrl } = await uploadPersonAndPortrait({
-				name,
-				sex,
-				birthDate,
-				deathDate,
-				photo,
-				token,
-			});
+			// const { pid, memoryUrl } = await uploadPersonAndPortrait({
+			// 	name,
+			// 	sex,
+			// 	birthDate,
+			// 	deathDate,
+			// 	photo,
+			// 	token,
+			// });
 
-			alert("Person and portrait uploaded successfully! PID: " + pid);
+			// alert("Person and portrait uploaded successfully! PID: " + pid);
 
-			// reset form state here
-			setName("");
-			setPhoto(null);
-			setPreviewUrl(null);
-			setSex("");
-			setBirthDate("");
-			setDeathDate("");
+			// // reset form state here
+			// setName("");
+			// setPhoto(null);
+			// setPreviewUrl(null);
+			// setSex("");
+			// setBirthDate("");
+			// setDeathDate("");
 		} catch (error: any) {
 			alert(error.message || "Error uploading person and portrait.");
 		} finally {
