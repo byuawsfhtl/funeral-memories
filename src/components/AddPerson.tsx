@@ -60,7 +60,7 @@ export default function AddPerson() {
 			}
 		};
 		run();
-	});
+	}, []);
 
 	function base64ToFile(base64: string, filename: string): File {
 		const arr = base64.split(",");
