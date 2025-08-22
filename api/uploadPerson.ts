@@ -125,25 +125,29 @@ export async function uploadPersonAndPortrait({
         living: false,
         gender: {
           type: genderType,
-          attribution: { changeMessage: "Gender added via AddPerson form" },
+          // attribution: { changeMessage: "Gender added via AddPerson form" },
         },
         names: [
           {
             type: "http://gedcomx.org/BirthName",
             preferred: true,
-            attribution: { changeMessage: "Name added via AddPerson form" },
-            nameForms,
+            //attribution: { changeMessage: "Name added via AddPerson form" },
+            //nameForms,
           },
         ],
-        facts,
-        attribution: {
-          changeMessage: "Person data uploaded via AddPerson form",
-        },
+        // facts,
+        // attribution: {
+        //   changeMessage: "Person data uploaded via AddPerson form",
+        // },
       },
     ],
   };
 
   console.log(personPayload);
+  console.log(
+    "Uploading personPayload:",
+    JSON.stringify(personPayload, null, 2)
+  );
 
   // 1. Upload person
   const personResponse = await fetch(
