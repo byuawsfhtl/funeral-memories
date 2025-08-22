@@ -131,6 +131,7 @@ export async function uploadPersonAndPortrait({
           {
             type: "http://gedcomx.org/BirthName",
             preferred: true,
+            nameForms: nameForms,
             //attribution: { changeMessage: "Name added via AddPerson form" },
             //nameForms,
           },
