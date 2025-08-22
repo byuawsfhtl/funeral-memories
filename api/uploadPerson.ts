@@ -1,145 +1,153 @@
 // uploadPerson.ts
 
 export interface UploadPersonParams {
-	name: string;
-	sex: string;
-	birthDate?: string;
-	deathDate?: string;
-	photo: File;
-	token: string;
-	fstoken: string;
+  name: string;
+  sex: string;
+  birthDate?: string;
+  deathDate?: string;
+  photo: File;
+  token: string;
+  fstoken: string;
 }
 
 export async function uploadPersonAndPortrait({
-	name,
-	sex,
-	birthDate,
-	deathDate,
-	photo,
-	token,
-	fstoken,
+  name,
+  sex,
+  birthDate,
+  deathDate,
+  photo,
+  token,
+  fstoken,
 }: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
-	// 1. Format gender and names
-	const genderType = sex
-		? `http://gedcomx.org/${sex}`
-		: "http://gedcomx.org/Unknown";
-	const nameForms = [
-		{
-			fullText: name,
-			parts: [{ type: "http://gedcomx.org/Given", value: name }],
-			// Expand to split given/family if desired
-		},
-	];
-	// TODO: Format birth/death dates into facts if needed
+  // 1. Format gender and names
+  const genderType = sex
+    ? `http://gedcomx.org/${sex}`
+    : "http://gedcomx.org/Unknown";
+  const nameParts = name.trim().split(" ");
+  const given = nameParts.slice(0, -1).join(" ") || name;
+  const surname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
 
-	const personPayload = {
-		persons: [
-			{
-				living: false,
-				gender: {
-					type: genderType,
-					attribution: { changeMessage: "Added via AddPerson form" },
-				},
-				names: [
-					{
-						type: "http://gedcomx.org/BirthName",
-						preferred: true,
-						attribution: { changeMessage: "Name added via form" },
-						nameForms,
-					},
-				],
-				// facts: [], // Add birth/death date facts if needed
-			},
-		],
-	};
+  const nameForms = [
+    {
+      fullText: name,
+      parts: [
+        { type: "http://gedcomx.org/Given", value: given },
+        ...(surname
+          ? [{ type: "http://gedcomx.org/Surname", value: surname }]
+          : []),
+      ],
+    },
+  ];
+  // TODO: Format birth/death dates into facts if needed
 
-	alert("Uploading person...");
+  const personPayload = {
+    persons: [
+      {
+        living: false,
+        gender: {
+          type: genderType,
+          attribution: { changeMessage: "Added via AddPerson form" },
+        },
+        names: [
+          {
+            type: "http://gedcomx.org/BirthName",
+            preferred: true,
+            attribution: { changeMessage: "Name added via form" },
+            nameForms,
+          },
+        ],
+        // facts: [], // Add parsed dates here if you want, but names/gender are most crucial
+      },
+    ],
+  };
 
-	// 2. Create person (POST)
-	const personResponse = await fetch(
-		"https://api.familysearch.org/platform/tree/persons",
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-fs-v1+json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(personPayload),
-		}
-	);
-	if (!personResponse.ok) {
-		throw new Error(`Person upload failed: ${personResponse.statusText}`);
-	}
-	const pid = personResponse.headers.get("x-entity-id");
-	if (!pid) {
-		throw new Error("Could not get person ID from response");
-	}
+  alert("Uploading person...");
 
-	alert("Person uploaded successfully! PID: " + pid);
+  // 2. Create person (POST)
+  const personResponse = await fetch(
+    "https://api.familysearch.org/platform/tree/persons",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-fs-v1+json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(personPayload),
+    }
+  );
+  if (!personResponse.ok) {
+    throw new Error(`Person upload failed: ${personResponse.statusText}`);
+  }
+  const pid = personResponse.headers.get("x-entity-id");
+  if (!pid) {
+    throw new Error("Could not get person ID from response");
+  }
 
-	// 3. Upload photo to Memories
-	// 3. Upload photo to Memories using FormData
-	const formData = new FormData();
-	formData.append("artifact", photo);
-	formData.append("title", "Portrait Photo");
-	formData.append("filename", photo.name);
+  alert("Person uploaded successfully! PID: " + pid);
 
-	alert("Uploading portrait...");
-	const memoryResponse = await fetch(
-		"https://api.familysearch.org/platform/memories/memories",
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${fstoken}`,
-				// DO NOT SET 'Content-Type' for FormData!
-			},
-			body: formData,
-		}
-	);
+  // 3. Upload photo to Memories
+  // 3. Upload photo to Memories using FormData
+  const formData = new FormData();
+  formData.append("artifact", photo);
+  formData.append("title", "Portrait Photo");
+  formData.append("filename", photo.name);
 
-	if (!memoryResponse.ok) {
-		throw new Error(`Memory upload failed: ${memoryResponse.statusText}`);
-	}
-	const memoryUrl =
-		memoryResponse.headers.get("content-location") ||
-		memoryResponse.headers.get("Content-Location");
+  alert("Uploading portrait...");
+  const memoryResponse = await fetch(
+    "https://api.familysearch.org/platform/memories/memories",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${fstoken}`,
+        // DO NOT SET 'Content-Type' for FormData!
+      },
+      body: formData,
+    }
+  );
 
-	if (!memoryUrl) {
-		throw new Error("Could not get memory URL from response");
-	}
+  if (!memoryResponse.ok) {
+    throw new Error(`Memory upload failed: ${memoryResponse.statusText}`);
+  }
+  const memoryUrl =
+    memoryResponse.headers.get("content-location") ||
+    memoryResponse.headers.get("Content-Location");
 
-	alert("Portrait uploaded successfully! Memory URL: " + memoryUrl);
-	// 4. Attach memory as portrait
-	const portraitPayload = {
-		persons: [
-			{
-				media: [
-					{
-						description: memoryUrl,
-						attribution: {
-							changeMessage: "Portrait added from AddPerson form",
-						},
-					},
-				],
-			},
-		],
-	};
+  if (!memoryUrl) {
+    throw new Error("Could not get memory URL from response");
+  }
 
-	alert("Attaching portrait to person...");
-	const portraitResponse = await fetch(
-		`https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-gedcomx-v1+json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(portraitPayload),
-		}
-	);
-	if (!portraitResponse.ok) {
-		throw new Error(`Portrait upload failed: ${portraitResponse.statusText}`);
-	}
+  alert("Portrait uploaded successfully! Memory URL: " + memoryUrl);
+  // 4. Attach memory as portrait
+  const portraitPayload = {
+    persons: [
+      {
+        media: [
+          {
+            description: memoryUrl,
+            attribution: {
+              changeMessage: "Portrait added from AddPerson form",
+            },
+          },
+        ],
+      },
+    ],
+  };
 
-	return { pid, memoryUrl };
+  alert("Attaching portrait to person...");
+  const portraitResponse = await fetch(
+    `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-gedcomx-v1+json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(portraitPayload),
+    }
+  );
+  if (!portraitResponse.ok) {
+    throw new Error(`Portrait upload failed: ${portraitResponse.statusText}`);
+  }
+
+  return { pid, memoryUrl };
 }
