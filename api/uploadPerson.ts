@@ -174,6 +174,7 @@ export async function uploadPersonAndPortrait({
   if (!pid) {
     throw new Error("No person ID returned from FamilySearch");
   }
+  console.log(pid);
 
   // 2. Upload photo (Memories)
   const formData = new FormData();
@@ -182,16 +183,27 @@ export async function uploadPersonAndPortrait({
   formData.append("filename", photo.name);
 
   const memoryResponse = await fetch(
-    "https://api.familysearch.org/platform/memories/memories",
+    `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
     {
       method: "POST",
       headers: {
         Authorization: `Bearer ${fstoken}`,
-        // no Content-Type header when sending FormData
       },
       body: formData,
     }
   );
+
+  //   const memoryResponse = await fetch(
+  //     "https://api.familysearch.org/platform/memories/memories",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${fstoken}`,
+  //         // no Content-Type header when sending FormData
+  //       },
+  //       body: formData,
+  //     }
+  //   );
 
   if (!memoryResponse.ok) {
     const text = await memoryResponse.text();
