@@ -57,6 +57,7 @@ export default function AddPerson() {
 
         const birthDateObj = parseDateString(birthDate);
         const deathDateObj = parseDateString(deathDate);
+        console.log(name);
 
         const { pid, memoryUrl } = await uploadPersonAndPortrait({
           name,
@@ -96,6 +97,7 @@ export default function AddPerson() {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+    console.log(name);
   };
 
   const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) => {
