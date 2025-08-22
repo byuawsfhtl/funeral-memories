@@ -91,7 +91,11 @@ export async function uploadPersonAndPortrait({
   fstoken,
 }: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
   // Validate and prepare nameForms
+  console.log("Name to upload:", JSON.stringify(name));
+
   const nameForms = formatNameForms(name);
+  console.log("Formatted nameForms:", JSON.stringify(nameForms, null, 2));
+
   if (!nameForms.length || !nameForms[0].fullText) {
     throw new Error("Invalid name format");
   }
