@@ -1,13 +1,65 @@
-// uploadPerson.ts
+interface DateDict {
+  original?: string | null;
+  formal?: string | null;
+  normalized?: Array<{ lang: string; value: string }> | null;
+}
 
-export interface UploadPersonParams {
+interface UploadPersonParams {
   name: string;
   sex: string;
-  birthDate?: string;
-  deathDate?: string;
+  birthDate?: { year?: string; month?: string; day?: string };
+  deathDate?: { year?: string; month?: string; day?: string };
+  marriageDate?: { year?: string; month?: string; day?: string };
   photo: File;
   token: string;
   fstoken: string;
+}
+
+// Helper to format GEDCOM X compliant date fact object
+function formatDateFact(
+  type: string,
+  date?: { year?: string; month?: string; day?: string }
+) {
+  if (!date || !date.year) return null;
+
+  const { year, month, day } = date;
+
+  // Format original, formal, normalized strings as your colleague does
+  const original = [year, month, day].filter(Boolean).join("-");
+  const formal = `+${year}${month ? "-" + month.padStart(2, "0") : ""}${
+    day ? "-" + day.padStart(2, "0") : ""
+  }`;
+  const normalized = [
+    { lang: "en", value: month && day ? `${month}/${day}/${year}` : year },
+  ];
+
+  return {
+    type,
+    date: {
+      original,
+      formal,
+      normalized,
+    },
+  };
+}
+
+function formatNameForms(name: string) {
+  const nameParts = name.trim().split(" ");
+  const given = nameParts.slice(0, -1).join(" ") || name;
+  const surname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+
+  const parts = [{ type: "http://gedcomx.org/Given", value: given }];
+
+  if (surname) {
+    parts.push({ type: "http://gedcomx.org/Surname", value: surname });
+  }
+
+  return [
+    {
+      fullText: name,
+      parts,
+    },
+  ];
 }
 
 export async function uploadPersonAndPortrait({
@@ -15,30 +67,35 @@ export async function uploadPersonAndPortrait({
   sex,
   birthDate,
   deathDate,
+  marriageDate,
   photo,
   token,
   fstoken,
 }: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
-  // 1. Format gender and names
-  const genderType = sex
+  // Validate and prepare nameForms
+  const nameForms = formatNameForms(name);
+  if (!nameForms.length || !nameForms[0].fullText) {
+    throw new Error("Invalid name format");
+  }
+
+  // Validate gender input, fallback to Unknown
+  const allowedGenders = ["Male", "Female"];
+  const genderType = allowedGenders.includes(sex)
     ? `http://gedcomx.org/${sex}`
     : "http://gedcomx.org/Unknown";
-  const nameParts = name.trim().split(" ");
-  const given = nameParts.slice(0, -1).join(" ") || name;
-  const surname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
 
-  const nameForms = [
-    {
-      fullText: name,
-      parts: [
-        { type: "http://gedcomx.org/Given", value: given },
-        ...(surname
-          ? [{ type: "http://gedcomx.org/Surname", value: surname }]
-          : []),
-      ],
-    },
-  ];
-  // TODO: Format birth/death dates into facts if needed
+  // Format facts
+  const facts = [];
+  const birthFact = formatDateFact("http://gedcomx.org/Birth", birthDate);
+  const deathFact = formatDateFact("http://gedcomx.org/Death", deathDate);
+  const marriageFact = formatDateFact(
+    "http://gedcomx.org/Marriage",
+    marriageDate
+  );
+
+  if (birthFact) facts.push(birthFact);
+  if (deathFact) facts.push(deathFact);
+  if (marriageFact) facts.push(marriageFact);
 
   const personPayload = {
     persons: [
@@ -46,24 +103,25 @@ export async function uploadPersonAndPortrait({
         living: false,
         gender: {
           type: genderType,
-          attribution: { changeMessage: "Added via AddPerson form" },
+          attribution: { changeMessage: "Gender added via AddPerson form" },
         },
         names: [
           {
             type: "http://gedcomx.org/BirthName",
             preferred: true,
-            attribution: { changeMessage: "Name added via form" },
+            attribution: { changeMessage: "Name added via AddPerson form" },
             nameForms,
           },
         ],
-        // facts: [], // Add parsed dates here if you want, but names/gender are most crucial
+        facts,
+        attribution: {
+          changeMessage: "Person data uploaded via AddPerson form",
+        },
       },
     ],
   };
 
-  alert("Uploading person...");
-
-  // 2. Create person (POST)
+  // 1. Upload person
   const personResponse = await fetch(
     "https://api.familysearch.org/platform/tree/persons",
     {
@@ -75,53 +133,52 @@ export async function uploadPersonAndPortrait({
       body: JSON.stringify(personPayload),
     }
   );
+
   if (!personResponse.ok) {
-    const errorText = await personResponse.text();
+    const text = await personResponse.text();
     throw new Error(
-      `Person upload failed: ${personResponse.statusText} - ${errorText}`
+      `Person upload failed: ${personResponse.status} ${personResponse.statusText}\n${text}`
     );
   }
 
   const pid = personResponse.headers.get("x-entity-id");
   if (!pid) {
-    throw new Error("Could not get person ID from response");
+    throw new Error("No person ID returned from FamilySearch");
   }
 
-  alert("Person uploaded successfully! PID: " + pid);
-
-  // 3. Upload photo to Memories
-  // 3. Upload photo to Memories using FormData
+  // 2. Upload photo (Memories)
   const formData = new FormData();
   formData.append("artifact", photo);
   formData.append("title", "Portrait Photo");
   formData.append("filename", photo.name);
 
-  alert("Uploading portrait...");
   const memoryResponse = await fetch(
     "https://api.familysearch.org/platform/memories/memories",
     {
       method: "POST",
       headers: {
         Authorization: `Bearer ${fstoken}`,
-        // DO NOT SET 'Content-Type' for FormData!
+        // no Content-Type header when sending FormData
       },
       body: formData,
     }
   );
 
   if (!memoryResponse.ok) {
-    throw new Error(`Memory upload failed: ${memoryResponse.statusText}`);
+    const text = await memoryResponse.text();
+    throw new Error(
+      `Memory upload failed: ${memoryResponse.status} ${memoryResponse.statusText}\n${text}`
+    );
   }
+
   const memoryUrl =
     memoryResponse.headers.get("content-location") ||
     memoryResponse.headers.get("Content-Location");
-
   if (!memoryUrl) {
-    throw new Error("Could not get memory URL from response");
+    throw new Error("Memory URL missing in response");
   }
 
-  alert("Portrait uploaded successfully! Memory URL: " + memoryUrl);
-  // 4. Attach memory as portrait
+  // 3. Attach portrait to person
   const portraitPayload = {
     persons: [
       {
@@ -137,7 +194,6 @@ export async function uploadPersonAndPortrait({
     ],
   };
 
-  alert("Attaching portrait to person...");
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
     {
@@ -149,21 +205,11 @@ export async function uploadPersonAndPortrait({
       body: JSON.stringify(portraitPayload),
     }
   );
-  if (!portraitResponse.ok) {
-    throw new Error(`Portrait upload failed: ${portraitResponse.statusText}`);
-  }
-
-  if (!memoryResponse.ok) {
-    const errorText = await memoryResponse.text();
-    throw new Error(
-      `Memory upload failed: ${memoryResponse.statusText} - ${errorText}`
-    );
-  }
 
   if (!portraitResponse.ok) {
-    const errorText = await portraitResponse.text();
+    const text = await portraitResponse.text();
     throw new Error(
-      `Portrait upload failed: ${portraitResponse.statusText} - ${errorText}`
+      `Portrait upload failed: ${portraitResponse.status} ${portraitResponse.statusText}\n${text}`
     );
   }
 
