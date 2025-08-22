@@ -143,6 +143,8 @@ export async function uploadPersonAndPortrait({
     ],
   };
 
+  console.log(personPayload);
+
   // 1. Upload person
   const personResponse = await fetch(
     "https://api.familysearch.org/platform/tree/persons",
