@@ -182,6 +182,9 @@ export async function uploadPersonAndPortrait({
   formData.append("title", "Portrait Photo");
   formData.append("filename", photo.name);
 
+  console.log(formData);
+  console.log("fstoken: ", fstoken);
+
   const memoryResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
     {
