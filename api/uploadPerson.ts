@@ -182,7 +182,9 @@ export async function uploadPersonAndPortrait({
   formData.append("title", "Portrait Photo");
   formData.append("filename", photo.name);
 
-  console.log(formData);
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
   console.log("fstoken: ", fstoken);
 
   const memoryResponse = await fetch(
