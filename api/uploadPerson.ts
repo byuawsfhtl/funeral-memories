@@ -76,8 +76,12 @@ export async function uploadPersonAndPortrait({
     }
   );
   if (!personResponse.ok) {
-    throw new Error(`Person upload failed: ${personResponse.statusText}`);
+    const errorText = await personResponse.text();
+    throw new Error(
+      `Person upload failed: ${personResponse.statusText} - ${errorText}`
+    );
   }
+
   const pid = personResponse.headers.get("x-entity-id");
   if (!pid) {
     throw new Error("Could not get person ID from response");
@@ -147,6 +151,20 @@ export async function uploadPersonAndPortrait({
   );
   if (!portraitResponse.ok) {
     throw new Error(`Portrait upload failed: ${portraitResponse.statusText}`);
+  }
+
+  if (!memoryResponse.ok) {
+    const errorText = await memoryResponse.text();
+    throw new Error(
+      `Memory upload failed: ${memoryResponse.statusText} - ${errorText}`
+    );
+  }
+
+  if (!portraitResponse.ok) {
+    const errorText = await portraitResponse.text();
+    throw new Error(
+      `Portrait upload failed: ${portraitResponse.statusText} - ${errorText}`
+    );
   }
 
   return { pid, memoryUrl };
