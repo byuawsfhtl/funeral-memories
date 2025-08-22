@@ -44,19 +44,37 @@ function formatDateFact(
 }
 
 function formatNameForms(name: string) {
-  const nameParts = name.trim().split(" ");
-  const given = nameParts.slice(0, -1).join(" ") || name;
-  const surname = nameParts.length > 1 ? nameParts[nameParts.length - 1] : "";
+  if (!name || !name.trim()) return [];
 
-  const parts = [{ type: "http://gedcomx.org/Given", value: given }];
+  const nameParts = name.trim().split(/\s+/); // split on any whitespace
+  let given = "";
+  let surname = "";
+
+  if (nameParts.length === 1) {
+    given = nameParts[0];
+  } else if (nameParts.length > 1) {
+    given = nameParts.slice(0, -1).join(" ");
+    surname = nameParts[nameParts.length - 1];
+  }
+
+  const parts = [];
+
+  if (given) {
+    parts.push({ type: "http://gedcomx.org/Given", value: given });
+  }
 
   if (surname) {
     parts.push({ type: "http://gedcomx.org/Surname", value: surname });
   }
 
+  if (!parts.length) {
+    // no valid name parts formed
+    return [];
+  }
+
   return [
     {
-      fullText: name,
+      fullText: name.trim(),
       parts,
     },
   ];
