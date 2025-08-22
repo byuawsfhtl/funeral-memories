@@ -39,47 +39,55 @@ export default function AddPerson() {
     const run = async () => {
       const params = new URLSearchParams(location.search);
       const fstoken = params.get("fstoken");
+      if (!fstoken) return;
 
-      if (fstoken) {
-        setName(localStorage.getItem("addName") || "");
-        setSex(localStorage.getItem("addSex") || "");
-        setBirthDate(localStorage.getItem("addBirthDate") || "");
-        setDeathDate(localStorage.getItem("addDeathDate") || "");
-        const base64Photo = localStorage.getItem("addPhotoBase64");
-        if (base64Photo) {
-          setPhoto(
-            base64ToFile(base64Photo, localStorage.getItem("addPhoto") || "")
-          );
-          setPreviewUrl(base64Photo);
-        }
+      // Load values from localStorage into local vars
+      const storedName = localStorage.getItem("addName") || "";
+      const storedSex = localStorage.getItem("addSex") || "";
+      const storedBirthDate = localStorage.getItem("addBirthDate") || "";
+      const storedDeathDate = localStorage.getItem("addDeathDate") || "";
+      const base64Photo = localStorage.getItem("addPhotoBase64") || "";
+      const fileName = localStorage.getItem("addPhoto") || "";
 
-        let token = await fetchAndStoreToken();
-
-        const birthDateObj = parseDateString(birthDate);
-        const deathDateObj = parseDateString(deathDate);
-        console.log(name);
-
-        const { pid, memoryUrl } = await uploadPersonAndPortrait({
-          name,
-          sex,
-          birthDate: birthDateObj,
-          deathDate: deathDateObj,
-          photo: photo as File,
-          token,
-          fstoken,
-        });
-
-        alert("Person and portrait uploaded successfully! PID: " + pid);
-
-        // reset form state here
-        setName("");
-        setPhoto(null);
-        setPreviewUrl(null);
-        setSex("");
-        setBirthDate("");
-        setDeathDate("");
+      // Update React state for UI
+      setName(storedName);
+      setSex(storedSex);
+      setBirthDate(storedBirthDate);
+      setDeathDate(storedDeathDate);
+      if (base64Photo) {
+        const file = base64ToFile(base64Photo, fileName);
+        setPhoto(file);
+        setPreviewUrl(base64Photo);
       }
+
+      let token = await fetchAndStoreToken();
+
+      // Convert date strings to objects
+      const birthDateObj = parseDateString(storedBirthDate);
+      const deathDateObj = parseDateString(storedDeathDate);
+
+      // Pass the *local* variables here, NOT the (not updated yet) React state
+      const { pid, memoryUrl } = await uploadPersonAndPortrait({
+        name: storedName,
+        sex: storedSex,
+        birthDate: birthDateObj,
+        deathDate: deathDateObj,
+        photo: base64Photo ? base64ToFile(base64Photo, fileName) : null!,
+        token,
+        fstoken,
+      });
+
+      alert("Person and portrait uploaded successfully! PID: " + pid);
+
+      // Reset states if needed here
+      setName("");
+      setPhoto(null);
+      setPreviewUrl(null);
+      setSex("");
+      setBirthDate("");
+      setDeathDate("");
     };
+
     run();
   }, []);
 
