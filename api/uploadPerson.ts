@@ -181,6 +181,11 @@ export async function uploadPersonAndPortrait({
   formData.append("artifact", photo);
   formData.append("title", "Portrait Photo");
   formData.append("filename", photo.name);
+  formData.append("type", "Photo");
+
+  const description = `Portrait Photo for ${name}`;
+
+  formData.append("description", description);
 
   for (const [key, value] of formData.entries()) {
     console.log(`${key}:`, value);
