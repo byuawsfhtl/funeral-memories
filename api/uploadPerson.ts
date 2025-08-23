@@ -304,24 +304,33 @@ export async function uploadPersonAndPortrait({
 
   console.log("memoryDetails: ", memoryDetails);
 
-  const media: MediaItem[] = memoryDetails.sourceDescriptions?.[0]?.media || [];
+  const media = memoryDetails.sourceDescriptions[0];
+
+  if (!memoryEntry || !memoryEntry.id || !memoryEntry.links?.artifact?.href) {
+    throw new Error(
+      "Invalid or incomplete sourceDescription data for portrait"
+    );
+  }
 
   console.log("got to media");
 
-  if (media.length === 0) {
+  if (!media) {
     throw new Error("No media found in uploaded memory details");
   }
 
-  const mediaId = media[0].id;
+  const mediaId = media.id;
   if (!mediaId) {
     throw new Error("No media ID found in memory details");
   }
 
-  const sourceDescUri = media[0].links.artifact?.href;
+  console.log("got to mediaID");
 
+  const sourceDescUri = media.links.artifact?.href;
   if (!sourceDescUri) {
     throw new Error("Artifact link missing from media item");
   }
+
+  console.log("found sourceDescUri");
 
   console.log("made mediaID");
 
