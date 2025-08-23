@@ -1,3 +1,5 @@
+import { fetchAndStoreToken } from "./auth";
+
 interface DateDict {
   original?: string | null;
   formal?: string | null;
@@ -241,6 +243,10 @@ export async function uploadPersonAndPortrait({
   }
 
   console.log(memoryUrl);
+  console.log("All response headers:");
+  for (const [key, value] of memoryResponse.headers.entries()) {
+    console.log(`${key}: ${value}`);
+  }
 
   // 3. Attach portrait to person
   const portraitPayload = {
@@ -257,6 +263,7 @@ export async function uploadPersonAndPortrait({
       },
     ],
   };
+  const newToken = fetchAndStoreToken();
 
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
@@ -264,7 +271,7 @@ export async function uploadPersonAndPortrait({
       method: "POST",
       headers: {
         "Content-Type": "application/x-gedcomx-v1+json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${newToken}`,
       },
       body: JSON.stringify(portraitPayload),
     }
