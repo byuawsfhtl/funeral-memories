@@ -235,14 +235,38 @@ export async function uploadPersonAndPortrait({
     );
   }
 
-  const memoryUrl =
-    memoryResponse.headers.get("content-location") ||
-    memoryResponse.headers.get("Content-Location");
-  if (!memoryUrl) {
-    throw new Error("Memory URL missing in response");
+  const linkHeader = memoryResponse.headers.get("link");
+  if (!linkHeader) {
+    throw new Error("Missing 'link' header in memory upload response");
   }
 
-  console.log(memoryUrl);
+  // Parse the link header to find rel="memory-reference" URI
+  const memoryReferenceMatch = linkHeader.match(
+    /<([^>]+)>; rel="memory-reference"/
+  );
+  if (!memoryReferenceMatch) {
+    throw new Error("No memory-reference link found in header");
+  }
+  const memoryReferenceUrl = memoryReferenceMatch[1];
+
+  const memoryRefResponse = await fetch(memoryReferenceUrl, {
+    headers: { Authorization: `Bearer ${actual_token}` },
+  });
+  if (!memoryRefResponse.ok) {
+    const text = await memoryRefResponse.text();
+    throw new Error(
+      `Memory-reference fetch failed: ${memoryRefResponse.status} ${memoryRefResponse.statusText}\n${text}`
+    );
+  }
+  const memoryRefData = await memoryRefResponse.json();
+
+  const sourceDescUri = memoryRefData.sourceDescription?.resourceId;
+  if (!sourceDescUri) {
+    throw new Error(
+      "SourceDescription resource ID missing in memory reference"
+    );
+  }
+
   console.log("All response headers:");
   for (const [key, value] of memoryResponse.headers.entries()) {
     console.log(`${key}: ${value}`);
@@ -254,7 +278,11 @@ export async function uploadPersonAndPortrait({
       {
         media: [
           {
-            description: memoryUrl,
+            description: sourceDescUri,
+            region: {
+              regionType: "http://gedcomx.org/RectangleRegion",
+              bounds: { x: 0, y: 0, width: 1, height: 1 }, // Full image as the portrait
+            },
             attribution: {
               changeMessage: "Portrait added from AddPerson form",
             },
@@ -284,5 +312,5 @@ export async function uploadPersonAndPortrait({
     );
   }
 
-  return { pid, memoryUrl };
+  return { pid, memoryUrl: sourceDescUri };
 }
