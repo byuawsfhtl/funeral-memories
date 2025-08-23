@@ -241,12 +241,23 @@ export async function uploadPersonAndPortrait({
     );
   }
 
-  const memoriesData = await memoryResponse.json();
+  const memoriesListResponse = await fetch(
+    `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
+    {
+      headers: { Authorization: `Bearer ${actual_token}` },
+    }
+  );
 
-  console.log("Memories entries:", memoriesData.entries);
+  if (!memoriesListResponse.ok) {
+    throw new Error(
+      `Failed to fetch memories list: ${memoriesListResponse.statusText}`
+    );
+  }
 
-  const memoryEntry = memoriesData.entries.find(
-    (entry: any) => entry.id === uploadedMemoryId // match on id or other criteria
+  const memoriesList = await memoriesListResponse.json();
+
+  const memoryEntry = memoriesList.entries.find(
+    (entry: any) => entry.id === uploadedMemoryId
   );
 
   if (!memoryEntry || !memoryEntry.sourceDescription) {
