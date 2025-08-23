@@ -102,6 +102,7 @@ export async function uploadPersonAndPortrait({
 }: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
   // Validate and prepare nameForms
   console.log("Name to upload:", JSON.stringify(name));
+  const actual_token = extractActualAccessToken(fstoken);
 
   const nameForms = formatNameForms(name);
   console.log("Formatted nameForms:", JSON.stringify(nameForms, null, 2));
@@ -207,7 +208,7 @@ export async function uploadPersonAndPortrait({
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${actual_token}`,
       },
       body: formData,
     }
