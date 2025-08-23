@@ -240,6 +240,8 @@ export async function uploadPersonAndPortrait({
     throw new Error("Memory URL missing in response");
   }
 
+  console.log(memoryUrl);
+
   // 3. Attach portrait to person
   const portraitPayload = {
     persons: [
