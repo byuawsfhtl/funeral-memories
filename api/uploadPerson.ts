@@ -256,6 +256,8 @@ export async function uploadPersonAndPortrait({
 
   const memoriesList = await memoriesListResponse.json();
 
+  console.log("Memory List: ", memoriesList);
+
   const memoryEntry = memoriesList.entries.find(
     (entry: any) => entry.id === uploadedMemoryId
   );
