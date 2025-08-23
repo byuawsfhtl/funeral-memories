@@ -292,6 +292,8 @@ export async function uploadPersonAndPortrait({
 
   const memoryDetails = await memoryDetailsResponse.json();
 
+  console.log("memoryDetails: ", memoryDetails);
+
   const media: MediaItem[] = memoryDetails.sourceDescriptions?.[0]?.media || [];
 
   if (media.length === 0) {
