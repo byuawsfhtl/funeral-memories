@@ -357,6 +357,8 @@ export async function uploadPersonAndPortrait({
     ],
   };
 
+  console.log(portraitPayload);
+
   console.log("got to after portrait payload");
   const newToken = await fetchAndStoreToken();
 
