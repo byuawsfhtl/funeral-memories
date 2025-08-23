@@ -365,9 +365,9 @@ export async function uploadPersonAndPortrait({
   const newToken = await fetchAndStoreToken();
 
   console.log(newToken);
-  const new_actual_token = extractActualAccessToken(newToken);
+  //const new_actual_token = extractActualAccessToken(newToken);
 
-  console.log(new_actual_token);
+  //console.log(new_actual_token);
 
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
@@ -375,7 +375,7 @@ export async function uploadPersonAndPortrait({
       method: "POST",
       headers: {
         "Content-Type": "application/x-gedcomx-v1+json",
-        Authorization: `Bearer ${new_actual_token}`,
+        Authorization: `Bearer ${newToken}`,
       },
       body: JSON.stringify(portraitPayload),
     }
