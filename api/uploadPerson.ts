@@ -370,7 +370,7 @@ export async function uploadPersonAndPortrait({
       method: "POST",
       headers: {
         "Content-Type": "application/x-gedcomx-v1+json",
-        Authorization: `Bearer ${newToken}`,
+        Authorization: `Bearer ${fstoken}`,
       },
       body: JSON.stringify(portraitPayload),
     }
