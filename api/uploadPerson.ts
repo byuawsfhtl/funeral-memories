@@ -309,7 +309,7 @@ export async function uploadPersonAndPortrait({
       {
         media: [
           {
-            id: mediaId,
+            id: memoryEntry.id,
             attribution: {
               changeMessage: "...change message...",
             },
@@ -325,6 +325,8 @@ export async function uploadPersonAndPortrait({
       },
     ],
   };
+
+  console.log("got to after portrait payload");
   const newToken = await fetchAndStoreToken();
 
   const portraitResponse = await fetch(
