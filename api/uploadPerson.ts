@@ -234,38 +234,26 @@ export async function uploadPersonAndPortrait({
       `Memory upload failed: ${memoryResponse.status} ${memoryResponse.statusText}\n${text}`
     );
   }
-
-  const linkHeader = memoryResponse.headers.get("link");
-  if (!linkHeader) {
-    throw new Error("Missing 'link' header in memory upload response");
+  const uploadedMemoryId = memoryResponse.headers.get("x-entity-id");
+  if (!uploadedMemoryId) {
+    throw new Error(
+      "No memory ID returned in header 'x-entity-id' from memory upload"
+    );
   }
 
-  // Parse the link header to find rel="memory-reference" URI
-  const memoryReferenceMatch = linkHeader.match(
-    /<([^>]+)>; rel="memory-reference"/
+  const memoriesData = await memoryResponse.json();
+
+  console.log("Memories entries:", memoriesData.entries);
+
+  const memoryEntry = memoriesData.entries.find(
+    (entry: any) => entry.id === uploadedMemoryId // match on id or other criteria
   );
-  if (!memoryReferenceMatch) {
-    throw new Error("No memory-reference link found in header");
-  }
-  const memoryReferenceUrl = memoryReferenceMatch[1];
 
-  const memoryRefResponse = await fetch(memoryReferenceUrl, {
-    headers: { Authorization: `Bearer ${actual_token}` },
-  });
-  if (!memoryRefResponse.ok) {
-    const text = await memoryRefResponse.text();
-    throw new Error(
-      `Memory-reference fetch failed: ${memoryRefResponse.status} ${memoryRefResponse.statusText}\n${text}`
-    );
+  if (!memoryEntry || !memoryEntry.sourceDescription) {
+    throw new Error("SourceDescription not found in memory entries");
   }
-  const memoryRefData = await memoryRefResponse.json();
 
-  const sourceDescUri = memoryRefData.sourceDescription?.resourceId;
-  if (!sourceDescUri) {
-    throw new Error(
-      "SourceDescription resource ID missing in memory reference"
-    );
-  }
+  const sourceDescUri = memoryEntry.sourceDescription.resourceId;
 
   console.log("All response headers:");
   for (const [key, value] of memoryResponse.headers.entries()) {
