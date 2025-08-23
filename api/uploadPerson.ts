@@ -6,11 +6,21 @@ interface DateDict {
   normalized?: Array<{ lang: string; value: string }> | null;
 }
 
+interface Link {
+  href: string;
+}
+
+interface Links {
+  artifact?: Link;
+  [key: string]: Link | undefined;
+}
+
 interface MediaItem {
   id: string;
   attribution?: object;
   description?: string;
   qualifiers?: Array<{ name: string; value: string }>;
+  links: Links; // specify the shape with possible known fields
 }
 
 interface UploadPersonParams {
@@ -272,9 +282,9 @@ export async function uploadPersonAndPortrait({
   }
 
   // The URI you need for portrait attachment:
-  const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${memoryEntry.id}`;
+  //const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${memoryEntry.id}`;
 
-  console.log("sourceDesc: ", sourceDescUri);
+  //console.log("sourceDesc: ", sourceDescUri);
 
   const memoryDetailsResponse = await fetch(
     `https://api.familysearch.org/platform/memories/memories/${uploadedMemoryId}`,
@@ -305,6 +315,12 @@ export async function uploadPersonAndPortrait({
   const mediaId = media[0].id;
   if (!mediaId) {
     throw new Error("No media ID found in memory details");
+  }
+
+  const sourceDescUri = media[0].links.artifact?.href;
+
+  if (!sourceDescUri) {
+    throw new Error("Artifact link missing from media item");
   }
 
   console.log("made mediaID");
