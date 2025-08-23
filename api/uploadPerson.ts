@@ -6,6 +6,13 @@ interface DateDict {
   normalized?: Array<{ lang: string; value: string }> | null;
 }
 
+interface MediaItem {
+  id: string;
+  attribution?: object;
+  description?: string;
+  qualifiers?: Array<{ name: string; value: string }>;
+}
+
 interface UploadPersonParams {
   name: string;
   sex: string;
@@ -265,9 +272,36 @@ export async function uploadPersonAndPortrait({
   }
 
   // The URI you need for portrait attachment:
-  const sourceDescUri = `/platform/sourcedescriptions/${memoryEntry.id}`;
+  const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${memoryEntry.id}`;
 
   console.log("sourceDesc: ", sourceDescUri);
+
+  const memoryDetailsResponse = await fetch(
+    `https://api.familysearch.org/platform/memories/memories/${uploadedMemoryId}`,
+    {
+      headers: { Authorization: `Bearer ${actual_token}` },
+    }
+  );
+
+  if (!memoryDetailsResponse.ok) {
+    const text = await memoryDetailsResponse.text();
+    throw new Error(
+      `Failed to fetch memory details: ${memoryDetailsResponse.status} ${memoryDetailsResponse.statusText}\n${text}`
+    );
+  }
+
+  const memoryDetails = await memoryDetailsResponse.json();
+
+  const media: MediaItem[] = memoryDetails.sourceDescriptions?.[0]?.media || [];
+
+  if (media.length === 0) {
+    throw new Error("No media found in uploaded memory details");
+  }
+
+  const mediaId = media[0].id;
+  if (!mediaId) {
+    throw new Error("No media ID found in memory details");
+  }
 
   // 3. Attach portrait to person
   const portraitPayload = {
@@ -275,14 +309,17 @@ export async function uploadPersonAndPortrait({
       {
         media: [
           {
-            description: sourceDescUri,
-            region: {
-              regionType: "http://gedcomx.org/RectangleRegion",
-              bounds: { x: 0, y: 0, width: 1, height: 1 }, // Full image as the portrait
-            },
+            id: mediaId,
             attribution: {
-              changeMessage: "Portrait added from AddPerson form",
+              changeMessage: "...change message...",
             },
+            description: sourceDescUri,
+            qualifiers: [
+              {
+                value: "0.1,0.2,0.3,0.4",
+                name: "http://gedcomx.org/RectangleRegion",
+              },
+            ],
           },
         ],
       },
