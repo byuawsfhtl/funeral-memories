@@ -291,7 +291,8 @@ export async function uploadPersonAndPortrait({
       },
     ],
   };
-  const newToken = fetchAndStoreToken();
+  const newJWTToken = await fetchAndStoreToken();
+  const newToken = await extractActualAccessToken(newJWTToken);
 
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
