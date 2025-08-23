@@ -233,18 +233,6 @@ export async function uploadPersonAndPortrait({
     }
   );
 
-  //   const memoryResponse = await fetch(
-  //     "https://api.familysearch.org/platform/memories/memories",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: `Bearer ${fstoken}`,
-  //         // no Content-Type header when sending FormData
-  //       },
-  //       body: formData,
-  //     }
-  //   );
-
   if (!memoryResponse.ok) {
     const text = await memoryResponse.text();
     throw new Error(
@@ -273,18 +261,11 @@ export async function uploadPersonAndPortrait({
 
   const memoriesList = await memoriesListResponse.json();
 
-  console.log("Memory List: ", memoriesList);
-
   const memoryEntry = memoriesList.sourceDescriptions[0]; // Assuming this is your uploaded memory
 
   if (!memoryEntry || !memoryEntry.id) {
     throw new Error("Invalid sourceDescription in memories list");
   }
-
-  // The URI you need for portrait attachment:
-  //const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${memoryEntry.id}`;
-
-  //console.log("sourceDesc: ", sourceDescUri);
 
   const memoryDetailsResponse = await fetch(
     `https://api.familysearch.org/platform/memories/memories/${uploadedMemoryId}`,
@@ -302,8 +283,6 @@ export async function uploadPersonAndPortrait({
 
   const memoryDetails = await memoryDetailsResponse.json();
 
-  console.log("memoryDetails: ", memoryDetails);
-
   const media = memoryDetails.sourceDescriptions[0];
 
   if (!memoryEntry || !memoryEntry.id || !memoryEntry.links?.artifact?.href) {
@@ -311,8 +290,6 @@ export async function uploadPersonAndPortrait({
       "Invalid or incomplete sourceDescription data for portrait"
     );
   }
-
-  console.log("got to media");
 
   if (!media) {
     throw new Error("No media found in uploaded memory details");
@@ -323,18 +300,10 @@ export async function uploadPersonAndPortrait({
     throw new Error("No media ID found in memory details");
   }
 
-  console.log("got to mediaID");
-
   const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${mediaId}`;
   if (!sourceDescUri) {
     throw new Error("Artifact link missing from media item");
   }
-
-  console.log(sourceDescUri);
-
-  console.log("found sourceDescUri");
-
-  console.log("made mediaID");
 
   // 3. Attach portrait to person
   const portraitPayload = {
@@ -358,16 +327,6 @@ export async function uploadPersonAndPortrait({
       },
     ],
   };
-
-  console.log(portraitPayload);
-
-  console.log("got to after portrait payload");
-  const newToken = await fetchAndStoreToken();
-
-  console.log(newToken);
-  //const new_actual_token = extractActualAccessToken(newToken);
-
-  //console.log(new_actual_token);
 
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
