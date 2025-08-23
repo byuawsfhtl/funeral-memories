@@ -296,6 +296,8 @@ export async function uploadPersonAndPortrait({
 
   const media: MediaItem[] = memoryDetails.sourceDescriptions?.[0]?.media || [];
 
+  console.log("got to media");
+
   if (media.length === 0) {
     throw new Error("No media found in uploaded memory details");
   }
@@ -304,6 +306,8 @@ export async function uploadPersonAndPortrait({
   if (!mediaId) {
     throw new Error("No media ID found in memory details");
   }
+
+  console.log("made mediaID");
 
   // 3. Attach portrait to person
   const portraitPayload = {
