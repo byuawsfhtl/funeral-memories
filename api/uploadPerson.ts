@@ -247,6 +247,10 @@ export async function uploadPersonAndPortrait({
         media: [
           {
             description: memoryUrl,
+            region: {
+              regionType: "http://gedcomx.org/RectangleRegion",
+              bounds: { x: 0, y: 0, width: 1, height: 1 }, // full image as portrait
+            },
             attribution: {
               changeMessage: "Portrait added from AddPerson form",
             },
