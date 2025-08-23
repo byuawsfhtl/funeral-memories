@@ -318,7 +318,7 @@ export async function uploadPersonAndPortrait({
             description: sourceDescUri,
             qualifiers: [
               {
-                value: "0.1,0.2,0.3,0.4",
+                value: "0,0,1,1",
                 name: "http://gedcomx.org/RectangleRegion",
               },
             ],
