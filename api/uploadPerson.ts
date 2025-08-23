@@ -267,10 +267,7 @@ export async function uploadPersonAndPortrait({
   // The URI you need for portrait attachment:
   const sourceDescUri = `/platform/sourcedescriptions/${memoryEntry.id}`;
 
-  console.log("All response headers:");
-  for (const [key, value] of memoryResponse.headers.entries()) {
-    console.log(`${key}: ${value}`);
-  }
+  console.log("sourceDesc: ", sourceDescUri);
 
   // 3. Attach portrait to person
   const portraitPayload = {
@@ -291,8 +288,7 @@ export async function uploadPersonAndPortrait({
       },
     ],
   };
-  const newJWTToken = await fetchAndStoreToken();
-  const newToken = await extractActualAccessToken(newJWTToken);
+  const newToken = await fetchAndStoreToken();
 
   const portraitResponse = await fetch(
     `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
