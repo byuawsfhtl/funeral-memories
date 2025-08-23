@@ -325,10 +325,12 @@ export async function uploadPersonAndPortrait({
 
   console.log("got to mediaID");
 
-  const sourceDescUri = media.links.artifact?.href;
+  const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${mediaId}`;
   if (!sourceDescUri) {
     throw new Error("Artifact link missing from media item");
   }
+
+  console.log(sourceDescUri);
 
   console.log("found sourceDescUri");
 
