@@ -80,6 +80,16 @@ function formatNameForms(name: string) {
   ];
 }
 
+function extractActualAccessToken(jwt: string): string | null {
+  try {
+    const payload = JSON.parse(atob(jwt.split(".")[1]));
+    return payload.fs_access_token;
+  } catch (err) {
+    console.error("Failed to decode token:", err);
+    return null;
+  }
+}
+
 export async function uploadPersonAndPortrait({
   name,
   sex,
@@ -197,7 +207,7 @@ export async function uploadPersonAndPortrait({
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${fstoken}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     }
