@@ -258,15 +258,14 @@ export async function uploadPersonAndPortrait({
 
   console.log("Memory List: ", memoriesList);
 
-  const memoryEntry = memoriesList.entries.find(
-    (entry: any) => entry.id === uploadedMemoryId
-  );
+  const memoryEntry = memoriesList.sourceDescriptions[0]; // Assuming this is your uploaded memory
 
-  if (!memoryEntry || !memoryEntry.sourceDescription) {
-    throw new Error("SourceDescription not found in memory entries");
+  if (!memoryEntry || !memoryEntry.id) {
+    throw new Error("Invalid sourceDescription in memories list");
   }
 
-  const sourceDescUri = memoryEntry.sourceDescription.resourceId;
+  // The URI you need for portrait attachment:
+  const sourceDescUri = `/platform/sourcedescriptions/${memoryEntry.id}`;
 
   console.log("All response headers:");
   for (const [key, value] of memoryResponse.headers.entries()) {
