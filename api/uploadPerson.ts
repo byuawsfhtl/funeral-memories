@@ -1,28 +1,3 @@
-import { fetchAndStoreToken } from "./auth";
-
-interface DateDict {
-  original?: string | null;
-  formal?: string | null;
-  normalized?: Array<{ lang: string; value: string }> | null;
-}
-
-interface Link {
-  href: string;
-}
-
-interface Links {
-  artifact?: Link;
-  [key: string]: Link | undefined;
-}
-
-interface MediaItem {
-  id: string;
-  attribution?: object;
-  description?: string;
-  qualifiers?: Array<{ name: string; value: string }>;
-  links: Links; // specify the shape with possible known fields
-}
-
 interface DateFact {
   type: string;
   date: {
@@ -153,19 +128,18 @@ export async function uploadPersonAndPortrait({
 
   if (birthDate != null) {
     birthFact = formatDateFact("http://gedcomx.org/Birth", birthDate);
+    facts.push(birthFact);
   }
 
   if (deathDate != null) {
     deathFact = formatDateFact("http://gedcomx.org/Death", deathDate);
+    facts.push(deathFact);
   }
 
   if (marriageDate != null) {
     marriageFact = formatDateFact("http://gedcomx.org/Marriage", marriageDate);
+    facts.push(marriageFact);
   }
-
-  if (birthFact) facts.push(birthFact);
-  if (deathFact) facts.push(deathFact);
-  if (marriageFact) facts.push(marriageFact);
 
   const personPayload = {
     persons: [
