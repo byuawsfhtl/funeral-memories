@@ -141,6 +141,8 @@ export async function uploadPersonAndPortrait({
     facts.push(marriageFact);
   }
 
+  console.log(facts);
+
   const personPayload = {
     persons: [
       {
