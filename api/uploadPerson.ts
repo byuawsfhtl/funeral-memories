@@ -19,6 +19,36 @@ interface UploadPersonParams {
 }
 
 // Helper to format GEDCOM X compliant date fact object
+const months = [
+  "",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+function formatOriginalDate(
+  year: string,
+  month?: string,
+  day?: string
+): string {
+  const m =
+    month && Number(month) >= 1 && Number(month) <= 12
+      ? months[Number(month)]
+      : "";
+  if (day && m) return `${day} ${m} ${year}`;
+  if (m) return `${m} ${year}`;
+  return year;
+}
+
 function formatDateFact(
   type: string,
   date?: { year?: string; month?: string; day?: string }
@@ -30,10 +60,10 @@ function formatDateFact(
   const padMonth = month?.padStart(2, "0") ?? "";
   const padDay = day?.padStart(2, "0") ?? "";
 
-  // Original should be YYYY-MM-DD or YYYY-MM or YYYY depending on what's provided
-  const original = [year, padMonth, padDay].filter(Boolean).join("-");
+  // Produce human-readable original date with textual month name
+  const original = formatOriginalDate(year, month, day);
 
-  // Formal must always start with '+' and follow ISO format
+  // Formal ISO date string starting with '+' matching GEDCOM X spec
   const formal = `+${year}${month ? "-" + padMonth : ""}${
     day ? "-" + padDay : ""
   }`;
