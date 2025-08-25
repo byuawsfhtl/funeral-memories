@@ -22,6 +22,22 @@ export default function AddPerson() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
 
+  function toDateOrNull(dateStr: string): Date | null {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function dateToPartialDate(
+    date: Date | null | undefined
+  ): { year?: string; month?: string; day?: string } | null {
+    if (!date) return null;
+    const year = date.getUTCFullYear().toString();
+    const month = (date.getUTCMonth() + 1).toString(); // JS months 0-based
+    const day = date.getUTCDate().toString();
+    return { year, month, day };
+  }
+
   function parseDateString(
     dateString: string
   ): { year?: string; month?: string; day?: string } | undefined {
@@ -66,15 +82,11 @@ export default function AddPerson() {
       let token = await fetchAndStoreToken();
 
       // Convert date strings to objects
-      const birthDateObj = storedBirthDate
-        ? parseDateString(storedBirthDate)
-        : null;
-      const deathDateObj = storedDeathDate
-        ? parseDateString(storedDeathDate)
-        : null;
-      const marriageDateObj = storedMarriageDate
-        ? parseDateString(storedMarriageDate)
-        : null;
+      const birthDateObj = dateToPartialDate(toDateOrNull(storedBirthDate));
+      const deathDateObj = dateToPartialDate(toDateOrNull(storedDeathDate));
+      const marriageDateObj = dateToPartialDate(
+        toDateOrNull(storedMarriageDate)
+      );
 
       // Pass the *local* variables here, NOT the (not updated yet) React state
       const { pid, memoryUrl } = await uploadPersonAndPortrait({
@@ -222,7 +234,7 @@ export default function AddPerson() {
               Birth Date <span className="text-muted small">(optional)</span>
             </label>
             <input
-              type="text"
+              type="date"
               id="birthDate"
               className="form-control"
               placeholder="Enter Birth Date"
@@ -235,7 +247,7 @@ export default function AddPerson() {
               Death Date <span className="text-muted small">(optional)</span>
             </label>
             <input
-              type="text"
+              type="date"
               id="deathDate"
               className="form-control"
               placeholder="Enter Death Date"
@@ -248,7 +260,7 @@ export default function AddPerson() {
               Marriage Date <span className="text-muted small">(optional)</span>
             </label>
             <input
-              type="text"
+              type="date"
               id="marriageDate"
               className="form-control"
               placeholder="Enter Marriage Date"

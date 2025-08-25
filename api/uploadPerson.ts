@@ -18,6 +18,17 @@ interface UploadPersonParams {
   fstoken: string;
 }
 
+function extractDateParts(
+  date?: Date | null
+): { year?: string; month?: string; day?: string } | null {
+  if (!date) return null;
+  return {
+    year: date.getUTCFullYear().toString(),
+    month: (date.getUTCMonth() + 1).toString(), // JavaScript months are 0-based
+    day: date.getUTCDate().toString(),
+  };
+}
+
 // Helper to format GEDCOM X compliant date fact object
 const months = [
   "",
@@ -51,19 +62,29 @@ function formatOriginalDate(
 
 function formatDateFact(
   type: string,
-  date?: { year?: string; month?: string; day?: string }
+  date?: { year?: string; month?: string; day?: string } | Date | null
 ): DateFact | null {
-  if (!date || !date.year) return null;
+  if (!date) return null;
 
-  const { year, month, day } = date;
+  let year, month, day;
+
+  if (date instanceof Date) {
+    year = date.getUTCFullYear().toString();
+    month = (date.getUTCMonth() + 1).toString();
+    day = date.getUTCDate().toString();
+  } else {
+    year = date.year;
+    month = date.month;
+    day = date.day;
+  }
+
+  if (!year) return null;
 
   const padMonth = month?.padStart(2, "0") ?? "";
   const padDay = day?.padStart(2, "0") ?? "";
 
-  // Produce human-readable original date with textual month name
   const original = formatOriginalDate(year, month, day);
 
-  // Formal ISO date string starting with '+' matching GEDCOM X spec
   const formal = `+${year}${month ? "-" + padMonth : ""}${
     day ? "-" + padDay : ""
   }`;
