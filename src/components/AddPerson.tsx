@@ -47,6 +47,7 @@ export default function AddPerson() {
       const storedSex = localStorage.getItem("addSex") || "";
       const storedBirthDate = localStorage.getItem("addBirthDate") || "";
       const storedDeathDate = localStorage.getItem("addDeathDate") || "";
+      const storedMarriageDate = localStorage.getItem("addMarriageDate") || "";
       const base64Photo = localStorage.getItem("addPhotoBase64") || "";
       const fileName = localStorage.getItem("addPhoto") || "";
 
@@ -55,6 +56,7 @@ export default function AddPerson() {
       setSex(storedSex);
       setBirthDate(storedBirthDate);
       setDeathDate(storedDeathDate);
+      setMarriageDate(storedMarriageDate);
       if (base64Photo) {
         const file = base64ToFile(base64Photo, fileName);
         setPhoto(file);
@@ -70,6 +72,9 @@ export default function AddPerson() {
       const deathDateObj = storedDeathDate
         ? parseDateString(storedDeathDate)
         : null;
+      const marriageDateObj = storedMarriageDate
+        ? parseDateString(storedMarriageDate)
+        : null;
 
       // Pass the *local* variables here, NOT the (not updated yet) React state
       const { pid, memoryUrl } = await uploadPersonAndPortrait({
@@ -77,6 +82,7 @@ export default function AddPerson() {
         sex: storedSex,
         birthDate: birthDateObj,
         deathDate: deathDateObj,
+        marriageDate: marriageDateObj,
         photo: base64Photo ? base64ToFile(base64Photo, fileName) : null!,
         token,
         fstoken,
@@ -161,6 +167,7 @@ export default function AddPerson() {
       localStorage.setItem("addBirthDate", birthDate);
       localStorage.setItem("addDeathDate", deathDate);
       localStorage.setItem("addPhoto", photo.name);
+      localStorage.setItem("addDeathDate", deathDate);
       // Convert photo (File) to base64 string and store in localStorage
       const toBase64 = (file: File): Promise<string> =>
         new Promise((resolve, reject) => {

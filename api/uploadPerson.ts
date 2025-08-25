@@ -22,7 +22,7 @@ interface UploadPersonParams {
 function formatDateFact(
   type: string,
   date?: { year?: string; month?: string; day?: string }
-) {
+): DateFact | null {
   if (!date || !date.year) return null;
 
   const { year, month, day } = date;
@@ -30,10 +30,14 @@ function formatDateFact(
   const padMonth = month?.padStart(2, "0") ?? "";
   const padDay = day?.padStart(2, "0") ?? "";
 
+  // Original should be YYYY-MM-DD or YYYY-MM or YYYY depending on what's provided
   const original = [year, padMonth, padDay].filter(Boolean).join("-");
+
+  // Formal must always start with '+' and follow ISO format
   const formal = `+${year}${month ? "-" + padMonth : ""}${
     day ? "-" + padDay : ""
   }`;
+
   const normalized = [{ lang: "en", value: formal }];
 
   return {
