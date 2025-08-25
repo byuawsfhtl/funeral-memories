@@ -158,7 +158,7 @@ export async function uploadPersonAndPortrait({
             //nameForms,
           },
         ],
-        // facts,
+        facts: facts,
         // attribution: {
         //   changeMessage: "Person data uploaded via AddPerson form",
         // },

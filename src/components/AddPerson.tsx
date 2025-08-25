@@ -17,6 +17,7 @@ export default function AddPerson() {
   const [sex, setSex] = useState<string>("");
   const [birthDate, setBirthDate] = useState("");
   const [deathDate, setDeathDate] = useState("");
+  const [marriageDate, setMarriageDate] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -90,6 +91,7 @@ export default function AddPerson() {
       setSex("");
       setBirthDate("");
       setDeathDate("");
+      setMarriageDate("");
     };
 
     run();
@@ -118,6 +120,10 @@ export default function AddPerson() {
 
   const handleDeathChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDeathDate(e.target.value);
+  };
+
+  const handleMarriageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMarriageDate(e.target.value);
   };
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -207,7 +213,7 @@ export default function AddPerson() {
           </div>
           <div className="mb-3">
             <label htmlFor="birthDate" className="form-label">
-              Birth Date
+              Birth Date <span className="text-muted small">(optional)</span>
             </label>
             <input
               type="text"
@@ -220,7 +226,7 @@ export default function AddPerson() {
           </div>
           <div className="mb-3">
             <label htmlFor="deathDate" className="form-label">
-              Death Date
+              Death Date <span className="text-muted small">(optional)</span>
             </label>
             <input
               type="text"
@@ -229,6 +235,19 @@ export default function AddPerson() {
               placeholder="Enter Death Date"
               value={deathDate}
               onChange={handleDeathChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="deathDate" className="form-label">
+              Marriage Date <span className="text-muted small">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="marriageDate"
+              className="form-control"
+              placeholder="Enter Marriage Date"
+              value={marriageDate}
+              onChange={handleMarriageChange}
             />
           </div>
           <div className="mb-3">
