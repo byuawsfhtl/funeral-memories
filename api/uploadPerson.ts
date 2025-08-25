@@ -191,6 +191,7 @@ export async function uploadPersonAndPortrait({
     facts.push(deathFact);
   }
 
+  console.log("marriageDate: ", marriageDate);
   if (marriageDate != null) {
     marriageFact = formatDateFact("http://gedcomx.org/Marriage", marriageDate);
     facts.push(marriageFact);
