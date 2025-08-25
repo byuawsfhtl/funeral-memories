@@ -63,8 +63,12 @@ export default function AddPerson() {
       let token = await fetchAndStoreToken();
 
       // Convert date strings to objects
-      const birthDateObj = parseDateString(storedBirthDate);
-      const deathDateObj = parseDateString(storedDeathDate);
+      const birthDateObj = storedBirthDate
+        ? parseDateString(storedBirthDate)
+        : null;
+      const deathDateObj = storedDeathDate
+        ? parseDateString(storedDeathDate)
+        : null;
 
       // Pass the *local* variables here, NOT the (not updated yet) React state
       const { pid, memoryUrl } = await uploadPersonAndPortrait({

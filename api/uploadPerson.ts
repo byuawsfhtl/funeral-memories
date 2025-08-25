@@ -23,12 +23,21 @@ interface MediaItem {
   links: Links; // specify the shape with possible known fields
 }
 
+interface DateFact {
+  type: string;
+  date: {
+    original: string;
+    formal: string;
+    normalized: Array<{ lang: string; value: string }>;
+  };
+}
+
 interface UploadPersonParams {
   name: string;
   sex: string;
-  birthDate?: { year?: string; month?: string; day?: string };
-  deathDate?: { year?: string; month?: string; day?: string };
-  marriageDate?: { year?: string; month?: string; day?: string };
+  birthDate?: { year?: string; month?: string; day?: string } | null;
+  deathDate?: { year?: string; month?: string; day?: string } | null;
+  marriageDate?: { year?: string; month?: string; day?: string } | null;
   photo: File;
   token: string;
   fstoken: string;
@@ -138,12 +147,21 @@ export async function uploadPersonAndPortrait({
 
   // Format facts
   const facts = [];
-  const birthFact = formatDateFact("http://gedcomx.org/Birth", birthDate);
-  const deathFact = formatDateFact("http://gedcomx.org/Death", deathDate);
-  const marriageFact = formatDateFact(
-    "http://gedcomx.org/Marriage",
-    marriageDate
-  );
+  let birthFact: DateFact | null = null;
+  let deathFact: DateFact | null = null;
+  let marriageFact: DateFact | null = null;
+
+  if (birthDate != null) {
+    birthFact = formatDateFact("http://gedcomx.org/Birth", birthDate);
+  }
+
+  if (deathDate != null) {
+    deathFact = formatDateFact("http://gedcomx.org/Death", deathDate);
+  }
+
+  if (marriageDate != null) {
+    marriageFact = formatDateFact("http://gedcomx.org/Marriage", marriageDate);
+  }
 
   if (birthFact) facts.push(birthFact);
   if (deathFact) facts.push(deathFact);
