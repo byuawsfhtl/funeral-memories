@@ -178,6 +178,7 @@ export default function AddPerson() {
       localStorage.setItem("addSex", sex);
       localStorage.setItem("addBirthDate", birthDate);
       localStorage.setItem("addDeathDate", deathDate);
+      localStorage.setItem("addMarriageDate", marriageDate);
       localStorage.setItem("addPhoto", photo.name);
       localStorage.setItem("addDeathDate", deathDate);
       // Convert photo (File) to base64 string and store in localStorage
