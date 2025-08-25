@@ -111,7 +111,6 @@ export default function AddPerson() {
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    console.log(name);
   };
 
   const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) => {
