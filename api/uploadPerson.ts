@@ -27,14 +27,14 @@ function formatDateFact(
 
   const { year, month, day } = date;
 
-  // Format original, formal, normalized strings as your colleague does
-  const original = [year, month, day].filter(Boolean).join("-");
-  const formal = `+${year}${month ? "-" + month.padStart(2, "0") : ""}${
-    day ? "-" + day.padStart(2, "0") : ""
+  const padMonth = month?.padStart(2, "0") ?? "";
+  const padDay = day?.padStart(2, "0") ?? "";
+
+  const original = [year, padMonth, padDay].filter(Boolean).join("-");
+  const formal = `+${year}${month ? "-" + padMonth : ""}${
+    day ? "-" + padDay : ""
   }`;
-  const normalized = [
-    { lang: "en", value: month && day ? `${month}/${day}/${year}` : year },
-  ];
+  const normalized = [{ lang: "en", value: formal }];
 
   return {
     type,
