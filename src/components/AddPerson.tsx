@@ -140,7 +140,7 @@ export default function AddPerson() {
   };
 
   const handleBirthPlaceChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setBirthDate(e.target.value);
+    setBirthPlace(e.target.value);
   };
 
   const handleDeathChange = (e: ChangeEvent<HTMLInputElement>) => {
