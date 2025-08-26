@@ -1,9 +1,18 @@
+interface Place {
+  original: string;
+  normalized: Array<{ lang: string; value: string }>;
+}
+
 interface DateFact {
   type: string;
   date: {
     original: string;
     formal: string;
     normalized: Array<{ lang: string; value: string }>;
+    place?: Place;
+  };
+  attribution?: {
+    changeMessage: string;
   };
 }
 
@@ -13,6 +22,7 @@ interface UploadPersonParams {
   birthDate?: { year?: string; month?: string; day?: string } | null;
   deathDate?: { year?: string; month?: string; day?: string } | null;
   marriageDate?: { year?: string; month?: string; day?: string } | null;
+  birthPlace: string;
   photo: File;
   token: string;
   fstoken: string;
@@ -154,6 +164,7 @@ export async function uploadPersonAndPortrait({
   birthDate,
   deathDate,
   marriageDate,
+  birthPlace,
   photo,
   token,
   fstoken,
@@ -183,6 +194,16 @@ export async function uploadPersonAndPortrait({
 
   if (birthDate != null) {
     birthFact = formatDateFact("http://gedcomx.org/Birth", birthDate);
+
+    if (birthFact && birthPlace) {
+      birthFact.date.place = {
+        original: birthPlace,
+        normalized: [{ lang: "en", value: birthPlace }],
+      };
+      birthFact.attribution = {
+        changeMessage: "Birthplace information added from user input",
+      };
+    }
     facts.push(birthFact);
   }
 
@@ -191,11 +212,12 @@ export async function uploadPersonAndPortrait({
     facts.push(deathFact);
   }
 
-  console.log("marriageDate: ", marriageDate);
-  if (marriageDate != null) {
-    marriageFact = formatDateFact("http://gedcomx.org/Marriage", marriageDate);
-    facts.push(marriageFact);
-  }
+  //TODO: FIGURE OUT HOW TO CORRECTLY SEND MARRIAGE DATE, TALK TO JENSON
+  // console.log("marriageDate: ", marriageDate);
+  // if (marriageDate != null) {
+  //   marriageFact = formatDateFact("http://gedcomx.org/Marriage", marriageDate);
+  //   facts.push(marriageFact);
+  // }
 
   console.log(facts);
 
@@ -217,9 +239,9 @@ export async function uploadPersonAndPortrait({
           },
         ],
         facts: facts,
-        attribution: {
-          changeMessage: "Person data uploaded via AddPerson form",
-        },
+        // attribution: {
+        //   changeMessage: "Person data uploaded via AddPerson form",
+        // },
       },
     ],
   };

@@ -16,6 +16,7 @@ export default function AddPerson() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [sex, setSex] = useState<string>("");
   const [birthDate, setBirthDate] = useState("");
+  const [birthPlace, setBirthPlace] = useState("");
   const [deathDate, setDeathDate] = useState("");
   const [marriageDate, setMarriageDate] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -64,6 +65,7 @@ export default function AddPerson() {
       const storedBirthDate = localStorage.getItem("addBirthDate") || "";
       const storedDeathDate = localStorage.getItem("addDeathDate") || "";
       const storedMarriageDate = localStorage.getItem("addMarriageDate") || "";
+      const storedBirthPlace = localStorage.getItem("addBirthPlace") || "";
       const base64Photo = localStorage.getItem("addPhotoBase64") || "";
       const fileName = localStorage.getItem("addPhoto") || "";
 
@@ -73,6 +75,7 @@ export default function AddPerson() {
       setBirthDate(storedBirthDate);
       setDeathDate(storedDeathDate);
       setMarriageDate(storedMarriageDate);
+      setBirthPlace(storedBirthPlace);
       if (base64Photo) {
         const file = base64ToFile(base64Photo, fileName);
         setPhoto(file);
@@ -95,6 +98,7 @@ export default function AddPerson() {
         birthDate: birthDateObj,
         deathDate: deathDateObj,
         marriageDate: marriageDateObj,
+        birthPlace: storedBirthPlace,
         photo: base64Photo ? base64ToFile(base64Photo, fileName) : null!,
         token,
         fstoken,
@@ -132,6 +136,10 @@ export default function AddPerson() {
   };
 
   const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setBirthDate(e.target.value);
+  };
+
+  const handleBirthPlaceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBirthDate(e.target.value);
   };
 
@@ -177,6 +185,7 @@ export default function AddPerson() {
       localStorage.setItem("addName", name);
       localStorage.setItem("addSex", sex);
       localStorage.setItem("addBirthDate", birthDate);
+      localStorage.setItem("addBirthPlace", birthPlace);
       localStorage.setItem("addDeathDate", deathDate);
       localStorage.setItem("addMarriageDate", marriageDate);
       localStorage.setItem("addPhoto", photo.name);
@@ -244,6 +253,19 @@ export default function AddPerson() {
             />
           </div>
           <div className="mb-3">
+            <label htmlFor="birthDate" className="form-label">
+              Birth Place <span className="text-muted small">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="birthPlace"
+              className="form-control"
+              placeholder="Enter Birth Place"
+              value={birthPlace}
+              onChange={handleBirthPlaceChange}
+            />
+          </div>
+          <div className="mb-3">
             <label htmlFor="deathDate" className="form-label">
               Death Date <span className="text-muted small">(optional)</span>
             </label>
@@ -256,7 +278,7 @@ export default function AddPerson() {
               onChange={handleDeathChange}
             />
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label htmlFor="deathDate" className="form-label">
               Marriage Date <span className="text-muted small">(optional)</span>
             </label>
@@ -268,7 +290,7 @@ export default function AddPerson() {
               value={marriageDate}
               onChange={handleMarriageChange}
             />
-          </div>
+          </div> */}
           <div className="mb-3">
             <label htmlFor="personPhoto" className="form-label">
               Add Portrait
