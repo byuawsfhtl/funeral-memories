@@ -217,9 +217,9 @@ export async function uploadPersonAndPortrait({
           },
         ],
         facts: facts,
-        // attribution: {
-        //   changeMessage: "Person data uploaded via AddPerson form",
-        // },
+        attribution: {
+          changeMessage: "Person data uploaded via AddPerson form",
+        },
       },
     ],
   };
@@ -245,6 +245,7 @@ export async function uploadPersonAndPortrait({
 
   if (!personResponse.ok) {
     const text = await personResponse.text();
+    console.error("API error response:", text); // <-- add this line
     throw new Error(
       `Person upload failed: ${personResponse.status} ${personResponse.statusText}\n${text}`
     );
