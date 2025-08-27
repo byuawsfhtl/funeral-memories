@@ -14,6 +14,7 @@ import AdminLogin from "./adminLogin";
 import FindRelative from "./find_relative/FindRelative";
 import SetExpireDate from "./setExpireDate";
 import AddPerson from "./AddPerson";
+import PersonSelect from "./PersonSelect";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -32,6 +33,7 @@ if (rootElement) {
           <Route path="/admin" Component={AdminLogin}></Route>
           <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
           <Route path="/addPerson" Component={AddPerson} />
+          <Route path="/personSelect" Component={PersonSelect} />
           <Route path="*" Component={Home} />
         </Routes>
         <Footer />
