@@ -24,6 +24,11 @@ export default function AddPerson() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
 
+  // Modal state
+  const [showConfirm, setShowConfirm] = useState(false);
+  const handleConfirmOpen = () => setShowConfirm(true);
+  const handleConfirmClose = () => setShowConfirm(false);
+
   function toDateOrNull(dateStr: string): Date | null {
     if (!dateStr) return null;
     const d = new Date(dateStr);
@@ -35,7 +40,7 @@ export default function AddPerson() {
   ): { year?: string; month?: string; day?: string } | null {
     if (!date) return null;
     const year = date.getUTCFullYear().toString();
-    const month = (date.getUTCMonth() + 1).toString(); // JS months 0-based
+    const month = (date.getUTCMonth() + 1).toString();
     const day = date.getUTCDate().toString();
     return { year, month, day };
   }
@@ -46,7 +51,6 @@ export default function AddPerson() {
     if (!dateString) return undefined;
     const parts = dateString.split("-");
     if (parts.length < 1) return undefined;
-
     return {
       year: parts[0] || undefined,
       month: parts[1] || undefined,
@@ -60,7 +64,6 @@ export default function AddPerson() {
       const fstoken = params.get("fstoken");
       if (!fstoken) return;
 
-      // Load values from localStorage into local vars
       const storedName = localStorage.getItem("addName") || "";
       const storedSex = localStorage.getItem("addSex") || "";
       const storedBirthDate = localStorage.getItem("addBirthDate") || "";
@@ -70,7 +73,6 @@ export default function AddPerson() {
       const base64Photo = localStorage.getItem("addPhotoBase64") || "";
       const fileName = localStorage.getItem("addPhoto") || "";
 
-      // Update React state for UI
       setName(storedName);
       setSex(storedSex);
       setBirthDate(storedBirthDate);
@@ -85,15 +87,13 @@ export default function AddPerson() {
 
       let token = await fetchAndStoreToken();
 
-      // Convert date strings to objects
       const birthDateObj = dateToPartialDate(toDateOrNull(storedBirthDate));
       const deathDateObj = dateToPartialDate(toDateOrNull(storedDeathDate));
       const marriageDateObj = dateToPartialDate(
         toDateOrNull(storedMarriageDate)
       );
 
-      // Pass the *local* variables here, NOT the (not updated yet) React state
-      const { pid, memoryUrl } = await uploadPersonAndPortrait({
+      const { pid } = await uploadPersonAndPortrait({
         name: storedName,
         sex: storedSex,
         birthDate: birthDateObj,
@@ -107,7 +107,6 @@ export default function AddPerson() {
 
       alert("Person and portrait uploaded successfully! PID: " + pid);
 
-      // Reset states if needed here
       setName("");
       setPhoto(null);
       setPreviewUrl(null);
@@ -132,40 +131,32 @@ export default function AddPerson() {
     return new File([u8arr], filename, { type: mime });
   }
 
-  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
-  };
 
-  const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleBirthChange = (e: ChangeEvent<HTMLInputElement>) =>
     setBirthDate(e.target.value);
-  };
 
-  const handleBirthPlaceChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleBirthPlaceChange = (e: ChangeEvent<HTMLInputElement>) =>
     setBirthPlace(e.target.value);
-  };
 
-  const handleDeathChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleDeathChange = (e: ChangeEvent<HTMLInputElement>) =>
     setDeathDate(e.target.value);
-  };
 
-  const handleMarriageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleMarriageChange = (e: ChangeEvent<HTMLInputElement>) =>
     setMarriageDate(e.target.value);
-  };
 
   const handlePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      // Compress the image before processing it further
       const options = {
-        maxSizeMB: 1, // <--- limit size to 1MB (adjust as needed)
-        maxWidthOrHeight: 1024, // <--- also resizes if necessary (adjust as needed)
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1024,
         useWebWorker: true,
       };
       try {
         const compressedFile = await imageCompression(file, options);
         setPhoto(compressedFile);
-
-        // Create preview URL for the compressed image
         const reader = new FileReader();
         reader.onloadend = () => {
           setPreviewUrl(reader.result as string);
@@ -182,7 +173,8 @@ export default function AddPerson() {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  // Show modal first
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       alert("Please enter a name.");
@@ -192,38 +184,21 @@ export default function AddPerson() {
       alert("Please upload a photo.");
       return;
     }
+    handleConfirmOpen();
+  };
+
+  // Final confirm submit
+  const handleConfirmSubmit = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      //TODO: Add real token"
-      //ADD CHECKS
       localStorage.setItem("addName", name);
       localStorage.setItem("addSex", sex);
       localStorage.setItem("addBirthDate", birthDate);
       localStorage.setItem("addBirthPlace", birthPlace);
       localStorage.setItem("addDeathDate", deathDate);
       localStorage.setItem("addMarriageDate", marriageDate);
-      //localStorage.setItem("addPhoto", photo.name);
+      localStorage.setItem("addPhoto", photo!.name);
 
-      try {
-        localStorage.setItem("addPhoto", photo.name); // Attempt to store the image
-      } catch (e: any) {
-        // Different browsers use different error names
-        if (
-          e.name === "QuotaExceededError" ||
-          e.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
-          e.code === 22 // legacy code for quota exceeded
-        ) {
-          alert(
-            "The image is too large to save! Please try a smaller photo or compress it."
-          );
-          // Optionally, clean up state or prevent form submission here
-        } else {
-          alert("Unexpected error saving image to local storage.");
-        }
-      }
-
-      localStorage.setItem("addDeathDate", deathDate);
-      // Convert photo (File) to base64 string and store in localStorage
       const toBase64 = (file: File): Promise<string> =>
         new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -232,14 +207,8 @@ export default function AddPerson() {
           reader.readAsDataURL(file);
         });
 
-      const base64Photo = await toBase64(photo);
+      const base64Photo = await toBase64(photo!);
       localStorage.setItem("addPhotoBase64", base64Photo);
-
-      // To convert base64 string back to a File:
-      // (You can use this code wherever you need to restore the File object)
-
-      // Example usage:
-      // const restoredFile = base64ToFile(base64Photo, photo.name);
 
       const redirectUri = `${window.location.origin}${location.pathname}`;
       window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
@@ -247,6 +216,7 @@ export default function AddPerson() {
       alert(error.message || "Error uploading person and portrait.");
     } finally {
       setLoading(false);
+      setShowConfirm(false);
     }
   };
 
@@ -272,6 +242,7 @@ export default function AddPerson() {
               required
             />
           </div>
+
           <div className="mb-3">
             <label htmlFor="birthDate" className="form-label">
               Birth Date <span className="text-muted small">(optional)</span>
@@ -280,24 +251,24 @@ export default function AddPerson() {
               type="date"
               id="birthDate"
               className="form-control"
-              placeholder="Enter Birth Date"
               value={birthDate}
               onChange={handleBirthChange}
             />
           </div>
+
           <div className="mb-3">
-            <label htmlFor="birthDate" className="form-label">
+            <label htmlFor="birthPlace" className="form-label">
               Birth Place <span className="text-muted small">(optional)</span>
             </label>
             <input
               type="text"
               id="birthPlace"
               className="form-control"
-              placeholder="Enter Birth Place"
               value={birthPlace}
               onChange={handleBirthPlaceChange}
             />
           </div>
+
           <div className="mb-3">
             <label htmlFor="deathDate" className="form-label">
               Death Date <span className="text-muted small">(optional)</span>
@@ -306,24 +277,11 @@ export default function AddPerson() {
               type="date"
               id="deathDate"
               className="form-control"
-              placeholder="Enter Death Date"
               value={deathDate}
               onChange={handleDeathChange}
             />
           </div>
-          {/* <div className="mb-3">
-            <label htmlFor="deathDate" className="form-label">
-              Marriage Date <span className="text-muted small">(optional)</span>
-            </label>
-            <input
-              type="date"
-              id="marriageDate"
-              className="form-control"
-              placeholder="Enter Marriage Date"
-              value={marriageDate}
-              onChange={handleMarriageChange}
-            />
-          </div> */}
+
           <div className="mb-3">
             <label htmlFor="personPhoto" className="form-label">
               Add Portrait
@@ -338,6 +296,7 @@ export default function AddPerson() {
               ref={fileInputRef}
             />
           </div>
+
           {previewUrl && (
             <div
               className="position-relative mt-2"
@@ -419,11 +378,85 @@ export default function AddPerson() {
 
           <div className="d-grid mt-4">
             <button type="submit" className="btn btn-primary btn-lg">
-              Add Person
+              Add Person and Create Memory Wall
             </button>
           </div>
         </form>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirm && (
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          role="dialog"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Confirm Person Details</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleConfirmClose}
+                ></button>
+              </div>
+              <div className="modal-body text-center">
+                {previewUrl && (
+                  <img
+                    src={previewUrl}
+                    alt="Portrait Preview"
+                    className="img-fluid mb-3 rounded"
+                    style={{ maxHeight: "200px" }}
+                  />
+                )}
+                <p>
+                  <strong>Name:</strong> {name}
+                </p>
+                <p>
+                  <strong>Sex:</strong> {sex}
+                </p>
+                {birthDate && (
+                  <p>
+                    <strong>Birth Date:</strong> {birthDate}
+                  </p>
+                )}
+                {birthPlace && (
+                  <p>
+                    <strong>Birth Place:</strong> {birthPlace}
+                  </p>
+                )}
+                {deathDate && (
+                  <p>
+                    <strong>Death Date:</strong> {deathDate}
+                  </p>
+                )}
+                {marriageDate && (
+                  <p>
+                    <strong>Marriage Date:</strong> {marriageDate}
+                  </p>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleConfirmClose}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleConfirmSubmit}
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Confirm & Submit"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

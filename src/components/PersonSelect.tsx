@@ -1,13 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
+import { ProgressBar } from "react-step-progress-bar";
 
 export default function PersonSelect() {
   const navigate = useNavigate();
   const [hostHover, setHostHover] = useState(false);
+  const percentage = 75;
 
   return (
     <main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+      <div style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}>
+        <small
+          className="text-muted align-items-center"
+          style={{
+            display: "block",
+            textAlign: "center",
+            marginBottom: "8px",
+          }}
+        >
+          Progress toward creating your memory wall
+        </small>
+        <ProgressBar
+          percent={percentage}
+          filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+          text={`${percentage}%`}
+        />
+      </div>
       <h1
         className="mb-5 text-center"
         style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
