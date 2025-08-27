@@ -9,6 +9,7 @@ import { uploadPersonAndPortrait } from "../../api/uploadPerson";
 import { fetchAndStoreToken } from "../../api/auth";
 import { useLocation } from "react-router";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import imageCompression from "browser-image-compression";
 
 export default function AddPerson() {
   const [name, setName] = useState("");
@@ -151,17 +152,30 @@ export default function AddPerson() {
     setMarriageDate(e.target.value);
   };
 
-  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
-      setPhoto(file);
-
-      // Create preview URL for the selected image
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
+      // Compress the image before processing it further
+      const options = {
+        maxSizeMB: 1, // <--- limit size to 1MB (adjust as needed)
+        maxWidthOrHeight: 1024, // <--- also resizes if necessary (adjust as needed)
+        useWebWorker: true,
       };
-      reader.readAsDataURL(file);
+      try {
+        const compressedFile = await imageCompression(file, options);
+        setPhoto(compressedFile);
+
+        // Create preview URL for the compressed image
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        alert("Image compression failed: " + error);
+        setPhoto(null);
+        setPreviewUrl(null);
+      }
     } else {
       setPhoto(null);
       setPreviewUrl(null);
@@ -188,7 +202,26 @@ export default function AddPerson() {
       localStorage.setItem("addBirthPlace", birthPlace);
       localStorage.setItem("addDeathDate", deathDate);
       localStorage.setItem("addMarriageDate", marriageDate);
-      localStorage.setItem("addPhoto", photo.name);
+      //localStorage.setItem("addPhoto", photo.name);
+
+      try {
+        localStorage.setItem("addPhoto", photo.name); // Attempt to store the image
+      } catch (e: any) {
+        // Different browsers use different error names
+        if (
+          e.name === "QuotaExceededError" ||
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+          e.code === 22 // legacy code for quota exceeded
+        ) {
+          alert(
+            "The image is too large to save! Please try a smaller photo or compress it."
+          );
+          // Optionally, clean up state or prevent form submission here
+        } else {
+          alert("Unexpected error saving image to local storage.");
+        }
+      }
+
       localStorage.setItem("addDeathDate", deathDate);
       // Convert photo (File) to base64 string and store in localStorage
       const toBase64 = (file: File): Promise<string> =>
