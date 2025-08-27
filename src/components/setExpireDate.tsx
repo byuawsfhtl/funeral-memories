@@ -35,7 +35,7 @@ export default function SetExpireDate() {
       state: {
         username,
         password,
-        expirationDateTime: new Date(expirationDateTime).toISOString(),
+        expirationDateTime: expirationDateTime,
       },
     });
   };
