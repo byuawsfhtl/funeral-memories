@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { ProgressBar } from "react-step-progress-bar";
@@ -6,6 +6,10 @@ import { ProgressBar } from "react-step-progress-bar";
 export default function PersonSelect() {
   const navigate = useNavigate();
   const [hostHover, setHostHover] = useState(false);
+  const location = useLocation();
+  const expirationDateTime = location.state?.expirationDateTime || {};
+  const username = location.state?.username || {};
+  const password = location.state?.password || {};
   const percentage = 75;
 
   return (
@@ -39,7 +43,17 @@ export default function PersonSelect() {
           <button
             className="btn btn-primary w-100"
             style={{ height: "200px", fontSize: "1.5rem" }}
-            onClick={() => navigate("/find-relative")}
+            onClick={() =>
+              navigate("/find-relative", {
+                state: {
+                  username,
+                  password,
+                  expirationDateTime: new Date(
+                    expirationDateTime
+                  ).toISOString(),
+                },
+              })
+            }
           >
             🔍 Find through FamilySearch
           </button>
@@ -57,7 +71,17 @@ export default function PersonSelect() {
               color: "#fff",
               transition: "background 0.2s, border-color 0.2s",
             }}
-            onClick={() => navigate("/addPerson")}
+            onClick={() =>
+              navigate("/addPerson", {
+                state: {
+                  username,
+                  password,
+                  expirationDateTime: new Date(
+                    expirationDateTime
+                  ).toISOString(),
+                },
+              })
+            }
             onMouseEnter={() => setHostHover(true)}
             onMouseLeave={() => setHostHover(false)}
           >

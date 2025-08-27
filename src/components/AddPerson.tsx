@@ -6,12 +6,16 @@ import React, {
   useEffect,
 } from "react";
 import { uploadPersonAndPortrait } from "../../api/uploadPerson";
+import axios from "axios";
+
 import { fetchAndStoreToken } from "../../api/auth";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import imageCompression from "browser-image-compression";
 
 export default function AddPerson() {
+  const service = new FuneralMemoryService();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -23,6 +27,22 @@ export default function AddPerson() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const expirationDateTime = location.state?.expirationDateTime || {};
+  const username = location.state?.username || {};
+  const password = location.state?.password || {};
+
+  useEffect(() => {
+    const authTokenUrl = "https://auth.fhtl.org/get_token";
+    axios
+      .post(authTokenUrl)
+      .then((response) => {
+        const token = response.data.access_token;
+        sessionStorage.setItem("yourKey", token);
+      })
+      .catch((error) => {
+        console.error("Error fetching token:", error);
+      });
+  }, []); // Empty dependency array to run once on mount
 
   // Modal state
   const [showConfirm, setShowConfirm] = useState(false);
@@ -106,6 +126,52 @@ export default function AddPerson() {
       });
 
       alert("Person and portrait uploaded successfully! PID: " + pid);
+
+      const personResponse = await fetch(
+        `https://api.familysearch.org/platform/tree/persons/${pid}`
+      );
+      const personData = await personResponse.json();
+
+      try {
+        const group = {
+          ancestor: personData,
+          portrait: base64Photo,
+          closed: false,
+          timestamp: Date.now(),
+          expirationDate: expirationDateTime,
+        };
+
+        const admin = { admin: username, password: password };
+
+        const madeGroup = await service.addGroup(group, admin);
+
+        const sessionId =
+          localStorage.getItem("sessionId") || crypto.randomUUID();
+        localStorage.setItem("sessionId", sessionId);
+
+        const loginRes = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            groupId: madeGroup.groupId,
+            username,
+            password,
+            sessionId,
+          }),
+        });
+
+        if (!loginRes.ok) {
+          console.error("Failed to record session as admin");
+          alert("Group made, but admin session failed.");
+        }
+
+        navigate("/wall", { state: { madeGroup } });
+      } catch (err) {
+        console.error("Error during confirmation:", err);
+        alert("Something went wrong. Could not confirm group setup.");
+      } finally {
+        setLoading(false);
+      }
 
       setName("");
       setPhoto(null);

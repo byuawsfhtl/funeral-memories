@@ -24,7 +24,7 @@ export default function SetExpireDate() {
       return;
     }
 
-    navigate("/find-relative", {
+    navigate("/personSelect", {
       state: {
         username,
         password,
