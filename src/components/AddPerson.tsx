@@ -27,9 +27,9 @@ export default function AddPerson() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const expirationDateTime = location.state?.expirationDateTime || {};
-  const username = location.state?.username || {};
-  const password = location.state?.password || {};
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [expirationDateTime, setExpirationDateTime] = useState({});
 
   console.log(
     "expireDate username and Pass: ",
@@ -37,6 +37,18 @@ export default function AddPerson() {
     password,
     expirationDateTime
   );
+
+  useEffect(() => {
+    if (location.state?.username) {
+      setUsername(location.state.username);
+    }
+    if (location.state?.password) {
+      setPassword(location.state.password);
+    }
+    if (location.state?.expirationDateTime) {
+      setExpirationDateTime(location.state.expirationDateTime);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const authTokenUrl = "https://auth.fhtl.org/get_token";
@@ -99,6 +111,15 @@ export default function AddPerson() {
       const storedBirthPlace = localStorage.getItem("addBirthPlace") || "";
       const base64Photo = localStorage.getItem("addPhotoBase64") || "";
       const fileName = localStorage.getItem("addPhoto") || "";
+      const storedUsername = localStorage.getItem("username") || "";
+      const storedPassword = localStorage.getItem("password") || "";
+      const storedExpiration = localStorage.getItem("expirationDateTime");
+      const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
+
+      // Use these to replace location.state values
+      setUsername(storedUsername);
+      setPassword(storedPassword);
+      setExpirationDateTime(expiration);
 
       setName(storedName);
       setSex(storedSex);
@@ -299,6 +320,13 @@ export default function AddPerson() {
 
       const base64Photo = await toBase64(photo!);
       localStorage.setItem("addPhotoBase64", base64Photo);
+
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      localStorage.setItem(
+        "expirationDateTime",
+        JSON.stringify(expirationDateTime)
+      );
 
       const redirectUri = `${window.location.origin}${location.pathname}`;
       window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;

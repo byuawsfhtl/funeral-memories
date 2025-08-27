@@ -15,13 +15,6 @@ export default function SetExpireDate() {
   const { username, password } = location.state || {};
   const percentage = 50;
 
-  console.log(
-    "expireDate username and Pass: ",
-    username,
-    password,
-    expirationDateTime
-  );
-
   const handleSetExpiration = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
