@@ -128,7 +128,14 @@ export default function AddPerson() {
       alert("Person and portrait uploaded successfully! PID: " + pid);
 
       const personResponse = await fetch(
-        `https://api.familysearch.org/platform/tree/persons/${pid}`
+        `https://api.familysearch.org/platform/tree/persons/${pid}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/x-gedcomx-v1+json",
+            Authorization: `Bearer ${token}`, // Replace with valid token string
+          },
+        }
       );
       const personData = await personResponse.json();
 
