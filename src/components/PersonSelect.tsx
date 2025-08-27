@@ -12,6 +12,13 @@ export default function PersonSelect() {
   const password = location.state?.password || {};
   const percentage = 75;
 
+  console.log(
+    "expireDate username and Pass: ",
+    username,
+    password,
+    expirationDateTime
+  );
+
   return (
     <main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
       <div style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}>

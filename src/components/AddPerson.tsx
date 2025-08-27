@@ -139,7 +139,7 @@ export default function AddPerson() {
       );
       const personData = await personResponse.json();
 
-      const person = personData[0];
+      const person = personData.persons[0];
 
       console.log("person: ", personData);
 
