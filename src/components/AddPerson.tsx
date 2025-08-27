@@ -31,6 +31,13 @@ export default function AddPerson() {
   const username = location.state?.username || {};
   const password = location.state?.password || {};
 
+  console.log(
+    "expireDate username and Pass: ",
+    username,
+    password,
+    expirationDateTime
+  );
+
   useEffect(() => {
     const authTokenUrl = "https://auth.fhtl.org/get_token";
     axios
