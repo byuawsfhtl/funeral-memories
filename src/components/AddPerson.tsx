@@ -139,6 +139,8 @@ export default function AddPerson() {
       );
       const personData = await personResponse.json();
 
+      console.log("person: ", personData);
+
       try {
         const group = {
           ancestor: personData,
@@ -148,9 +150,15 @@ export default function AddPerson() {
           expirationDate: expirationDateTime,
         };
 
+        console.log("group: ", group);
+
         const admin = { admin: username, password: password };
 
+        console.log("admin: ", admin);
+
         const madeGroup = await service.addGroup(group, admin);
+
+        console.log("madeGroup", madeGroup);
 
         const sessionId =
           localStorage.getItem("sessionId") || crypto.randomUUID();
