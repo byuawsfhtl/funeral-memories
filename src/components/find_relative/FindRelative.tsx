@@ -284,7 +284,7 @@ export default function FindRelative() {
         flexDirection: "column", // keep label above bar
         alignItems: "center", // horizontal center
         justifyContent: "center", // vertical center
-        height: "100vh", // center horizontally
+        minHeight: "100vh", // center horizontally
       }}
     >
       <div className={`container ${isLoading ? "loading" : ""}`}>
