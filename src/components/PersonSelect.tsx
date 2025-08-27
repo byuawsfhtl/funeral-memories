@@ -20,7 +20,7 @@ export default function PersonSelect() {
           <button
             className="btn btn-primary w-100"
             style={{ height: "200px", fontSize: "1.5rem" }}
-            onClick={() => navigate("/findRelative")}
+            onClick={() => navigate("/find-relative")}
           >
             🔍 Find through FamilySearch
           </button>
