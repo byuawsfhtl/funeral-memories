@@ -233,6 +233,9 @@ export class FuneralMemoryService {
       } while (existing);
       console.log("got after fetch");
 
+      console.log("groupID: ", newGroupId);
+      console.log("admin: ", admin);
+
       await this.addAdmin({ groupId: newGroupId, ...admin });
       console.log("added admin");
 

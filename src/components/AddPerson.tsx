@@ -139,11 +139,13 @@ export default function AddPerson() {
       );
       const personData = await personResponse.json();
 
+      const person = personData[0];
+
       console.log("person: ", personData);
 
       try {
         const group = {
-          ancestor: personData,
+          ancestor: person,
           portrait: base64Photo,
           closed: false,
           timestamp: Date.now(),
