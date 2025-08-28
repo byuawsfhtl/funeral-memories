@@ -153,7 +153,7 @@ export default function AddPerson() {
         fstoken,
       });
 
-      alert("Person and portrait uploaded successfully! PID: " + pid);
+      //alert("Person and portrait uploaded successfully! PID: " + pid);
 
       const personResponse = await fetch(
         `https://api.familysearch.org/platform/tree/persons/${pid}`,
@@ -359,6 +359,10 @@ export default function AddPerson() {
     >
       <div style={{ width: "100%", maxWidth: 500 }}>
         <h1 className="text-center mb-4">Add a Person</h1>
+        <small>
+          For some reason you are not redirected to a memory wall after
+          submission, please try submitting again.
+        </small>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="personName" className="form-label">
@@ -587,6 +591,27 @@ export default function AddPerson() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {loading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "white",
+            fontSize: "1.5rem",
+            zIndex: 1050,
+          }}
+        >
+          Creating person and taking you to memory wall...
         </div>
       )}
     </main>
