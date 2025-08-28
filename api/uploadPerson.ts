@@ -168,7 +168,7 @@ export async function uploadPersonAndPortrait({
   photo,
   token,
   fstoken,
-}: UploadPersonParams): Promise<{ pid: string; memoryUrl: string }> {
+}: UploadPersonParams): Promise<{ pid: string; memoryUrl: string | null }> {
   // Validate and prepare nameForms
   console.log("Name to upload:", JSON.stringify(name));
   const actual_token = extractActualAccessToken(fstoken);
@@ -279,145 +279,151 @@ export async function uploadPersonAndPortrait({
   }
   console.log(pid);
 
-  // 2. Upload photo (Memories)
-  const formData = new FormData();
-  formData.append("artifact", photo);
-  formData.append("title", "Portrait Photo");
-  formData.append("filename", photo.name);
-  formData.append("type", "Photo");
+  let sourceDescUri: string | null = null;
 
-  const description = `Portrait Photo for ${name}`;
+  if (photo != null) {
+    // photo upload logic here
 
-  formData.append("description", description);
+    // 2. Upload photo (Memories)
+    const formData = new FormData();
+    formData.append("artifact", photo);
+    formData.append("title", "Portrait Photo");
+    formData.append("filename", photo.name);
+    formData.append("type", "Photo");
 
-  for (const [key, value] of formData.entries()) {
-    console.log(`${key}:`, value);
-  }
-  console.log("fstoken: ", fstoken);
+    const description = `Portrait Photo for ${name}`;
 
-  const memoryResponse = await fetch(
-    `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${actual_token}`,
-      },
-      body: formData,
+    formData.append("description", description);
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
-  );
+    console.log("fstoken: ", fstoken);
 
-  if (!memoryResponse.ok) {
-    const text = await memoryResponse.text();
-    throw new Error(
-      `Memory upload failed: ${memoryResponse.status} ${memoryResponse.statusText}\n${text}`
-    );
-  }
-  const uploadedMemoryId = memoryResponse.headers.get("x-entity-id");
-  if (!uploadedMemoryId) {
-    throw new Error(
-      "No memory ID returned in header 'x-entity-id' from memory upload"
-    );
-  }
-
-  const memoriesListResponse = await fetch(
-    `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
-    {
-      headers: { Authorization: `Bearer ${actual_token}` },
-    }
-  );
-
-  if (!memoriesListResponse.ok) {
-    throw new Error(
-      `Failed to fetch memories list: ${memoriesListResponse.statusText}`
-    );
-  }
-
-  const memoriesList = await memoriesListResponse.json();
-
-  const memoryEntry = memoriesList.sourceDescriptions[0]; // Assuming this is your uploaded memory
-
-  if (!memoryEntry || !memoryEntry.id) {
-    throw new Error("Invalid sourceDescription in memories list");
-  }
-
-  const memoryDetailsResponse = await fetch(
-    `https://api.familysearch.org/platform/memories/memories/${uploadedMemoryId}`,
-    {
-      headers: { Authorization: `Bearer ${actual_token}` },
-    }
-  );
-
-  if (!memoryDetailsResponse.ok) {
-    const text = await memoryDetailsResponse.text();
-    throw new Error(
-      `Failed to fetch memory details: ${memoryDetailsResponse.status} ${memoryDetailsResponse.statusText}\n${text}`
-    );
-  }
-
-  const memoryDetails = await memoryDetailsResponse.json();
-
-  const media = memoryDetails.sourceDescriptions[0];
-
-  if (!memoryEntry || !memoryEntry.id || !memoryEntry.links?.artifact?.href) {
-    throw new Error(
-      "Invalid or incomplete sourceDescription data for portrait"
-    );
-  }
-
-  if (!media) {
-    throw new Error("No media found in uploaded memory details");
-  }
-
-  const mediaId = media.id;
-  if (!mediaId) {
-    throw new Error("No media ID found in memory details");
-  }
-
-  const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${mediaId}`;
-  if (!sourceDescUri) {
-    throw new Error("Artifact link missing from media item");
-  }
-
-  // 3. Attach portrait to person
-  const portraitPayload = {
-    persons: [
+    const memoryResponse = await fetch(
+      `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
       {
-        media: [
-          {
-            id: memoryEntry.id,
-            attribution: {
-              changeMessage: "...change message...",
-            },
-            description: sourceDescUri,
-            qualifiers: [
-              {
-                value: "0,0,1,1",
-                name: "http://gedcomx.org/RectangleRegion",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
-
-  const portraitResponse = await fetch(
-    `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-gedcomx-v1+json",
-        Authorization: `Bearer ${actual_token}`,
-      },
-      body: JSON.stringify(portraitPayload),
-    }
-  );
-
-  if (!portraitResponse.ok) {
-    const text = await portraitResponse.text();
-    throw new Error(
-      `Portrait upload failed: ${portraitResponse.status} ${portraitResponse.statusText}\n${text}`
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${actual_token}`,
+        },
+        body: formData,
+      }
     );
+
+    if (!memoryResponse.ok) {
+      const text = await memoryResponse.text();
+      throw new Error(
+        `Memory upload failed: ${memoryResponse.status} ${memoryResponse.statusText}\n${text}`
+      );
+    }
+    const uploadedMemoryId = memoryResponse.headers.get("x-entity-id");
+    if (!uploadedMemoryId) {
+      throw new Error(
+        "No memory ID returned in header 'x-entity-id' from memory upload"
+      );
+    }
+
+    const memoriesListResponse = await fetch(
+      `https://api.familysearch.org/platform/tree/persons/${pid}/memories`,
+      {
+        headers: { Authorization: `Bearer ${actual_token}` },
+      }
+    );
+
+    if (!memoriesListResponse.ok) {
+      throw new Error(
+        `Failed to fetch memories list: ${memoriesListResponse.statusText}`
+      );
+    }
+
+    const memoriesList = await memoriesListResponse.json();
+
+    const memoryEntry = memoriesList.sourceDescriptions[0]; // Assuming this is your uploaded memory
+
+    if (!memoryEntry || !memoryEntry.id) {
+      throw new Error("Invalid sourceDescription in memories list");
+    }
+
+    const memoryDetailsResponse = await fetch(
+      `https://api.familysearch.org/platform/memories/memories/${uploadedMemoryId}`,
+      {
+        headers: { Authorization: `Bearer ${actual_token}` },
+      }
+    );
+
+    if (!memoryDetailsResponse.ok) {
+      const text = await memoryDetailsResponse.text();
+      throw new Error(
+        `Failed to fetch memory details: ${memoryDetailsResponse.status} ${memoryDetailsResponse.statusText}\n${text}`
+      );
+    }
+
+    const memoryDetails = await memoryDetailsResponse.json();
+
+    const media = memoryDetails.sourceDescriptions[0];
+
+    if (!memoryEntry || !memoryEntry.id || !memoryEntry.links?.artifact?.href) {
+      throw new Error(
+        "Invalid or incomplete sourceDescription data for portrait"
+      );
+    }
+
+    if (!media) {
+      throw new Error("No media found in uploaded memory details");
+    }
+
+    const mediaId = media.id;
+    if (!mediaId) {
+      throw new Error("No media ID found in memory details");
+    }
+
+    const sourceDescUri = `https://api.familysearch.org/platform/memories/memories/${mediaId}`;
+    if (!sourceDescUri) {
+      throw new Error("Artifact link missing from media item");
+    }
+
+    // 3. Attach portrait to person
+    const portraitPayload = {
+      persons: [
+        {
+          media: [
+            {
+              id: memoryEntry.id,
+              attribution: {
+                changeMessage: "...change message...",
+              },
+              description: sourceDescUri,
+              qualifiers: [
+                {
+                  value: "0,0,1,1",
+                  name: "http://gedcomx.org/RectangleRegion",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    const portraitResponse = await fetch(
+      `https://api.familysearch.org/platform/tree/persons/${pid}/portraits`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-gedcomx-v1+json",
+          Authorization: `Bearer ${actual_token}`,
+        },
+        body: JSON.stringify(portraitPayload),
+      }
+    );
+
+    if (!portraitResponse.ok) {
+      const text = await portraitResponse.text();
+      throw new Error(
+        `Portrait upload failed: ${portraitResponse.status} ${portraitResponse.statusText}\n${text}`
+      );
+    }
   }
 
   return { pid, memoryUrl: sourceDescUri };
