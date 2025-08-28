@@ -230,14 +230,15 @@ export default function AddPerson() {
           console.error("Failed to record session as admin");
           alert("Group made, but admin session failed.");
         }
-        localStorage.removeItem("hasConfirmed");
 
         navigate("/wall", { state: { madeGroup } });
       } catch (err) {
         console.error("Error during confirmation:", err);
+        localStorage.removeItem("hasConfirmed");
         alert("Something went wrong. Could not confirm group setup.");
       } finally {
         setLoading(false);
+        localStorage.removeItem("hasConfirmed");
       }
 
       setName("");

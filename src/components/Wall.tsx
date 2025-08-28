@@ -102,6 +102,7 @@ export default function Wall() {
   const qrWrapperRef = useRef<HTMLDivElement>(null);
   const [showHelp, setShowHelp] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  localStorage.removeItem("hasConfirmed");
 
   const downloadQR = () => {
     const svg = qrWrapperRef.current?.querySelector("svg");
