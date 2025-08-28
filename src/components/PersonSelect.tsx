@@ -83,7 +83,9 @@ export default function PersonSelect() {
                 state: {
                   username,
                   password,
-                  expirationDateTime: expirationDateTime,
+                  expirationDateTime: new Date(
+                    expirationDateTime
+                  ).toISOString(),
                 },
               })
             }
