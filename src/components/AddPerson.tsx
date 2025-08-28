@@ -427,7 +427,6 @@ export default function AddPerson() {
               accept="image/*"
               className="form-control"
               onChange={handlePhotoChange}
-              required
               ref={fileInputRef}
             />
           </div>
