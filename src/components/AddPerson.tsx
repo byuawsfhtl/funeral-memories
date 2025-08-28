@@ -85,22 +85,8 @@ export default function AddPerson() {
     return { year, month, day };
   }
 
-  function parseDateString(
-    dateString: string
-  ): { year?: string; month?: string; day?: string } | undefined {
-    if (!dateString) return undefined;
-    const parts = dateString.split("-");
-    if (parts.length < 1) return undefined;
-    return {
-      year: parts[0] || undefined,
-      month: parts[1] || undefined,
-      day: parts[2] || undefined,
-    };
-  }
-
   useEffect(() => {
     const confirmed = localStorage.getItem("hasConfirmed");
-    const loading = localStorage.getItem("loading");
     if (confirmed === "true") {
       setHasConfirmed(true);
       setLoading(true); // or set depending on your loading flow
@@ -171,7 +157,7 @@ export default function AddPerson() {
           method: "GET",
           headers: {
             Accept: "application/x-gedcomx-v1+json",
-            Authorization: `Bearer ${token}`, // Replace with valid token string
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -372,7 +358,7 @@ export default function AddPerson() {
     >
       <div style={{ width: "100%", maxWidth: 500 }}>
         <h1 className="text-center mb-4">Add a Person</h1>
-        <small className="text-muted align-items-center">
+        <small className="text-muted align-items-center text-center">
           For some reason you are not redirected to a memory wall after
           submission, please try submitting again.
         </small>
