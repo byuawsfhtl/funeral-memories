@@ -99,6 +99,15 @@ export default function AddPerson() {
   }
 
   useEffect(() => {
+    const confirmed = localStorage.getItem("hasConfirmed");
+    const loading = localStorage.getItem("loading");
+    if (confirmed === "true") {
+      setHasConfirmed(true);
+      setLoading(true); // or set depending on your loading flow
+    }
+  }, []);
+
+  useEffect(() => {
     const run = async () => {
       const params = new URLSearchParams(location.search);
       const fstoken = params.get("fstoken");
@@ -318,6 +327,8 @@ export default function AddPerson() {
   const handleConfirmSubmit = async () => {
     setLoading(true);
     setHasConfirmed(true);
+    localStorage.setItem("hasConfirmed", "true");
+    localStorage.setItem("loading", "true");
     try {
       localStorage.setItem("addName", name);
       localStorage.setItem("addSex", sex);
