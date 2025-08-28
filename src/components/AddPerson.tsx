@@ -89,7 +89,10 @@ export default function AddPerson() {
     const confirmed = localStorage.getItem("hasConfirmed");
     if (confirmed === "true") {
       setHasConfirmed(true);
-      setLoading(true); // or set depending on your loading flow
+      setLoading(true);
+      localStorage.removeItem("hasConfirmed");
+
+      // or set depending on your loading flow
     }
   }, []);
 
