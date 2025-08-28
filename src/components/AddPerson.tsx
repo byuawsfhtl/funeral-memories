@@ -197,6 +197,17 @@ export default function AddPerson() {
           localStorage.getItem("sessionId") || crypto.randomUUID();
         localStorage.setItem("sessionId", sessionId);
 
+        console.log(
+          "groupID: ",
+          madeGroup.groupId,
+          " username: ",
+          username,
+          " password: ",
+          password,
+          " sessionId: ",
+          sessionId
+        );
+
         const loginRes = await fetch("/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
