@@ -360,7 +360,7 @@ export default function AddPerson() {
         <h1 className="text-center mb-4">Add a Person</h1>
         <small className="text-muted text-center d-block">
           For some reason you are not redirected to a memory wall after
-          submission, please try submitting again.
+          submitting, please try submitting again.
         </small>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
