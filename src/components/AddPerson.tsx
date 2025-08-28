@@ -330,7 +330,11 @@ export default function AddPerson() {
       localStorage.setItem("addBirthPlace", birthPlace);
       localStorage.setItem("addDeathDate", deathDate);
       localStorage.setItem("addMarriageDate", marriageDate);
-      localStorage.setItem("addPhoto", photo!.name);
+      if (photo) {
+        localStorage.setItem("addPhoto", photo.name);
+      } else {
+        localStorage.removeItem("addPhoto"); // or set a default or empty string
+      }
 
       const toBase64 = (file: File): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -340,7 +344,8 @@ export default function AddPerson() {
           reader.readAsDataURL(file);
         });
 
-      const base64Photo = await toBase64(photo!);
+      const base64Photo = photo ? await toBase64(photo) : "";
+      localStorage.setItem("addPhotoBase64", base64Photo);
       localStorage.setItem("addPhotoBase64", base64Photo);
 
       localStorage.setItem("username", username);
