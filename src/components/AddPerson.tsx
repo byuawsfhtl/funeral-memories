@@ -30,6 +30,7 @@ export default function AddPerson() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [expirationDateTime, setExpirationDateTime] = useState("");
+  const [hasConfirmed, setHasConfirmed] = useState(false);
 
   console.log(
     "expireDate username and Pass: ",
@@ -99,7 +100,6 @@ export default function AddPerson() {
 
   useEffect(() => {
     const run = async () => {
-      setLoading(true);
       const params = new URLSearchParams(location.search);
       const fstoken = params.get("fstoken");
       if (!fstoken) return;
@@ -317,6 +317,7 @@ export default function AddPerson() {
   // Final confirm submit
   const handleConfirmSubmit = async () => {
     setLoading(true);
+    setHasConfirmed(true);
     try {
       localStorage.setItem("addName", name);
       localStorage.setItem("addSex", sex);
@@ -595,7 +596,7 @@ export default function AddPerson() {
         </div>
       )}
 
-      {loading && (
+      {loading && hasConfirmed && (
         <div
           style={{
             position: "fixed",
