@@ -6,39 +6,50 @@ import { compareSync } from "bcryptjs";
 import { addAdminSession } from "../lib/AdminDAO.js";
 
 export default async function handler(req: any, res: any) {
-	console.log("got to login.js");
-	if (req.method !== "POST") {
-		return res.status(405).send("Method not allowed");
-	}
+  console.log("got to login.js");
+  if (req.method !== "POST") {
+    return res.status(405).send("Method not allowed");
+  }
 
-	const { groupId, username, password, sessionId } = req.body;
+  const { groupId, username, password, sessionId } = req.body;
 
-	if (!groupId || !username || !password) {
-		return res.status(400).send("Missing groupId, username, or password");
-	}
+  console.log(
+    "groupID: ",
+    groupId,
+    " username: ",
+    username,
+    " password: ",
+    password,
+    " sessionId: ",
+    sessionId
+  );
 
-	try {
-		const admin = await getAdmin(groupId);
-		if (!admin || admin.admin !== username) {
-			return res.status(401).send("Invalid username or group ID");
-		}
+  if (!groupId || !username || !password) {
+    return res.status(400).send("Missing groupId, username, or password");
+  }
 
-		const isMatch = await bcrypt.compareSync(password, admin.password);
+  try {
+    const admin = await getAdmin(groupId);
+    if (!admin || admin.admin !== username) {
+      return res.status(401).send("Invalid username or group ID");
+    }
 
-		console.log("isMatch: ", isMatch);
-		if (!isMatch) {
-			return res.status(401).send("Invalid password");
-		}
+    const isMatch = await bcrypt.compareSync(password, admin.password);
 
-		await addAdminSession(groupId, sessionId);
+    console.log("isMatch: ", isMatch);
+    if (!isMatch) {
+      return res.status(401).send("Invalid password");
+    }
 
-		return res.status(200).json({ success: true });
-	} catch (err) {
-		if (err instanceof Error) {
-			console.error("Login error:", err.message);
-		} else {
-			console.error("Login error:", err);
-		}
-		return res.status(500).send("Internal server error");
-	}
+    await addAdminSession(groupId, sessionId);
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("Login error:", err.message);
+    } else {
+      console.error("Login error:", err);
+    }
+    return res.status(500).send("Internal server error");
+  }
 }
