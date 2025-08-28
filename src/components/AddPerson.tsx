@@ -278,6 +278,7 @@ export default function AddPerson() {
         maxSizeMB: 1,
         maxWidthOrHeight: 1024,
         useWebWorker: true,
+        initialQuality: Math.random() * (0.9 - 0.7) + 0.7,
       };
       try {
         const compressedFile = await imageCompression(file, options);
