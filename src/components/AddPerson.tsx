@@ -230,6 +230,7 @@ export default function AddPerson() {
           console.error("Failed to record session as admin");
           alert("Group made, but admin session failed.");
         }
+        localStorage.removeItem("hasConfirmed");
 
         navigate("/wall", { state: { madeGroup } });
       } catch (err) {
@@ -361,6 +362,7 @@ export default function AddPerson() {
     } finally {
       setLoading(false);
       setShowConfirm(false);
+      setHasConfirmed(false);
     }
   };
 
