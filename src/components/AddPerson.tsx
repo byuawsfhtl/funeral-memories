@@ -213,9 +213,9 @@ export default function AddPerson() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             groupId: madeGroup.groupId,
-            storedUsername,
-            storedPassword,
-            sessionId,
+            username: storedUsername,
+            password: storedPassword,
+            sessionId: sessionId,
           }),
         });
 
