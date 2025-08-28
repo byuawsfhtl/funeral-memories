@@ -167,7 +167,10 @@ export default function AddPerson() {
       );
       const personData = await personResponse.json();
 
-      const person = personData.persons[0];
+      const person = {
+        name: storedName,
+        id: pid,
+      };
 
       console.log("person: ", personData);
 
@@ -182,7 +185,7 @@ export default function AddPerson() {
 
         console.log("group: ", group);
 
-        const admin = { admin: username, password: password };
+        const admin = { admin: storedUsername, password: storedPassword };
 
         console.log("admin: ", admin);
 
