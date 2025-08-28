@@ -358,7 +358,7 @@ export default function AddPerson() {
     >
       <div style={{ width: "100%", maxWidth: 500 }}>
         <h1 className="text-center mb-4">Add a Person</h1>
-        <small className="text-muted align-items-center text-center">
+        <small className="text-muted text-center d-block">
           For some reason you are not redirected to a memory wall after
           submission, please try submitting again.
         </small>
