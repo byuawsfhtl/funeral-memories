@@ -180,7 +180,7 @@ export default function AddPerson() {
           portrait: base64Photo,
           closed: false,
           timestamp: Date.now(),
-          expirationDate: expirationDateTime,
+          expirationDate: storedExpiration,
         };
 
         console.log("group: ", group);
@@ -201,9 +201,9 @@ export default function AddPerson() {
           "groupID: ",
           madeGroup.groupId,
           " username: ",
-          username,
+          storedUsername,
           " password: ",
-          password,
+          storedPassword,
           " sessionId: ",
           sessionId
         );
