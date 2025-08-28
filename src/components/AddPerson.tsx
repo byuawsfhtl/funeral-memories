@@ -110,6 +110,17 @@ export default function AddPerson() {
       const storedUsername = localStorage.getItem("username") || "";
       const storedPassword = localStorage.getItem("password") || "";
       const storedExpiration = localStorage.getItem("expirationDateTime") || "";
+      const defaultPortraitUrl =
+        "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
+
+      const response = await fetch(
+        `/api/fetchPortrait?portraitUrl=${encodeURIComponent(
+          defaultPortraitUrl
+        )}`
+      );
+      const data = await response.json();
+      const portraitBase64 = data.base64;
+
       //const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
 
       // Use these to replace location.state values
@@ -173,7 +184,7 @@ export default function AddPerson() {
       try {
         const group = {
           ancestor: person,
-          portrait: base64Photo,
+          portrait: base64Photo || portraitBase64,
           closed: false,
           timestamp: Date.now(),
           expirationDate: storedExpiration,
