@@ -29,7 +29,7 @@ export default function AddPerson() {
   const location = useLocation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [expirationDateTime, setExpirationDateTime] = useState({});
+  const [expirationDateTime, setExpirationDateTime] = useState("");
 
   console.log(
     "expireDate username and Pass: ",
@@ -337,10 +337,7 @@ export default function AddPerson() {
 
       localStorage.setItem("username", username);
       localStorage.setItem("password", password);
-      localStorage.setItem(
-        "expirationDateTime",
-        JSON.stringify(expirationDateTime)
-      );
+      localStorage.setItem("expirationDateTime", expirationDateTime);
 
       console.log("expirationDateTime: ", expirationDateTime);
 
