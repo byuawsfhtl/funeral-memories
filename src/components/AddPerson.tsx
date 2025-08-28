@@ -302,10 +302,7 @@ export default function AddPerson() {
       alert("Please enter a name.");
       return;
     }
-    if (!photo) {
-      alert("Please upload a photo.");
-      return;
-    }
+
     handleConfirmOpen();
   };
 
