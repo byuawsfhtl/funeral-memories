@@ -213,8 +213,8 @@ export default function AddPerson() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             groupId: madeGroup.groupId,
-            username,
-            password,
+            storedUsername,
+            storedPassword,
             sessionId,
           }),
         });
@@ -341,6 +341,8 @@ export default function AddPerson() {
         "expirationDateTime",
         JSON.stringify(expirationDateTime)
       );
+
+      console.log("expirationDateTime: ", expirationDateTime);
 
       const redirectUri = `${window.location.origin}${location.pathname}`;
       window.location.href = `https://auth.fhtl.org?redirect=${redirectUri}`;
