@@ -113,13 +113,13 @@ export default function AddPerson() {
       const fileName = localStorage.getItem("addPhoto") || "";
       const storedUsername = localStorage.getItem("username") || "";
       const storedPassword = localStorage.getItem("password") || "";
-      const storedExpiration = localStorage.getItem("expirationDateTime");
-      const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
+      const storedExpiration = localStorage.getItem("expirationDateTime") || "";
+      //const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
 
       // Use these to replace location.state values
       setUsername(storedUsername);
       setPassword(storedPassword);
-      setExpirationDateTime(expiration);
+      setExpirationDateTime(storedExpiration);
 
       setName(storedName);
       setSex(storedSex);
