@@ -99,6 +99,7 @@ export default function AddPerson() {
 
   useEffect(() => {
     const run = async () => {
+      setLoading(true);
       const params = new URLSearchParams(location.search);
       const fstoken = params.get("fstoken");
       if (!fstoken) return;
@@ -359,7 +360,7 @@ export default function AddPerson() {
     >
       <div style={{ width: "100%", maxWidth: 500 }}>
         <h1 className="text-center mb-4">Add a Person</h1>
-        <small>
+        <small className="text-muted align-items-center">
           For some reason you are not redirected to a memory wall after
           submission, please try submitting again.
         </small>
