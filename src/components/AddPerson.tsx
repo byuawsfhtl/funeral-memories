@@ -462,7 +462,7 @@ export default function AddPerson() {
 						<input
 							type="file"
 							id="personPhoto"
-							accept="image/*"
+							accept=".jpg,.jpeg,.png,image/jpeg,image/png"
 							className="form-control"
 							onChange={handlePhotoChange}
 							ref={fileInputRef}
