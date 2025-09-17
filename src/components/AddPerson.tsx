@@ -378,7 +378,7 @@ export default function AddPerson() {
 			className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
 			style={{ padding: "2rem" }}
 		>
-			<div style={{ width: "100%", maxWidth: 500 }}>
+			<div style={{ width: "100%", maxWidth: "500px" }}>
 				<small
 					className="text-muted align-items-center"
 					style={{ display: "block", textAlign: "center", marginBottom: "8px" }}

@@ -299,7 +299,7 @@ export default function FindRelative() {
 				>
 					{/* Progress bar above title */}
 					<div
-						style={{ width: "100%", maxWidth: "600px", marginBottom: "15px" }}
+						style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}
 					>
 						<small
 							className="text-muted align-items-center"
