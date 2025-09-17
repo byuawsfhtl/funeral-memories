@@ -1,42 +1,49 @@
 import nodemailer from "nodemailer";
 
 export default async function handler(req: any, res: any) {
-  const { email, username, password, groupId, ancestorName, expirationDate } =
-    req.body;
+	const {
+		email,
+		username,
+		password,
+		groupId,
+		ancestorName,
+		expirationDate,
+		pid,
+	} = req.body;
 
-  if (!email || !username || !password || !groupId) {
-    return res.status(400).json({ error: "Missing fields" });
-  }
+	if (!email || !username || !password || !groupId) {
+		return res.status(400).json({ error: "Missing fields" });
+	}
 
-  const expirationDateString = new Date(expirationDate);
+	const expirationDateString = new Date(expirationDate);
 
-  const formattedDate = expirationDateString.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+	const formattedDate = expirationDateString.toLocaleDateString(undefined, {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
 
-  const formattedTime = expirationDateString.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-    timeZoneName: "short",
-  });
+	const formattedTime = expirationDateString.toLocaleTimeString(undefined, {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: true,
+		timeZoneName: "short",
+	});
 
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+	try {
+		const transporter = nodemailer.createTransport({
+			service: "Gmail",
+			auth: {
+				user: process.env.EMAIL_USER,
+				pass: process.env.EMAIL_PASS,
+			},
+		});
 
-    const mailOptions = {
-      from: `"Funeral Memories" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: `Your Funeral Memories Group Credentials`,
-      text: `Hello,
+		const mailOptions = {
+			from: `"Funeral Memories" <${process.env.EMAIL_USER}>`,
+			to: email,
+			subject: `Your Funeral Memories Group Credentials`,
+			text: `Hello,
 
 Your Funeral Memories group has been created for "${ancestorName}".
 
@@ -52,10 +59,10 @@ Please keep this information safe.
 
 Thank you,
 Funeral Memories Team`,
-      html: `
+			html: `
     <p>Hello,</p>
 
-    <p>Your Funeral Memories group has been created for "<strong>${ancestorName}</strong>".</p>
+    <p>Your Funeral Memories group has been created for "<strong>${ancestorName}</strong>" (PID : ${pid}).</p>
 
     <p>Here are your access details:</p>
 
@@ -69,14 +76,16 @@ Funeral Memories Team`,
 
     <p>Please keep this information safe.</p>
 
+    <p>If you created this person on our website, <strong>Please ensure you attach them to your tree.</strong></p>
+
     <p>Thank you,<br/>Funeral Memories Team</p>
   `,
-    };
+		};
 
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: "Email sent." });
-  } catch (error) {
-    console.error("Failed to send admin credentials email:", error);
-    res.status(500).json({ error: "Failed to send email." });
-  }
+		await transporter.sendMail(mailOptions);
+		res.status(200).json({ message: "Email sent." });
+	} catch (error) {
+		console.error("Failed to send admin credentials email:", error);
+		res.status(500).json({ error: "Failed to send email." });
+	}
 }
