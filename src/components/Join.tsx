@@ -50,10 +50,7 @@ export default function Join() {
 	}, [location.search]);
 
 	return (
-		<main
-			className="d-flex justify-content-center flex-grow-1 container my-4 flex-column align-items-center"
-			style={{ minHeight: "80vh" }}
-		>
+		<main className="d-flex justify-content-center flex-grow-1 container my-4 flex-column align-items-center">
 			<div className="w-100" style={{ maxWidth: "400px" }}>
 				<h1
 					className="text-center mb-4"
