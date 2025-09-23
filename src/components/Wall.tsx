@@ -714,6 +714,63 @@ export default function Wall() {
 									className="form-control"
 									//accept=".jpg,.jpeg,.png,image/jpeg,image/png"
 									accept="image/*"
+									onChange={async (e) => {
+										const files = e.target.files;
+										if (!files || files.length === 0) return;
+										let file = files[0];
+
+										try {
+											if (
+												file.type === "image/heic" ||
+												file.type === "image/heif"
+											) {
+												const convertedBlob = await heic2any({
+													blob: file,
+													toType: "image/jpeg",
+													quality: 0.9,
+												});
+
+												file = new File(
+													[convertedBlob as Blob],
+													file.name.replace(/\.[^.]+$/, ".jpg"), // rename extension
+													{ type: "image/jpeg" }
+												);
+											}
+
+											if (!["image/jpeg", "image/png"].includes(file.type)) {
+												alert("Only JPG and PNG images are allowed.");
+												return;
+											}
+
+											const compressedFile = await imageCompression(file, {
+												maxSizeMB: 1.5,
+												maxWidthOrHeight: 1024,
+												useWebWorker: true,
+											});
+
+											setImageFile(compressedFile);
+
+											const reader = new FileReader();
+											reader.onloadend = () => {
+												const result = reader.result;
+												if (typeof result === "string") {
+													setImagePreview(result); // ✅ Safe
+												} else {
+													setImagePreview(null); // or handle error
+												}
+											};
+											reader.readAsDataURL(compressedFile);
+										} catch (error) {
+											console.error("Image compression failed:", error);
+										}
+									}}
+								/>
+								<input
+									ref={fileInputRef}
+									type="file"
+									className="form-control"
+									//accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+									accept="image/*"
 									capture="environment"
 									onChange={async (e) => {
 										const files = e.target.files;
