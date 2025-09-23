@@ -1,42 +1,36 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "x-vercel-protection-bypass",
-          "value": "1"
-        }
-      ]
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/cleanup",
-      "schedule": "*/5 * * * *"
-    },
-    {
-      "path": "/api/send-warning",
-      "schedule":"*/5 * * * *"
-    }
-  ],
-  "functions": {
-    "api/**/*.ts": {
-      "includeFiles": "src/service/**"
-
-    }
-  }
-
+	"buildCommand": "npm run build",
+	"outputDirectory": "dist",
+	"rewrites": [
+		{
+			"source": "/api/(.*)",
+			"destination": "/api/$1.js"
+		},
+		{
+			"source": "/(.*)",
+			"destination": "/"
+		}
+	],
+	"headers": [
+		{
+			"source": "/api/(.*)",
+			"headers": [
+				{
+					"key": "x-vercel-protection-bypass",
+					"value": "1"
+				}
+			]
+		}
+	],
+	"crons": [
+		{
+			"path": "/api/cleanup",
+			"schedule": "*/5 * * * *"
+		}
+	],
+	"functions": {
+		"api/**/*.ts": {
+			"includeFiles": "src/service/**"
+		}
+	}
 }
