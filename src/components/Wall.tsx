@@ -714,6 +714,7 @@ export default function Wall() {
 									className="form-control"
 									//accept=".jpg,.jpeg,.png,image/jpeg,image/png"
 									accept="image/*"
+									capture="environment"
 									onChange={async (e) => {
 										const files = e.target.files;
 										if (!files || files.length === 0) return;
