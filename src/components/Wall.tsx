@@ -1149,6 +1149,7 @@ export default function Wall() {
 											setShowSecondConfirm(false);
 											setShowConfirmDelete(false);
 											service.deleteGroup(groupId);
+											navigate("/");
 										}}
 									>
 										Yes, Continue
