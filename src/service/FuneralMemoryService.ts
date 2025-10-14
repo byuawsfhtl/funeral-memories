@@ -163,6 +163,7 @@ export class FuneralMemoryService {
 	}
 
 	async deleteMemory(memoryId: string) {
+		//TODO:: change to groupId and the memoryId!!!!!
 		try {
 			const res = await fetch("/api/memories", {
 				method: "DELETE",
