@@ -120,6 +120,7 @@ export default function AddPerson() {
 				"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
 
 			const response = await fetch(
+				//TODO:: change api to be a function in service file
 				`/api/fetchPortrait?portraitUrl=${encodeURIComponent(
 					defaultPortraitUrl
 				)}`
