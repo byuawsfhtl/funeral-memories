@@ -367,6 +367,7 @@ export class FuneralMemoryService {
 		}
 	}
 
+	//TODO:: might be able to delete
 	async deleteAdmin(groupId: string) {
 		try {
 			const res = await fetch("/api/admin", {
