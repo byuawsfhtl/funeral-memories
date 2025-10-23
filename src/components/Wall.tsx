@@ -168,7 +168,8 @@ export default function Wall() {
 		}
 	}, []);
 
-	const service = new FuneralMemoryService();
+        const serviceRef = useRef(new FuneralMemoryService());
+        const service = serviceRef.current;
 	const rawGroup =
 		location.state?.madeGroup || localStorage.getItem("madeGroup");
 	const madeGroup =
@@ -180,17 +181,18 @@ export default function Wall() {
 	const portraitUrl = madeGroup?.portrait;
 
 	// 🧠 Save to localStorage on first load
-	useEffect(() => {
-		if (location.state?.madeGroup) {
-			localStorage.setItem(
-				"madeGroup",
-				JSON.stringify(location.state.madeGroup)
-			);
-		}
-	}, [location.state?.madeGroup]);
-	const sessionId = useRef(
-		localStorage.getItem("sessionId") || crypto.randomUUID()
-	);
+        useEffect(() => {
+                if (location.state?.madeGroup) {
+                        localStorage.setItem(
+                                "madeGroup",
+                                JSON.stringify(location.state.madeGroup)
+                        );
+                        localStorage.setItem("groupId", location.state.madeGroup.groupId);
+                }
+        }, [location.state?.madeGroup]);
+        const sessionId = useRef(
+                localStorage.getItem("sessionId") || crypto.randomUUID()
+        );
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -257,38 +259,58 @@ export default function Wall() {
 		};
 	}, [showPopup]);
 
-	useEffect(() => {
-		if (!groupId) {
-			navigate("/");
-			return;
-		}
+        useEffect(() => {
+                if (!groupId) {
+                        let cancelled = false;
 
-		const fetchMemoriesAndVerify = async () => {
-			try {
-				// Check if group still exists
-				await service.getGroup(groupId); // This throws if deleted
+                        const bootstrapMockGroup = async () => {
+                                try {
+                                        const mockGroup = await service.getGroup("elmwood");
+                                        if (cancelled) return;
+                                        localStorage.setItem("madeGroup", JSON.stringify(mockGroup));
+                                        localStorage.setItem("groupId", mockGroup.groupId);
+                                        navigate("/wall", { replace: true, state: { madeGroup: mockGroup } });
+                                } catch (error) {
+                                        console.error("Unable to bootstrap mock group:", error);
+                                        if (!cancelled) {
+                                                navigate("/", { replace: true });
+                                        }
+                                }
+                        };
 
-				// Then fetch memories
-				const data = await service.getMemories(groupId);
-				setMemoryList(data);
-				const mine = data.filter(
-					(m: Memory) => m.sessionId === sessionId.current
-				);
-				setMyMemories(mine);
-			} catch (error) {
-				console.error("Group no longer exists or fetch failed:", error);
-				// ✅ Only kick out if not admin
-				if (!isAdmin) {
-					navigate("/", { replace: true });
-				}
-			}
-		};
+                        bootstrapMockGroup();
 
-		fetchMemoriesAndVerify();
-		const intervalId = setInterval(fetchMemoriesAndVerify, 5000);
+                        return () => {
+                                cancelled = true;
+                        };
+                }
 
-		return () => clearInterval(intervalId);
-	}, [groupId, navigate, isAdmin]);
+                const fetchMemoriesAndVerify = async () => {
+                        try {
+                                // Check if group still exists
+                                await service.getGroup(groupId); // This throws if deleted
+
+                                // Then fetch memories
+                                const data = await service.getMemories(groupId);
+                                setMemoryList(data);
+                                const mine = data.filter(
+                                        (m: Memory) => m.sessionId === sessionId.current
+                                );
+                                setMyMemories(mine);
+                        } catch (error) {
+                                console.error("Group no longer exists or fetch failed:", error);
+                                // ✅ Only kick out if not admin
+                                if (!isAdmin) {
+                                        navigate("/", { replace: true });
+                                }
+                        }
+                };
+
+                fetchMemoriesAndVerify();
+                const intervalId = setInterval(fetchMemoriesAndVerify, 5000);
+
+                return () => clearInterval(intervalId);
+        }, [groupId, navigate, isAdmin, service]);
 
 	useEffect(() => {
 		if (groupId && sessionId.current) {

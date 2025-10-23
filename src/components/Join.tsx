@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 
 export default function Join() {
-	const [groupId, setGroupId] = useState<string>("");
+        const [groupId, setGroupId] = useState<string>("elmwood");
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function Join() {
 							type="text"
 							id="group-id"
 							className="form-control"
-							placeholder="XXXXX"
+                                                placeholder="elmwood"
 							value={groupId}
 							onChange={(e) => setGroupId(e.target.value.toLowerCase())}
 							required
