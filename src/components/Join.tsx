@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
@@ -52,10 +51,7 @@ export default function Join() {
 	return (
 		<main className="d-flex justify-content-center flex-grow-1 container my-4 flex-column align-items-center">
 			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h1
-					className="text-center mb-4"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
+				<h1 className="text-center mb-4" style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}>
 					Join Group
 				</h1>
 

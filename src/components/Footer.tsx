@@ -1,10 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
 export default function Footer() {
   return (
     <footer
       className="container-fluid text-white mt-auto d-none d-md-block"
-      style={{ backgroundColor: "rgb(13 106 95)" }}
+      style={{ backgroundColor: "var(--color-primary)" }}
     >
       <div className="row">
         <div className="col-md-3 mt-4">

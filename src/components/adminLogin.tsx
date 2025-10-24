@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
@@ -59,10 +58,7 @@ export default function AdminLogin() {
 	return (
 		<main className="d-flex justify-content-center align-items-center flex-column container my-5 flex-grow-1">
 			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h2
-					className="text-center mb-4"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
+				<h2 className="text-center mb-4" style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}>
 					Admin Login
 				</h2>
 

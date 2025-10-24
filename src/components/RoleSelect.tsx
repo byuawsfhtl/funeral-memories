@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
 export default function RoleSelect() {
@@ -10,10 +9,7 @@ export default function RoleSelect() {
 			style={{ flexGrow: 1 }}
 		>
 			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h1
-					className="text-center mb-4"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
+				<h1 className="text-center mb-4" style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}>
 					Choose Your Role
 				</h1>
 

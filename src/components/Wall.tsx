@@ -1,9 +1,5 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ClipboardCheck, Clipboard } from "react-bootstrap-icons";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import "./Wall.css";
 import imageCompression from "browser-image-compression";
@@ -18,6 +14,28 @@ import Lightbox, { label } from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Instructions from "./Instructions";
 import heic2any from "heic2any";
+
+// Simple icon components to replace react-bootstrap-icons
+const ClipboardIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+		<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+	</svg>
+);
+
+const ClipboardCheckIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+		<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+		<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+	</svg>
+);
+
+const ThreeDotsIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+	</svg>
+);
 
 type CopyableGroupIdProps = {
 	groupId: string;
@@ -55,7 +73,7 @@ function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
 			Group ID:{" "}
 			<strong style={{ fontSize: "1em", marginLeft: 6 }}>{groupId}</strong>
 			<span style={{ marginLeft: 8, fontSize: 18 }}>
-				{copied ? <ClipboardCheck color="#177e5b" /> : <Clipboard />}
+				{copied ? <ClipboardCheckIcon /> : <ClipboardIcon />}
 			</span>
 			{copied && (
 				<span
@@ -101,6 +119,7 @@ export default function Wall() {
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 	const [showButton, setShowButton] = useState(false);
 	const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
+	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const qrWrapperRef = useRef<HTMLDivElement>(null);
 	const [showHelp, setShowHelp] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -647,13 +666,16 @@ export default function Wall() {
 									data-bs-toggle="dropdown"
 									aria-expanded="false"
 								>
-									<i className="bi bi-three-dots-vertical"></i>
+									<ThreeDotsIcon />
 								</button>
-								<ul className="dropdown-menu" aria-labelledby="adminDropdown">
+								<ul className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
 									<li>
 										<button
 											className="dropdown-item"
-											onClick={() => setShowConfirmPublish(true)}
+											onClick={() => {
+												setShowConfirmPublish(true);
+												setDropdownOpen(false);
+											}}
 										>
 											Publish Memories to FamilySearch
 										</button>
@@ -663,6 +685,7 @@ export default function Wall() {
 											className="dropdown-item"
 											onClick={async () => {
 												await exportMemoriesAsPDF(person.name, memoryList);
+												setDropdownOpen(false);
 											}}
 										>
 											Export Memories

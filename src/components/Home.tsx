@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 
 export default function Home() {
@@ -8,10 +7,7 @@ export default function Home() {
 
 	return (
 		<main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-			<h1
-				className="mb-5 text-center"
-				style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-			>
+			<h1 className="mb-5 text-center" style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}>
 				Welcome to Funeral Memories!
 			</h1>
 
@@ -32,16 +28,13 @@ export default function Home() {
 				</div>
 				<div className="col-12 col-md-6">
 					<button
-						className="btn btn-secondary w-100 custom-host-btn"
+						className="btn btn-secondary w-100"
 						style={{
 							height: "200px",
 							fontSize: "1.5rem",
-							backgroundColor: hostHover
-								? "rgb(8, 82, 75)"
-								: "rgb(13, 106, 95)",
-							borderColor: hostHover ? "rgb(8, 82, 75)" : "rgb(13, 106, 95)",
-							color: "#fff",
-							transition: "background 0.2s, border-color 0.2s",
+							backgroundColor: hostHover ? "var(--color-primary-hover)" : "var(--color-primary)",
+							borderColor: hostHover ? "var(--color-primary-hover)" : "var(--color-primary)",
+							color: "var(--color-white)",
 						}}
 						onClick={() => navigate("/host")}
 						onMouseEnter={() => setHostHover(true)}
