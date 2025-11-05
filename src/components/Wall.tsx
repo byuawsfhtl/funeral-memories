@@ -301,7 +301,7 @@ export default function Wall() {
 
 		if (!selectedMemory) return;
 		try {
-			await service.deleteMemory(selectedMemory._id);
+			await service.deleteMemory(groupId, selectedMemory._id);
 			setShowDetail(false);
 			const refreshed = await service.getMemories(groupId);
 			setMemoryList(refreshed);

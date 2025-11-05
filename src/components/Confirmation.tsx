@@ -89,6 +89,7 @@ export default function Confirmation({
 				sessionId,
 			});
 
+			//TODO:: change to service function call
 			const loginRes = await fetch("/api/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

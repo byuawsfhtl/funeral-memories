@@ -24,6 +24,7 @@ export default function AdminLogin() {
 		localStorage.setItem("sessionId", sessionId);
 
 		try {
+			//TODO:: change to service function call
 			const res = await fetch("/api/login", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
