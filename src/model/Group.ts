@@ -6,4 +6,5 @@ export interface Group {
 	portrait: string;
 	closed: boolean;
 	timestamp: Date;
+	expirationDate: string;
 }

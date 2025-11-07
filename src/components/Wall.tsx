@@ -301,7 +301,7 @@ export default function Wall() {
 
 		if (!selectedMemory) return;
 		try {
-			await service.deleteMemory(groupId, selectedMemory._id);
+			await service.deleteMemory(groupId, selectedMemory.memoryId);
 			setShowDetail(false);
 			const refreshed = await service.getMemories(groupId);
 			setMemoryList(refreshed);
@@ -364,28 +364,23 @@ export default function Wall() {
 					image: imageFile || imagePreview,
 				});
 
+				let mem: Memory = myMemories.find((m) => m.memoryId === editingId)!;
 				await service.updateMemory({
 					memoryId: editingId,
-					title,
-					story: memory,
-					place,
+					groupId: groupId!,
+					title: title,
+					memory: memory,
+					place: place,
 					date: date ? date.toISOString().split("T")[0] : "",
 					image: imageBase64,
-					author,
+					author: author,
+					createdAt: mem.createdAt,
+					sessionId: mem.sessionId,
 				});
 			} else {
 				// ADD MODE
-				const memoryData: {
-					groupId: string;
-					title: string;
-					memory: string;
-					place: string;
-					date: string;
-					image: string | null; // ✅ this is the fix
-					author: string;
-					createdAt: Date;
-					sessionId: string;
-				} = {
+				const memoryData: Memory = {
+					memoryId: crypto.randomUUID(),
 					groupId,
 					title,
 					memory,
@@ -419,7 +414,7 @@ export default function Wall() {
 					submittedData = await service.addMemory(memoryData);
 				}
 
-				setMyMemories((prev) => [...prev, submittedData]);
+				setMyMemories((prev) => [...prev, memoryData]); //TODO::might need to debug (was submittedData)
 				const refreshed = await service.getMemories(groupId);
 				setMemoryList(refreshed);
 				setMyMemories(
@@ -477,7 +472,7 @@ export default function Wall() {
 		setImagePreview(selectedMemory.image || null);
 		setShowDetail(false); // Close the detail view
 		setShowPopup(true); // Open the form
-		setEditingId(selectedMemory._id); // Track that we're editing
+		setEditingId(selectedMemory.memoryId); // Track that we're editing
 	};
 
 	return (

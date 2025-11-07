@@ -69,7 +69,7 @@ export class FuneralMemoryService {
 						: "N/A";
 
 					console.log("Preparing memory upload:", {
-						id: memory._id,
+						id: memory.memoryId,
 						title: memory.title,
 						place: memory.place,
 						date: memory.date,
@@ -81,7 +81,7 @@ export class FuneralMemoryService {
 
 					if (memory.image) {
 						const uniqueFilename = `memory-photo-${
-							memory._id || Date.now()
+							memory.memoryId || Date.now()
 						}.jpg`;
 						file = this.base64ToFile(memory.image, uniqueFilename);
 						type = "Photo";
@@ -122,11 +122,15 @@ export class FuneralMemoryService {
 
 					if (!response.ok) {
 						const errorText = await response.text();
-						return { memoryId: memory._id, success: false, error: errorText };
+						return {
+							memoryId: memory.memoryId,
+							success: false,
+							error: errorText,
+						};
 					}
 					console.log(`✅ Upload succeeded for ${memory.title}`);
 
-					return { memoryId: memory._id, success: true };
+					return { memoryId: memory.memoryId, success: true };
 				})
 			);
 
@@ -154,7 +158,7 @@ export class FuneralMemoryService {
 	// }
 
 	async getMemories(groupId: string): Promise<Memory[]> {
-		return await this.communicator.doGet<Memory[]>("/getMemories", { groupId });
+		return await this.communicator.doGet<Memory[]>("/memories", { groupId });
 	}
 
 	// async addMemory(memory: Partial<Memory>) {
@@ -178,7 +182,7 @@ export class FuneralMemoryService {
 
 	//TODO:: Fix service file in front end to create the _id with => crypt.randomUUID();
 	async addMemory(memory: Memory): Promise<{ message: string }> {
-		return await this.communicator.doPost("/postMemory", { memory });
+		return await this.communicator.doPost("/memories", { memory });
 	}
 
 	// async deleteMemory(memoryId: string) {
@@ -205,7 +209,7 @@ export class FuneralMemoryService {
 		groupId: string,
 		memoryId: string
 	): Promise<{ message: string }> {
-		return await this.communicator.doDelete("/deleteMemory", {
+		return await this.communicator.doDelete("/memories", {
 			groupId,
 			memoryId,
 		});
@@ -246,7 +250,7 @@ export class FuneralMemoryService {
 	// }
 
 	async updateMemory(memory: Memory): Promise<{ message: string }> {
-		return await this.communicator.doPost("/updateMemory", { memory });
+		return await this.communicator.doPost("/memories/update", { memory });
 	}
 
 	// GROUPS
@@ -315,7 +319,7 @@ export class FuneralMemoryService {
 			console.log("Checking if group ID exists:", newGroupId);
 
 			try {
-				existing = await this.communicator.doGet<Group>("/getGroup", {
+				existing = await this.communicator.doGet<Group>("/group", {
 					groupId: newGroupId,
 				});
 			} catch (err: any) {
@@ -334,22 +338,19 @@ export class FuneralMemoryService {
 		console.log("✅ Unique group ID confirmed:", newGroupId);
 
 		// 2️⃣ Create admin entry
-		await this.communicator.doPost("/postAdmin", {
+		await this.communicator.doPost("/admin", {
 			admin: { groupId: newGroupId, ...admin },
 		});
 		console.log("✅ Admin created successfully");
 
 		// 3️⃣ Create group
-		const newGroup = await this.communicator.doPost<{ message: string }>(
-			"/postGroup",
-			{
-				group: { groupId: newGroupId, ...group },
-			}
-		);
+		const newGroup = await this.communicator.doPost("/group", {
+			group: { groupId: newGroupId, ...group },
+		});
 		console.log("✅ Group created successfully");
 
 		// 4️⃣ Send credentials email
-		await this.communicator.doPost("/sendCredentials", {
+		await this.communicator.doPost("/admin/send-credentials", {
 			email: admin.admin, // assuming admin.admin is the email
 			username: admin.admin,
 			password: admin.password,
@@ -361,7 +362,7 @@ export class FuneralMemoryService {
 		console.log("📨 Credentials email sent successfully");
 
 		// 5️⃣ Return created group info (you can fetch fresh copy if needed)
-		const finalGroup = await this.communicator.doGet<Group>("/getGroup", {
+		const finalGroup = await this.communicator.doGet<Group>("/group", {
 			groupId: newGroupId,
 		});
 
@@ -389,7 +390,7 @@ export class FuneralMemoryService {
 	// }
 
 	async getGroup(groupId: string): Promise<Group> {
-		return await this.communicator.doGet<Group>("/getGroup", { groupId });
+		return await this.communicator.doGet<Group>("/group", { groupId });
 	}
 
 	// async closeGroup(groupId: string) {
@@ -431,7 +432,7 @@ export class FuneralMemoryService {
 	// }
 
 	async deleteGroup(groupId: string): Promise<{ message: string }> {
-		return await this.communicator.doDelete("/deleteGroup", { groupId });
+		return await this.communicator.doDelete("/group", { groupId });
 	}
 
 	// ADMINS
@@ -459,7 +460,7 @@ export class FuneralMemoryService {
 	// }
 
 	async addAdmin(admin: Admin): Promise<{ message: string }> {
-		return await this.communicator.doPost("/postAdmin", { admin });
+		return await this.communicator.doPost("/admin", { admin });
 	}
 
 	// async getAdmin(groupId: string) {
@@ -478,7 +479,7 @@ export class FuneralMemoryService {
 	// }
 
 	async getAdmin(groupId: string): Promise<Admin> {
-		return await this.communicator.doGet<Admin>("/getAdmin", { groupId });
+		return await this.communicator.doGet<Admin>("/admin", { groupId });
 	}
 
 	//TODO:: might be able to delete
@@ -501,7 +502,7 @@ export class FuneralMemoryService {
 	// 	}
 	// }
 	async deleteAdmin(groupId: string): Promise<{ message: string }> {
-		return await this.communicator.doDelete("/deleteAdmin", { groupId });
+		return await this.communicator.doDelete("/admin", { groupId });
 	}
 
 	// async getAdminSessions(groupId: string) {
@@ -517,7 +518,7 @@ export class FuneralMemoryService {
 	// }
 
 	async getAdminSessions(groupId: string): Promise<string[]> {
-		return await this.communicator.doGet<string[]>("/getAdminSessions", {
+		return await this.communicator.doGet<string[]>("/admin/sessions", {
 			groupId,
 		});
 	}
@@ -537,4 +538,13 @@ export class FuneralMemoryService {
 	// 		throw new Error("Unable to check group status");
 	// 	}
 	// }
+
+	async login(data: {
+		groupId: string;
+		username: string;
+		password: string;
+		sessionId: string;
+	}): Promise<{ message: string; sessionId: string }> {
+		return await this.communicator.doPost("/admin/login", data);
+	}
 }

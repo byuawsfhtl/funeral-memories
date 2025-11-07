@@ -90,18 +90,24 @@ export default function Confirmation({
 			});
 
 			//TODO:: change to service function call
-			const loginRes = await fetch("/api/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					groupId: madeGroup.groupId,
-					username,
-					password,
-					sessionId,
-				}),
+			// const loginRes = await fetch("/api/login", {
+			// 	method: "POST",
+			// 	headers: { "Content-Type": "application/json" },
+			// 	body: JSON.stringify({
+			// 		groupId: madeGroup.groupId,
+			// 		username,
+			// 		password,
+			// 		sessionId,
+			// 	}),
+			// });
+			const loginRes = await service.login({
+				groupId: madeGroup.groupId,
+				username,
+				password,
+				sessionId,
 			});
 
-			if (!loginRes.ok) {
+			if (!loginRes || !loginRes.sessionId) {
 				console.error("Failed to record session as admin");
 				alert("Group made, but admin session failed.");
 			}

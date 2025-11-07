@@ -1,5 +1,5 @@
 export interface Memory {
-	_id: string;
+	memoryId: string;
 	groupId: string;
 	title: string;
 	memory: string;
