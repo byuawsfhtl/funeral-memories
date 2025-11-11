@@ -1,0 +1,82 @@
+button {
+  border-radius: 15px;
+  padding: 1rem 2rem;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hero {
+    background: linear-gradient(to bottom right, #1C495E, #2D5F76);
+
+    display: flex;
+
+}
+
+.tagline {
+    font-family: 'InstrumentSerif';
+    font-weight: lighter;
+    color: #FFFFF0;
+    font-size: 3.5rem;
+    width: 60%;
+}
+
+.hero-left {
+    width: 50%;
+    background-image: linear-gradient(#FFFFF0, #FFFFF0);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 1px 70%;
+    padding: 8rem 6rem;
+}
+
+.new-button {
+    margin-top: 1rem;
+    background-color: #B08459;
+}
+
+.new-button a {
+    color:#FFFFF0;
+    font-size: 17px;
+}
+
+.new-button:hover {
+    background-color: #9C6F45;
+}
+
+.hero-right {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero-right button {
+    margin: 1.2rem;
+    background-color: #FFFFF0;
+    font-size: 1.3rem;
+    width: 60%;
+    padding: 2.5rem ;
+}
+
+.hero-right .join-button {
+    background-color: #B08459;
+    color: #FFFFF0;
+}
+
+.join-button:hover {
+    background-color: #9C6F45;
+}
+
+.hero-right .new-g-button {
+    background-color: #FFFFF0;
+    color: #B08459;
+}
+
+
+.new-g-button:hover {
+    background-color: #ede0d5;
+}

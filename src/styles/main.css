@@ -1,14 +1,9 @@
 /* Main CSS - Import all styles */
-@import "./variables.css";
-@import "./reset.css";
-@import "./layout.css";
-@import "./components.css";
 
 /* Global App Styles */
 #root {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
+	font-family: 'InstrumentSans';
+	text-decoration: none;
 }
 
 /* Prevent scroll when popup is open */
@@ -21,4 +16,15 @@ body.popup-open {
 	overflow: hidden;
 	height: 100%;
 	touch-action: none;
+}
+
+
+@font-face {
+	font-family: InstrumentSans;
+	src: url('src/fonts/InstrumentSans-VariableFont_wdth,wght.ttf');
+}
+
+@font-face {
+	font-family: InstrumentSerif;
+	src: url('src/fonts/InstrumentSerif-Regular.ttf');
 }
