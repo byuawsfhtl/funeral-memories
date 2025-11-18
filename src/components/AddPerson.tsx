@@ -5,10 +5,9 @@ import React, {
 	FormEvent,
 	useEffect,
 } from "react";
-import { uploadPersonAndPortrait } from "../../api/uploadPerson";
+import { uploadPersonAndPortrait } from "../service/uploadPerson";
 import axios from "axios";
 
-import { fetchAndStoreToken } from "../../api/auth";
 import { useLocation, useNavigate } from "react-router";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
 import imageCompression from "browser-image-compression";
@@ -119,14 +118,9 @@ export default function AddPerson() {
 			const defaultPortraitUrl =
 				"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
 
-			const response = await fetch(
-				//TODO:: change api to be a function in service file
-				`/api/fetchPortrait?portraitUrl=${encodeURIComponent(
-					defaultPortraitUrl
-				)}`
+			const portraitBase64 = await service.fetchPortrait(
+				encodeURIComponent(defaultPortraitUrl)
 			);
-			const data = await response.json();
-			const portraitBase64 = data.base64;
 
 			//const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
 
@@ -147,7 +141,7 @@ export default function AddPerson() {
 				setPreviewUrl(base64Photo);
 			}
 
-			let token = await fetchAndStoreToken();
+			let token = await service.fetchAndStoreToken();
 
 			const birthDateObj = dateToPartialDate(toDateOrNull(storedBirthDate));
 			const deathDateObj = dateToPartialDate(toDateOrNull(storedDeathDate));
@@ -192,7 +186,7 @@ export default function AddPerson() {
 				const group = {
 					ancestor: person,
 					portrait: base64Photo || portraitBase64,
-					closed: false,
+					closed: "false",
 					timestamp: Date.now(),
 					expirationDate: storedExpiration,
 				};
