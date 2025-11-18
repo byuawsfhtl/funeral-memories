@@ -15,7 +15,6 @@ export class FuneralMemoryService {
 	}
 
 	async fetchAndStoreToken() {
-		//TODO:: Change api to be a functoin in service file
 		const authTokenUrl = "https://auth.fhtl.org/get_token";
 		try {
 			const response = await axios.post(authTokenUrl);
@@ -213,13 +212,11 @@ export class FuneralMemoryService {
 	// 	}
 	// }
 
-	//TODO:: Fix service file in front end to create the _id with => crypt.randomUUID();
 	async addMemory(memory: Memory): Promise<{ message: string }> {
 		return await this.communicator.doPost("/memories", { memory });
 	}
 
 	// async deleteMemory(memoryId: string) {
-	// 	//TODO:: change to groupId and the memoryId!!!!!
 	// 	try {
 	// 		const res = await fetch("/api/memories", {
 	// 			method: "DELETE",
@@ -515,7 +512,6 @@ export class FuneralMemoryService {
 		return await this.communicator.doGet<Admin>("/admin", { groupId });
 	}
 
-	//TODO:: might be able to delete
 	// async deleteAdmin(groupId: string) {
 	// 	try {
 	// 		const res = await fetch("/api/admin", {

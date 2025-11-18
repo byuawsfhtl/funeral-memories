@@ -1,4 +1,3 @@
-//TODO:: Turn this into a service file??
 interface Place {
 	original: string;
 	normalized: Array<{ lang: string; value: string }>;

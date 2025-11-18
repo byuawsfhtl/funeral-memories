@@ -1,6 +1,6 @@
 import { MongoClient, WithId, Document } from "mongodb";
 import { genSaltSync, hashSync } from "bcryptjs";
-import { Admin } from "../src/model/Admin";
+import { Admin } from "../../src/model/Admin";
 
 const uri = process.env.MONGODB_URI;
 if (!uri) {

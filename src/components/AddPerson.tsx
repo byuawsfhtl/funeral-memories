@@ -118,9 +118,7 @@ export default function AddPerson() {
 			const defaultPortraitUrl =
 				"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
 
-			const portraitBase64 = await service.fetchPortrait(
-				encodeURIComponent(defaultPortraitUrl)
-			);
+			const portraitBase64 = await service.fetchPortrait(defaultPortraitUrl);
 
 			//const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
 
@@ -216,7 +214,6 @@ export default function AddPerson() {
 					sessionId
 				);
 
-				//TODO:: change to service function call
 				// const loginRes = await fetch("/api/login", {
 				// 	method: "POST",
 				// 	headers: { "Content-Type": "application/json" },

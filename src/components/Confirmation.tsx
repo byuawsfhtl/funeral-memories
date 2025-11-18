@@ -55,9 +55,7 @@ export default function Confirmation({
 	const handleConfirm = async () => {
 		setLoading(true);
 		try {
-			const portraitBase64 = service.fetchPortrait(
-				encodeURIComponent(portraitUrl)
-			);
+			const portraitBase64 = service.fetchPortrait(portraitUrl);
 			const expire = new Date();
 			expire.setMonth(expire.getMonth() + 1);
 
@@ -86,7 +84,6 @@ export default function Confirmation({
 				sessionId,
 			});
 
-			//TODO:: change to service function call
 			// const loginRes = await fetch("/api/login", {
 			// 	method: "POST",
 			// 	headers: { "Content-Type": "application/json" },

@@ -2,7 +2,6 @@
 import axios from "axios";
 
 export async function fetchAndStoreToken() {
-	//TODO:: Change api to be a functoin in service file
 	const authTokenUrl = "https://auth.fhtl.org/get_token";
 	try {
 		const response = await axios.post(authTokenUrl);
