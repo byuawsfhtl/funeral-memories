@@ -4,6 +4,7 @@ export interface Group {
 	groupId: string;
 	ancestor: Ancestor;
 	portrait: string;
-	closed: boolean;
+	closed: string;
 	timestamp: Date;
+	expirationDate: string;
 }

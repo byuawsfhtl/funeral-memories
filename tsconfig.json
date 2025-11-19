@@ -11,5 +11,5 @@
 		"allowJs": true,
 		"noEmit": true
 	},
-	"include": ["api", "lib", "src", "src/declarations.d.ts"]
+	"include": ["src", "src/declarations.d.ts"]
 }

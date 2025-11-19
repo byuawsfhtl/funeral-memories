@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId, WithId, Document, OptionalId } from "mongodb";
-import { Memory } from "../src/model/Memory";
+import { Memory } from "../../src/model/Memory";
 
 const uri = process.env.MONGODB_URI;
 if (!uri) {
@@ -15,6 +15,7 @@ async function connect() {
 
 //memory = {groupId, title, story, location, date, image, author}
 //NOTE: Going to use MongoDBs generated _id for memoryId
+
 export async function postMemory(
 	memory: Partial<Memory>
 ): Promise<WithId<Document> | null> {
