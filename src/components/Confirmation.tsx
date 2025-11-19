@@ -55,7 +55,7 @@ export default function Confirmation({
 	const handleConfirm = async () => {
 		setLoading(true);
 		try {
-			const portraitBase64 = service.fetchPortrait(portraitUrl);
+			//const portraitBase64 = service.fetchPortrait(portraitUrl);
 			const expire = new Date();
 			expire.setMonth(expire.getMonth() + 1);
 
@@ -63,7 +63,7 @@ export default function Confirmation({
 
 			const group = {
 				ancestor: person,
-				portrait: portraitBase64,
+				portrait: portraitUrl,
 				closed: "false",
 				timestamp: Date.now(),
 				expirationDate: expirationDate,

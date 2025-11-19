@@ -27,23 +27,23 @@ export class FuneralMemoryService {
 		}
 	}
 
-	async fetchPortrait(portraitUrl: string): Promise<string> {
-		try {
-			const imageRes = await fetch(portraitUrl);
-			if (!imageRes.ok) {
-				throw new Error("Failed to fetch portrait from FamilySearch");
-			}
+	// async fetchPortrait(portraitUrl: string): Promise<string> {
+	// 	try {
+	// 		const imageRes = await fetch(portraitUrl);
+	// 		if (!imageRes.ok) {
+	// 			throw new Error("Failed to fetch portrait from FamilySearch");
+	// 		}
 
-			const contentType = imageRes.headers.get("content-type") || "image/jpeg";
-			const arrayBuffer = await imageRes.arrayBuffer();
-			const buffer = Buffer.from(arrayBuffer);
-			const base64 = `data:${contentType};base64,${buffer.toString("base64")}`;
-			return base64;
-		} catch (err) {
-			console.error("Portrait fetch error:", err);
-			throw err;
-		}
-	}
+	// 		const contentType = imageRes.headers.get("content-type") || "image/jpeg";
+	// 		const arrayBuffer = await imageRes.arrayBuffer();
+	// 		const buffer = Buffer.from(arrayBuffer);
+	// 		const base64 = `data:${contentType};base64,${buffer.toString("base64")}`;
+	// 		return base64;
+	// 	} catch (err) {
+	// 		console.error("Portrait fetch error:", err);
+	// 		throw err;
+	// 	}
+	// }
 
 	private extractActualAccessToken(jwt: string): string | null {
 		try {
