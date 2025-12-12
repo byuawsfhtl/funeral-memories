@@ -1,0 +1,64 @@
+body {
+    background-color: #FFFFF0;
+    margin: 0;
+    padding: 0;
+    font-family: 'DMSans';
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    gap: 10px;
+}
+
+
+h1 {
+    font-family: "InstrumentSerif";
+    font-size: 3rem;
+    color: #B08459;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    gap: 10px;
+    max-width: 500px;
+
+}
+
+.join-guest-button {
+    background-color: #1C495E;
+    color: #FFFFF0;
+    font-family: 'DMSans';
+}
+
+.join-guest-button h5 {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.join-admin-button {
+    font-family: 'DMSans';
+    border: #1C495E 2px solid;
+    color: #1C495E;
+    background-color: #FFFFF0;
+}
+
+.join-admin-button h5 {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+
+
+.join-guest-button:hover {
+    background-color: #163949;
+}
+
+.join-admin-button:hover {
+    background-color: #ede0d5;
+}

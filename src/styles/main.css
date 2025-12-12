@@ -2,7 +2,7 @@
 
 /* Global App Styles */
 #root {
-	font-family: 'InstrumentSans';
+	font-family: 'DMSans';
 	text-decoration: none;
 }
 
@@ -21,10 +21,15 @@ body.popup-open {
 
 @font-face {
 	font-family: InstrumentSans;
-	src: url('src/fonts/InstrumentSans-VariableFont_wdth,wght.ttf');
+	src: url('../fonts/DMSans-VariableFont_wdth,wght.ttf');
 }
 
 @font-face {
 	font-family: InstrumentSerif;
-	src: url('src/fonts/InstrumentSerif-Regular.ttf');
+	src: url('../fonts/InstrumentSerif-Regular.ttf');
+}
+
+@font-face {
+	font-family: DMSans;
+	src: url('../fonts/DMSans-VariableFont_opsz,wght.ttf');
 }

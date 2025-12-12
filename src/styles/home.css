@@ -10,9 +10,7 @@ a {
 
 .hero {
     background: linear-gradient(to bottom right, #1C495E, #2D5F76);
-
     display: flex;
-
 }
 
 .tagline {
@@ -79,4 +77,52 @@ a {
 
 .new-g-button:hover {
     background-color: #ede0d5;
+}
+
+/* How it works section */
+.cards-section {
+    background-color: #FFFFF0;
+    
+}
+
+.how-it-works {
+    text-align: center;
+    font-family: 'InstrumentSerif';
+    padding-top: 80px;
+    padding-bottom: 80px;
+    font-size: 3rem;
+    color: #B08459;
+
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.card {
+    background-color: #F5F5E6;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    color: #1C495E;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5%;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
 }
