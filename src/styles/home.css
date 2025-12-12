@@ -82,7 +82,10 @@ a {
 /* How it works section */
 .cards-section {
     background-color: #FFFFF0;
+<<<<<<< HEAD
     
+=======
+>>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .how-it-works {
@@ -92,7 +95,10 @@ a {
     padding-bottom: 80px;
     font-size: 3rem;
     color: #B08459;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .cards-container {
@@ -111,7 +117,14 @@ a {
     margin-right: 2rem;
     padding-top: 4rem;
     padding-bottom: 4rem;
+<<<<<<< HEAD
     color: #1C495E;
+=======
+}
+
+.card-icon {
+
+>>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .arrow {
@@ -119,10 +132,13 @@ a {
     align-items: center;
     justify-content: center;
     width: 5%;
+<<<<<<< HEAD
 }
 
 .card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
     transition: all 0.3s ease;
+=======
+>>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
