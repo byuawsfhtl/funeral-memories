@@ -5,7 +5,7 @@ export default function RoleSelect() {
 	const navigate = useNavigate();
 
 	return (
-		<main>
+		<main className="role-select-main">
 				<h1>Choose Your Role</h1>
 
 				<div className="button-container">
