@@ -7,7 +7,7 @@ export default function Header() {
     <header>
       <nav>
         <img src="src\assets\navylogo.png" alt="Funeral Memories Logo" />
-        <h1>Funeral Memories</h1>
+        <Link to="/"><h1>Funeral Memories</h1></Link>
         <div className="nav-links">
           <Link to="/">Home</Link>
           <Link to="/instructions">Instructions</Link>

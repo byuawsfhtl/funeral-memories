@@ -1,21 +1,30 @@
-body {
-    background-color: #FFFFF0;
-    margin: 0;
-    padding: 0;
-    font-family: 'DMSans';
-}
-
 .role-select-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-    gap: 10px;
+  background-color: #FFFFF0;
+  margin: 0;
+  padding: 0;
+  font-family: 'DMSans';
+  padding-top: 6vw;
+  display: grid;
+  grid-template-columns: 1fr 3px 1fr; /* left half / divider / right half */
+  padding-bottom: 6vw;
 }
 
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-h1 {
+  padding: 40px;
+}
+
+.roleTitle {
+  font-family: "InstrumentSerif";
+  font-size: 3rem;
+  color: #B08459;
+  margin-bottom: 20px;
+}
+
+.roleTitle {
     font-family: "InstrumentSerif";
     font-size: 3rem;
     color: #B08459;
@@ -24,10 +33,9 @@ h1 {
 .button-container {
     display: flex;
     flex-direction: column;
-    width: 50vw;
+    width: 40vw;
     gap: 10px;
     max-width: 500px;
-
 }
 
 .join-guest-button {
@@ -61,4 +69,67 @@ h1 {
 
 .join-admin-button:hover {
     background-color: #ede0d5;
+}
+
+
+
+.verticalLine {
+    border-left: 3px solid #1C495E;
+    height: 450px;
+}
+
+
+
+/* RIGHT HALF overlay area */
+.rightPanel {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.rightPanel.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.overlayInner {
+  width: min(520px, 100%);
+}
+
+/*Responsive design*/
+@media screen and (max-width: 910px) {
+  .role-select-main {
+    grid-template-columns: 1fr; /* single column on small screens */
+    padding-top: 80px;
+  }
+
+  .verticalLine {
+    display: none; /* hide vertical line on small screens */
+  }
+
+  .leftPanel, .rightPanel {
+    padding: 0;
+  }
+
+  .verticalLine {
+    display: none; /* hide vertical line on small screens */
+  }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

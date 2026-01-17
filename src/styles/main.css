@@ -6,6 +6,10 @@
 	text-decoration: none;
 }
 
+body {
+	background-color: #FFFFF0;
+}
+
 /* Prevent scroll when popup is open */
 html.popup-open,
 body.popup-open {

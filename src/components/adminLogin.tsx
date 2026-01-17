@@ -1,121 +1,130 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import "../styles/forms.css";
 
-export default function AdminLogin() {
-	const [groupId, setGroupId] = useState<string>("");
-	const [username, setUsername] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
-	const [error, setError] = useState("");
-	const navigate = useNavigate();
-	const service = new FuneralMemoryService();
+export default function AdminLogin({ embedded = false }: { embedded?: boolean }) {
+  const [groupId, setGroupId] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [joinHover, setJoinHover] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const service = new FuneralMemoryService();
 
-	const handleLogin = async (e: any) => {
-		e.preventDefault();
-		setError("");
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    setError("");
 
-		if (!groupId.trim() || !username.trim() || !password.trim()) {
-			setError("Please fill in all fields.");
-			return;
-		}
+    if (!groupId.trim() || !username.trim() || !password.trim()) {
+      setError("Please fill in all fields.");
+      return;
+    }
 
-		const sessionId = localStorage.getItem("sessionId") || crypto.randomUUID();
-		localStorage.setItem("sessionId", sessionId);
+    const sessionId = localStorage.getItem("sessionId") || crypto.randomUUID();
+    localStorage.setItem("sessionId", sessionId);
 
-		try {
-			// const res = await fetch("/api/login", {
-			// 	method: "POST",
-			// 	headers: { "Content-Type": "application/json" },
-			// 	body: JSON.stringify({ groupId, username, password, sessionId }),
-			// });
-			const res = await service.login({
-				groupId,
-				username,
-				password,
-				sessionId,
-			});
+    try {
+      const res = await service.login({ groupId, username, password, sessionId });
 
-			if (!res || !res.sessionId) {
-				const message = res.message;
-				setError(message || "Invalid login credentials.");
-				return;
-			}
+      if (!res || !res.sessionId) {
+        const message = (res as any)?.message;
+        setError(message || "Invalid login credentials.");
+        return;
+      }
 
-			// Login succeeded, now fetch group data
-			const group = await service.getGroup(groupId);
-			if (!group) {
-				setError("Group not found after login.");
-				return;
-			}
+      const group = await service.getGroup(groupId);
+      if (!group) {
+        setError("Group not found after login.");
+        return;
+      }
 
-			navigate("/wall", {
-				state: { madeGroup: group, isAdmin: true },
-			});
-		} catch (err) {
-			if (err instanceof Error) {
-				console.error("Login error:", err.message);
-			} else {
-				console.error("Login error:", err);
-			}
-			setError("Something went wrong. Please try again.");
-		}
-	};
+      navigate("/wall", { state: { madeGroup: group, isAdmin: true } });
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Something went wrong. Please try again.");
+    }
+  };
 
-	return (
-		<main className="d-flex justify-content-center align-items-center flex-column container my-5 flex-grow-1">
-			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h2 className="text-center mb-4" style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}>
-					Admin Login
-				</h2>
+  const Wrapper: any = embedded ? "div" : "main";
 
-				{error && (
-					<div className="alert alert-danger text-center py-2">{error}</div>
-				)}
+  return (
+    <Wrapper
+      className={
+        embedded
+          ? ""
+          : "form-main"
+      }
+    >
+      <div className="login-box">
+        <h2 className="form-title">
+          Admin Login
+        </h2>
 
-				<form onSubmit={handleLogin}>
-					<div className="mb-3">
-						<label className="form-label">Group ID</label>
-						<input
-							type="text"
-							className="form-control"
-							value={groupId}
-							onChange={(e) => setGroupId(e.target.value.toLowerCase())}
-							placeholder="e.g., abc123"
-							required
-						/>
-					</div>
+        {error && <div className="alert alert-danger text-center py-2">{error}</div>}
 
-					<div className="mb-3">
-						<label className="form-label">Admin Email</label>
-						<input
-							type="email"
-							className="form-control"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							placeholder="Enter admin email"
-							required
-						/>
-					</div>
+        <form onSubmit={handleLogin}>
+          <div className="mb-3">
+            <label className="form-label">Group ID</label>
+			<br />
+            <input style={{ fontFamily: "DMSans", width:"100%", paddingTop:"8px", paddingBottom:"8px", paddingLeft:"12px", borderRadius:"5px", border:"1px solid #ccc" }}
+              type="text"
+              className="form-control"
+              value={groupId}
+              onChange={(e) => setGroupId(e.target.value.toLowerCase())}
+              placeholder="e.g., abc123"
+              required
+            />
+          </div>
+	  	  <br />
+          <div className="mb-3">
+            <label className="form-label">Admin Email</label>
+			<br />
+            <input style={{ fontFamily: "DMSans", width:"100%", paddingTop:"8px", paddingBottom:"8px", paddingLeft:"12px", borderRadius:"5px", border:"1px solid #ccc" }}
+              type="email"
+              className="form-control"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter admin email"
+              required
+            />
+          </div>
+	  	  < br />
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+			<br />
+            <input style={{ fontFamily: "DMSans", width:"100%", paddingTop:"8px", paddingBottom:"8px", paddingLeft:"12px", borderRadius:"5px", border:"1px solid #ccc" }}
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+              required
+            />
+          </div>
 
-					<div className="mb-3">
-						<label className="form-label">Password</label>
-						<input
-							type="password"
-							className="form-control"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							placeholder="Enter password"
-							required
-						/>
-					</div>
-
-					<div className="d-grid mt-4">
-						<button type="submit" className="btn btn-primary">
-							Login as Admin
-						</button>
-					</div>
-				</form>
-			</div>
-		</main>
-	);
+          <div className="d-grid mt-4">
+			<br />
+            <button
+				type="submit"
+				className="btn btn-secondary btn-lg"
+				style={{
+                    backgroundColor: joinHover
+                        ? "#153443"
+                        : "#1C495E",
+                    color: "#FFFFF0",
+                    transition: "background 0.2s, border-color 0.2s",
+                    }}
+				    onMouseEnter={() => setJoinHover(true)}
+                	onMouseLeave={() => setJoinHover(false)}
+                    disabled={isLoading}
+			>
+              Login as Admin
+            </button>
+          </div>
+        </form>
+      </div>
+    </Wrapper>
+  );
 }

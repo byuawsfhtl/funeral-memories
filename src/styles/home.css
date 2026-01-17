@@ -1,16 +1,24 @@
 button {
-  border-radius: 15px;
-  padding: 1rem 2rem;
-  border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    border: none;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .hero {
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: opacity 0.7s ease-out, transform 0.6s ease-out;
     background: linear-gradient(to bottom right, #1C495E, #2D5F76);
     display: flex;
+}
+
+.hero.is-visible {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .tagline {
@@ -82,10 +90,6 @@ a {
 /* How it works section */
 .cards-section {
     background-color: #FFFFF0;
-<<<<<<< HEAD
-    
-=======
->>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .how-it-works {
@@ -95,10 +99,6 @@ a {
     padding-bottom: 80px;
     font-size: 3rem;
     color: #B08459;
-<<<<<<< HEAD
-
-=======
->>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .cards-container {
@@ -117,14 +117,6 @@ a {
     margin-right: 2rem;
     padding-top: 4rem;
     padding-bottom: 4rem;
-<<<<<<< HEAD
-    color: #1C495E;
-=======
-}
-
-.card-icon {
-
->>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
 
 .arrow {
@@ -132,13 +124,4 @@ a {
     align-items: center;
     justify-content: center;
     width: 5%;
-<<<<<<< HEAD
-}
-
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-    transition: all 0.3s ease;
-=======
->>>>>>> 65c7f29ced887e02a32d3e83dcad403855c98c75
 }
