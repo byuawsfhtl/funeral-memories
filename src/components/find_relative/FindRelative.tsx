@@ -317,128 +317,131 @@ export default function FindRelative() {
 							text={`${percentage}%`}
 						/>
 					</div>
+					</div>
 
-					{/* Title */}
-					<h1
-						style={{
-							textAlign: "center",
-							maxWidth: "600px", // same max as bar
-							width: "100%",
-						}}
-					>
-						Search and Select a Relative for the Memory Wall
-					</h1>
+					<div className="login-box" style={{maxWidth: "650px;"}}>
+						{/* Title */}
+						<h1 className="form-title">
+								Search and Select a Relative for the Memory Wall
+						</h1>
+						<p className="text-danger text-center mb-1">
+							<strong>
+								Note: Please ensure that the relative has been marked as deceased on
+								Family Search.
+							</strong>
+						</p>
+						<br />
+						<p className="text-muted text-center mb-4">
+							It might take around an hour for the relative to be searchable after
+							initially being marked as deceased.
+						</p>
+						<br />
+						<div
+							className="find-relative-form"
+							style={{width: "100%"}}
+						>
+						<form onSubmit={handleSubmit}>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Ancestor's First Name
+										<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="firstName"
+										value={formData.firstName}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.firstName ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Ancestor's Last Name
+										<span className="form-required"> (Required)</span>
+									</label>
+									<input
+										type="text"
+										name="lastName"
+										value={formData.lastName}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.lastName ? "black-text" : "gray-text"}
+										required
+									/>
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Birth Place<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="birthPlace"
+										value={formData.birthPlace}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.birthPlace ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Birth Year<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="birthYear"
+										value={formData.birthYear}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.birthYear ? "black-text" : "gray-text"}
+									/>
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Death Place<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="deathPlace"
+										value={formData.deathPlace}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.deathPlace ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Death Year<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="deathYear"
+										value={formData.deathYear}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.deathYear ? "black-text" : "gray-text"}
+									/>
+								</div>
+							</div>
+							<div className="form-col">
+								<button
+									type="submit"
+									className="form-search button button-green"
+									style={{ width: "150px" }}
+								>
+									Search
+								</button>
+							</div>
+						</form>
+						</div>
+						<br />
 				</div>
 
-				<p className="text-danger text-center mb-1">
-					<strong>
-						Note: Please ensure that the relative has been marked as deceased on
-						Family Search.
-					</strong>
-				</p>
-				<p className="text-muted text-center mb-4">
-					It might take around an hour for the relative to be searchable after
-					initially being marked as deceased
-				</p>
-				<form onSubmit={handleSubmit}>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Ancestor's First Name
-								<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="firstName"
-								value={formData.firstName}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.firstName ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Ancestor's Last Name
-								<span className="form-required"> (Required)</span>
-							</label>
-							<input
-								type="text"
-								name="lastName"
-								value={formData.lastName}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.lastName ? "black-text" : "gray-text"}
-								required
-							/>
-						</div>
-					</div>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Birth Place<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="birthPlace"
-								value={formData.birthPlace}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.birthPlace ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Birth Year<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="birthYear"
-								value={formData.birthYear}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.birthYear ? "black-text" : "gray-text"}
-							/>
-						</div>
-					</div>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Death Place<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="deathPlace"
-								value={formData.deathPlace}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.deathPlace ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Death Year<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="deathYear"
-								value={formData.deathYear}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.deathYear ? "black-text" : "gray-text"}
-							/>
-						</div>
-					</div>
-					<div className="form-col">
-						<button
-							type="submit"
-							className="form-search button button-green"
-							style={{ width: "150px" }}
-						>
-							Search
-						</button>
-					</div>
-				</form>
-				<br />
 				{/*This div is for the ancestors results*/}
 				{ancestors.length > 0 && (
 					<p className="results-hint">

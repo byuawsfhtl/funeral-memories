@@ -5,11 +5,12 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
 import "react-circular-progressbar/dist/styles.css";
-import "./setExpireDate.css";
+import "../styles/forms.css";
 
 export default function SetExpireDate() {
   const [expirationDateTime, setExpirationDateTime] = useState("");
   const [error, setError] = useState("");
+  const [hostHover, setHostHover] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { username, password } = location.state || {};
@@ -63,29 +64,12 @@ export default function SetExpireDate() {
 
   return (
     <main
-      className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
-      style={{ padding: "2rem" }}
-    >
-      <div style={{ width: "100%", maxWidth: "500px" }}>
-        <small
-          className="text-muted"
-          style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
-        >
-          Progress toward creating your memory wall
-        </small>
+      className="form-main"
+      >
+      <div>
 
-        <div style={{ marginBottom: "16px", width: "100%", height: 20 }}>
-          <ProgressBar
-            percent={percentage}
-            filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-            text={`${percentage}%`}
-          />
-        </div>
-
-        <h2
-          className="text-center mb-3"
-          style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-        >
+        <div className="login-box">
+                  <h2 className="form-title">
           Set Group Expiration Date
         </h2>
 
@@ -98,14 +82,15 @@ export default function SetExpireDate() {
             minimum of 2 hours from the current time.
           </strong>
         </p>
-
+        <br />
         {error && (
           <div className="alert alert-danger text-center py-2">{error}</div>
         )}
 
         <form onSubmit={handleSetExpiration}>
-          <div className="mb-3">
+          <div >
             <label className="form-label">Group Expiration Date & Time</label>
+            <br />
             <input
               type="datetime-local"
               className="form-control"
@@ -114,14 +99,43 @@ export default function SetExpireDate() {
               required
               min={minDateStr}
               max={maxDateStr}
+              style={{width:"50%"}}
             />
           </div>
-          <div className="d-grid mt-4">
-            <button type="submit" className="btn btn-primary">
+          <br />
+          <div className="d-grid">
+            <button
+              type="submit"
+              className="btn btn-secondary btn-lg"
+              style={{
+							  backgroundColor: hostHover
+								  ? "#153443"
+								  : "#1C495E",
+							  color: "#fff",
+							  transition: "background 0.2s, border-color 0.2s",
+                fontFamily: "DMSans"
+						  }}
+              onMouseEnter={() => setHostHover(true)}
+							onMouseLeave={() => setHostHover(false)}
+            >
               Set Expiration & Continue
             </button>
           </div>
         </form>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", width: "100%" }}>
+          <div style={{ marginBottom: "100px", width: 500, height: 20 }}>
+            <p style={{ textAlign: "center", marginBottom: "8px", color: "#1C495E" }}>Progress toward creating your memory wall</p>
+            <ProgressBar
+              percent={percentage}
+              filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
+              text={`${percentage}%`}
+            />
+        </div>
+      </div>
+
       </div>
     </main>
   );
