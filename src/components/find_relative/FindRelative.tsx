@@ -15,6 +15,7 @@ export default function FindRelative() {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [selectedPerson, setSelectedPerson] = useState<any>(null);
 	const resultsRef = useRef<HTMLDivElement>(null);
+	const [joinHover, setJoinHover] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const expirationDateTime = location.state?.expirationDateTime || {};
 	const percentage = 75;
@@ -297,29 +298,10 @@ export default function FindRelative() {
 						justifyContent: "center", // vertical center
 					}}
 				>
-					{/* Progress bar above title */}
-					<div
-						style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}
-					>
-						<small
-							className="text-muted align-items-center"
-							style={{
-								display: "block",
-								textAlign: "center",
-								marginBottom: "8px",
-							}}
-						>
-							Progress toward creating your memory wall
-						</small>
-						<ProgressBar
-							percent={percentage}
-							filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-							text={`${percentage}%`}
-						/>
-					</div>
+
 					</div>
 
-					<div className="login-box" style={{maxWidth: "650px;"}}>
+					<div className="role-select-box" style={{maxWidth:"2000px !important"}}>
 						{/* Title */}
 						<h1 className="form-title">
 								Search and Select a Relative for the Memory Wall
@@ -338,7 +320,7 @@ export default function FindRelative() {
 						<br />
 						<div
 							className="find-relative-form"
-							style={{width: "100%"}}
+							style={{width: "100% !important"}}
 						>
 						<form onSubmit={handleSubmit}>
 							<div className="form-row">
@@ -432,7 +414,17 @@ export default function FindRelative() {
 								<button
 									type="submit"
 									className="form-search button button-green"
-									style={{ width: "150px" }}
+									style={{
+										width: "150px",
+										backgroundColor: joinHover
+                        					? "#153443"
+                        					: "#1C495E",
+                    					color: "#FFFFF0",
+										transition: "background 0.2s, border-color 0.2s"
+									}}
+										onMouseEnter={() => setJoinHover(true)}
+        									onMouseLeave={() => setJoinHover(false)}
+                    							disabled={isLoading}
 								>
 									Search
 								</button>
@@ -440,7 +432,28 @@ export default function FindRelative() {
 						</form>
 						</div>
 						<br />
-				</div>
+					</div>
+
+					{/* Progress bar above title */}
+					<div
+						style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}
+					>
+						<small
+							className="text-muted align-items-center"
+							style={{
+								display: "block",
+								textAlign: "center",
+								marginBottom: "8px",
+							}}
+						>
+							Progress toward creating your memory wall
+						</small>
+						<ProgressBar
+							percent={percentage}
+							filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
+							text={`${percentage}%`}
+						/>
+					</div>
 
 				{/*This div is for the ancestors results*/}
 				{ancestors.length > 0 && (
@@ -459,6 +472,8 @@ export default function FindRelative() {
 					<p></p>
 				)}
 			</div>
+
+
 			{showConfirmation && selectedPerson && (
 				<Confirmation
 					person={selectedPerson}

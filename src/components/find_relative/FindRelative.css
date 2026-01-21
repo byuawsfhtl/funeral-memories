@@ -1,23 +1,14 @@
-.title {
-	text-align: center;
-	/* padding: 75px; */
-	padding-top: 75px;
-	padding-bottom: 0px;
-	padding-left: 75px;
-	padding-right: 75px;
-}
+
 
 .gray-text {
 	font-size: 16px;
 	padding: 8px;
-	width: 50%;
 	color: gray;
 }
 
 .black-text {
 	font-size: 16px;
 	padding: 8px;
-	width: 50%;
 	color: black;
 }
 
@@ -32,8 +23,6 @@
 	flex: 0 0 48%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	text-align: center;
 }
 
 .form-label {
@@ -42,12 +31,12 @@
 
 .form-required {
 	font-size: smaller;
-	color: red;
+	color: rgb(126, 33, 33);
 }
 
 .form-optional {
 	font-size: smaller;
-	color: gray;
+	color: #1C495E;
 }
 
 .form-search {
@@ -95,7 +84,7 @@
 
 .search-result {
 	cursor: pointer;
-	background-color: #ececec;
+	background-color: #B08459;
 	box-shadow: rgb(0 0 0 / 14%) 0px 1px 1px, rgb(0 0 0 / 12%) 0px 2px 1px,
 		rgb(0 0 0 / 20%) 0px 1px 3px;
 	border-radius: 5px;
@@ -127,3 +116,16 @@
 }
 
 
+
+
+
+/* NEW STYLES FOR FORM BOX */
+.role-select-box {
+    background-color: #B08459;
+    color: #FFFFF0;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+    border-radius: 15px;
+    max-width: 650px;
+}

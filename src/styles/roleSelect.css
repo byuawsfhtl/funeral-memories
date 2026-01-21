@@ -3,10 +3,10 @@
   margin: 0;
   padding: 0;
   font-family: 'DMSans';
-  padding-top: 6vw;
+  padding-top: 7vw;
   display: grid;
   grid-template-columns: 1fr 3px 1fr; /* left half / divider / right half */
-  padding-bottom: 6vw;
+  padding-bottom: 7vw;
 }
 
 .leftPanel {
