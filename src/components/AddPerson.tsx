@@ -118,7 +118,7 @@ export default function AddPerson() {
 			const defaultPortraitUrl =
 				"https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png";
 
-			const portraitBase64 = await service.fetchPortrait(defaultPortraitUrl);
+			//const portraitBase64 = await service.fetchPortrait(defaultPortraitUrl);
 
 			//const expiration = storedExpiration ? JSON.parse(storedExpiration) : {};
 
@@ -183,7 +183,7 @@ export default function AddPerson() {
 			try {
 				const group = {
 					ancestor: person,
-					portrait: base64Photo || portraitBase64,
+					portrait: base64Photo || defaultPortraitUrl,
 					closed: "false",
 					timestamp: Date.now(),
 					expirationDate: storedExpiration,
