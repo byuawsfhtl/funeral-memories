@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Funeral Memories</string>
+    <string name="title_activity_main">Funeral Memories</string>
+    <string name="package_name">com.funeralmemories.fhtl</string>
+    <string name="custom_url_scheme">com.funeralmemories.fhtl</string>
+</resources>
