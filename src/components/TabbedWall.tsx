@@ -22,7 +22,7 @@ export default function TabbedMemoryWall(props: TabbedMemoryWallProps) {
             className={`nav-link ${activeTab === "others" ? "active" : ""}`}
             onClick={() => setActiveTab("others")}
           >
-            Memory Wall
+            All Memories
           </button>
         </li>
         <li className="nav-item">
