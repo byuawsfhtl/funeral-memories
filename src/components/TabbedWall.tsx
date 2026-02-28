@@ -14,31 +14,27 @@ export default function TabbedMemoryWall(props: TabbedMemoryWallProps) {
   const [activeTab, setActiveTab] = useState("others");
 
   return (
-    <div className="container">
+    <div className="tabbed-wall-container">
       {/* Tab Buttons */}
-      <ul className="nav nav-tabs justify-content-center">
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "others" ? "active" : ""}`}
-            onClick={() => setActiveTab("others")}
-          >
-            Memory Wall
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "mine" ? "active" : ""}`}
-            onClick={() => setActiveTab("mine")}
-          >
-            My Memories
-          </button>
-        </li>
-      </ul>
+      <div className="memory-tabs">
+        <button
+          className={`tab-btn ${activeTab === "others" ? "active" : ""}`}
+          onClick={() => setActiveTab("others")}
+        >
+          All Memories
+        </button>
+        <button
+          className={`tab-btn ${activeTab === "mine" ? "active" : ""}`}
+          onClick={() => setActiveTab("mine")}
+        >
+          My Memories
+        </button>
+      </div>
 
       {/* Tab Content */}
-      <div className="tab-content pt-3">
+      <div className="tab-content">
         {activeTab === "others" && (
-          <ul className="memory-wall d-flex flex-wrap justify-content-center">
+          <ul className="memory-wall">
             {props.otherMemories.length > 0 ? (
               props.otherMemories.map((mem, index) => (
                 <AMemory
@@ -50,13 +46,13 @@ export default function TabbedMemoryWall(props: TabbedMemoryWallProps) {
                 />
               ))
             ) : (
-              <p className="text-muted text-center">No other memories yet.</p>
+              <p className="no-memories-text">No memories yet. Be the first to share one!</p>
             )}
           </ul>
         )}
 
         {activeTab === "mine" && (
-          <ul className="memory-wall d-flex flex-wrap justify-content-center">
+          <ul className="memory-wall">
             {props.myMemories.length > 0 ? (
               props.myMemories.map((mem, index) => (
                 <AMemory
@@ -68,7 +64,7 @@ export default function TabbedMemoryWall(props: TabbedMemoryWallProps) {
                 />
               ))
             ) : (
-              <p className="text-muted text-center">No memories added yet.</p>
+              <p className="no-memories-text">No memories added yet.</p>
             )}
           </ul>
         )}

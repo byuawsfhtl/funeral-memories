@@ -279,33 +279,22 @@ export default function FindRelative() {
 
 	return (
 		<div
+			className="find-relative-main"
 			style={{
 				display: "flex",
-				flexDirection: "column", // keep label above bar
-				alignItems: "center", // horizontal center
-				justifyContent: "center", // vertical center
-				minHeight: "100vh", // center horizontally
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
 			}}
 		>
 			<div className={`container ${isLoading ? "loading" : ""}`}>
 				{isLoading}
 
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column", // keep label above bar
-						alignItems: "center", // horizontal center
-						justifyContent: "center", // vertical center
-					}}
-				>
-
-					</div>
-
-					<div className="role-select-box" style={{maxWidth:"2000px !important"}}>
-						{/* Title */}
-						<h1 className="form-title">
-								Search and Select a Relative for the Memory Wall
-						</h1>
+				<div className="role-select-box">
+					{/* Title */}
+					<h1 className="form-title">
+							Search and Select a Relative for the Memory Wall
+					</h1>
 						<p className="text-danger text-center mb-1">
 							<strong>
 								Note: Please ensure that the relative has been marked as deceased on
@@ -434,26 +423,7 @@ export default function FindRelative() {
 						<br />
 					</div>
 
-					{/* Progress bar above title */}
-					<div
-						style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}
-					>
-						<small
-							className="text-muted align-items-center"
-							style={{
-								display: "block",
-								textAlign: "center",
-								marginBottom: "8px",
-							}}
-						>
-							Progress toward creating your memory wall
-						</small>
-						<ProgressBar
-							percent={percentage}
-							filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
-							text={`${percentage}%`}
-						/>
-					</div>
+				<br /><br /><br /><br />
 
 				{/*This div is for the ancestors results*/}
 				{ancestors.length > 0 && (
@@ -462,6 +432,7 @@ export default function FindRelative() {
 						and search again.
 					</p>
 				)}
+				<br />
 				{ancestors.length > 0 ? (
 					<div className="results" ref={resultsRef} tabIndex={-1}>
 						{ancestors.map((ancestor: any, index: any) => (
