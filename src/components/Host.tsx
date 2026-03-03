@@ -1,8 +1,7 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "react-step-progress-bar";
-import "react-circular-progressbar/dist/styles.css";
+import "../styles/forms.css";
 
 export default function Host() {
 	const [username, setUsername] = useState("");
@@ -38,109 +37,103 @@ export default function Host() {
 	};
 
 	return (
-		<main
-			className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
-			style={{ padding: "2rem" }}
-		>
-			<div style={{ width: "100%", maxWidth: "500px" }}>
-				<small
-					className="text-muted align-items-center"
-					style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
-				>
-					Progress toward creating your memory wall
-				</small>
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<div style={{ marginBottom: "10px", width: 500, height: 20 }}>
+		<main className="form-main">
+			<div>
+
+				<div className="login-box">
+					<h1 className="form-title">Host a Group</h1>
+					<p>Enter your email and password to create a group.</p>
+					<p className="">
+						<strong>
+							Note: Remember your information to access the group later.
+						</strong>
+					</p>
+					< br />
+					<form onSubmit={handleHost}>
+						<div className="mb-3">
+							<label htmlFor="username" className="form-label">
+								Email <span className="text-danger">*<br /></span>
+							</label>
+							<input
+								type="email"
+								id="username"
+								name="username"
+								autoComplete="email"
+								className="form-control"
+								placeholder="Enter your email"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+								required
+							/>
+						</div>
+						< br />
+						<div className="mb-3">
+							<label htmlFor="confirmUsername" className="form-label">
+								Confirm Email <span className="text-danger">*<br /></span>
+							</label>
+							<input
+								type="email"
+								id="confirmUsername"
+								name="confirmUsername"
+								className="form-control"
+								autoComplete="off"
+								placeholder="Enter your email again to confirm"
+								value={confirmUsername}
+								onChange={(e) => setConfirmUsername(e.target.value)}
+								required
+							/>
+						</div>
+						< br />
+						<div className="mb-4">
+							<label htmlFor="password" className="form-label">
+								Password <span className="text-danger">*<br /></span>
+							</label>
+							<input
+								type="password"
+								id="password"
+								className="form-control"
+								placeholder="Create a password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								required
+							/>
+						</div>
+						< br />
+						<div className="d-grid">
+							<button
+								type="submit"
+								className="btn btn-secondary btn-lg"
+								style={{
+									backgroundColor: hostHover
+										? "#153443"
+										: "#1C495E",
+									color: "#fff",
+									transition: "background 0.2s, border-color 0.2s",
+									fontFamily: "DMSans"
+								}}
+								onMouseEnter={() => setHostHover(true)}
+								onMouseLeave={() => setHostHover(false)}
+							>
+								Continue
+							</button>
+						</div>
+					</form>
+				</div>
+
+				{/* Progress bar */}
+				<div style={{ display: "flex", justifyContent: "center", marginTop: "20px", width: "100%" }}>
+
+					<div style={{ marginBottom: "100px", width: 500, height: 20 }}>
+						<p style={{ textAlign: "center", marginBottom: "8px", color: "#1C495E" }}>Progress toward creating your memory wall</p>
 						{" "}
 						<ProgressBar
 							percent={percentage}
-							filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
+							filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
 							text={`${percentage}%`} // This shows the percent text inside the progress bar
 						/>
 					</div>
 				</div>
-				<h1
-					className="text-center mb-3"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
-					Host a Group
-				</h1>
-				<p className="text-muted text-center mb-4">
-					Enter your email and password to create a group.
-				</p>
-				<p className="text-danger text-center mb-4">
-					<strong>
-						Note: Remember your information to access the group later.
-					</strong>
-				</p>
-				<form onSubmit={handleHost}>
-					<div className="mb-3">
-						<label htmlFor="username" className="form-label">
-							Email<span className="text-danger">*</span>
-						</label>
-						<input
-							type="email"
-							id="username"
-							name="username"
-							autoComplete="email"
-							className="form-control"
-							placeholder="Enter your email"
-							value={username}
-							onChange={(e) => setUsername(e.target.value)}
-							required
-						/>
-					</div>
-					<div className="mb-3">
-						<label htmlFor="confirmUsername" className="form-label">
-							Confirm Email<span className="text-danger">*</span>
-						</label>
-						<input
-							type="email"
-							id="confirmUsername"
-							name="confirmUsername"
-							className="form-control"
-							autoComplete="off"
-							placeholder="Enter your email again to confirm"
-							value={confirmUsername}
-							onChange={(e) => setConfirmUsername(e.target.value)}
-							required
-						/>
-					</div>
 
-					<div className="mb-4">
-						<label htmlFor="password" className="form-label">
-							Password<span className="text-danger">*</span>
-						</label>
-						<input
-							type="password"
-							id="password"
-							className="form-control"
-							placeholder="Create a password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-					</div>
-
-					<div className="d-grid">
-						<button
-							type="submit"
-							className="btn btn-secondary btn-lg"
-							style={{
-								backgroundColor: hostHover
-									? "rgb(8, 82, 75)"
-									: "rgb(13, 106, 95)",
-								borderColor: hostHover ? "rgb(8, 82, 75)" : "rgb(13, 106, 95)",
-								color: "#fff",
-								transition: "background 0.2s, border-color 0.2s",
-							}}
-							onMouseEnter={() => setHostHover(true)}
-							onMouseLeave={() => setHostHover(false)}
-						>
-							Continue
-						</button>
-					</div>
-				</form>
 			</div>
 		</main>
 	);

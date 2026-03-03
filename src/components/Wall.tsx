@@ -1,11 +1,7 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ClipboardCheck, Clipboard } from "react-bootstrap-icons";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
-import "./Wall.css";
+import "../styles/Wall.css";
 import imageCompression from "browser-image-compression";
 import TabbedMemoryWall from "./TabbedWall";
 import DatePicker from "react-datepicker";
@@ -18,6 +14,29 @@ import Lightbox, { label } from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import Instructions from "./Instructions";
 import heic2any from "heic2any";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
+
+// Simple icon components to replace react-bootstrap-icons
+const ClipboardIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+		<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+	</svg>
+);
+
+const ClipboardCheckIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path fillRule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+		<path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+		<path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+	</svg>
+);
+
+const ThreeDotsIcon = () => (
+	<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ display: "inline-block", verticalAlign: "middle" }}>
+		<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+	</svg>
+);
 
 type CopyableGroupIdProps = {
 	groupId: string;
@@ -41,32 +60,17 @@ function CopyableGroupId({ groupId }: CopyableGroupIdProps) {
 
 	return (
 		<span
-			className="text-muted small mb-0 d-flex align-items-center"
-			style={{
-				cursor: "pointer",
-				padding: "6px 10px",
-				transition: "background 0.15s",
-				background: copied ? "#e6ffee" : "transparent",
-				color: copied ? "#177e5b" : undefined,
-			}}
+			className={`copyable-group-id ${copied ? "copied" : ""}`}
 			title={copied ? "Copied!" : "Click to copy"}
 			onClick={handleCopy}
 		>
 			Group ID:{" "}
-			<strong style={{ fontSize: "1em", marginLeft: 6 }}>{groupId}</strong>
-			<span style={{ marginLeft: 8, fontSize: 18 }}>
-				{copied ? <ClipboardCheck color="#177e5b" /> : <Clipboard />}
+			<strong>{groupId}</strong>
+			<span className="icon">
+				{copied ? <ClipboardCheckIcon /> : <ClipboardIcon />}
 			</span>
 			{copied && (
-				<span
-					style={{
-						marginLeft: 10,
-						color: "#177e5b",
-						fontWeight: 600,
-						fontSize: "0.93em",
-						letterSpacing: 0.3,
-					}}
-				>
+				<span className="copied-text">
 					Copied!
 				</span>
 			)}
@@ -101,6 +105,7 @@ export default function Wall() {
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 	const [showButton, setShowButton] = useState(false);
 	const [isQRLightboxOpen, setIsQRLightboxOpen] = useState(false);
+	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const qrWrapperRef = useRef<HTMLDivElement>(null);
 	const [showHelp, setShowHelp] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -476,202 +481,166 @@ export default function Wall() {
 	};
 
 	return (
-		<div>
+		<div className="wall-container">
 			{/* Title + dropdown */}
-			<div className="container py-3">
-				<div className="d-flex justify-content-center align-items-center gap-2 flex-wrap mb-2">
-					<h2
-						className="mb-0 text-center w-100"
-						style={{ fontFamily: "Merriweather, serif", fontWeight: 600 }}
-					>
-						{person ? `Memory Wall for ${person.name}` : "Memory Wall"}
-					</h2>
-					{madeGroup?.expirationDate && (
-						<p
-							className="mb-0 text-center w-100 text-danger"
-							style={{ fontWeight: 400, fontSize: "0.85rem" }}
-						>
-							This Memory Wall will Expire On{" "}
-							{new Date(madeGroup.expirationDate).toLocaleDateString(
-								undefined,
-								{
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								}
-							)}
-							{" at "}
-							{new Date(madeGroup.expirationDate).toLocaleTimeString(
-								undefined,
-								{
-									hour: "2-digit",
-									minute: "2-digit",
-									hour12: true, // or false for 24-hour time
-									timeZoneName: "short", // optional, shows "MDT" etc.
-								}
-							)}
-						</p>
-					)}{" "}
-					<p
-						className="mb-0 text-center w-100 text-danger"
-						style={{
-							fontSize: "0.75rem",
-							color: "#b22222",
-							fontWeight: 400,
-							marginLeft: 8,
-						}}
-					>
-						(This group and all memories will be deleted on this date or when
-						admin publishes the memories to FamilySearch)
-					</p>
-				</div>
-
-				{/* Portrait on its own row below */}
-				{person && (
-					<div className="d-flex justify-content-center mt-2">
-						<img
-							src={portraitUrl}
-							alt="Portrait"
-							className="img-fluid"
-							style={{ height: "100px", borderRadius: "10%" }}
-						/>
-					</div>
-				)}
-			</div>
-
 			{groupId && (
-				<div className="d-flex flex-column align-items-center mt-1 gap-2">
-					<div
-						style={{ cursor: "pointer" }}
-						onClick={() => setIsQRLightboxOpen(true)}
-						className="text-center"
-					>
-						<QRCode
-							value={`${window.location.origin}/join?groupId=${groupId}`}
-							size={128}
-							bgColor="white"
-							fgColor="black"
-							style={{ borderRadius: 8 }}
-						/>
-						<small className="text-muted d-block mt-1">
-							Click to enlarge/download and share QR Code
-						</small>
+				<div className="wall-info-div-div">
+					{/* Hero Section */}
+					<div className="wall-person-div">
+						{person && (
+							<div className="portrait-container">
+								<img
+									src={portraitUrl}
+									alt="Portrait"
+								/>
+							</div>
+						)}
+						<div className="wall-name-div">
+							<h1>{person.name}</h1>
+							<h2>Memory Wall</h2>
+						</div>
 					</div>
 
-					{isQRLightboxOpen && (
-						<div
-							className="popup-overlay"
-							style={{ zIndex: 20000 }}
-							onClick={() => setIsQRLightboxOpen(false)}
-						>
+					{/* QR + Group Info Card */}
+					<div className="wall-share-div">
+						{madeGroup?.expirationDate && (
+							<p className="wall-warning-text">
+								This Memory Wall will expire on{" "}
+								<strong>
+									{new Date(madeGroup.expirationDate).toLocaleDateString(
+										undefined,
+										{ year: "numeric", month: "long", day: "numeric" }
+									)}
+									{" at "}
+									{new Date(madeGroup.expirationDate).toLocaleTimeString(
+										undefined,
+										{ hour: "2-digit", minute: "2-digit", hour12: true, timeZoneName: "short" }
+									)}
+								</strong>.
+							</p>
+						)}
+
+						<div className="qr-info-card">
+							{/* Left: QR Code */}
 							<div
-								className="popup"
-								style={{
-									background: "white",
-									borderRadius: 12,
-									padding: 32,
-									maxWidth: 420,
-									boxShadow: "0 8px 28px rgba(0,0,0,0.22)",
-									display: "flex",
-									flexDirection: "column",
-									alignItems: "center",
-									cursor: "default",
-								}}
-								onClick={(e) => e.stopPropagation()}
+								className="qr-code-wrapper"
+								onClick={() => setIsQRLightboxOpen(true)}
 							>
-								<div ref={qrWrapperRef}>
-									<QRCode
-										value={`${window.location.origin}/join?groupId=${groupId}`}
-										size={320}
-										bgColor="white"
-										fgColor="black"
-										style={{ borderRadius: 8 }}
-									/>
-								</div>
-								<small className="mt-3 mb-0" style={{ fontSize: "1.5rem" }}>
-									Scan to join this group
+								<QRCode
+									value={`${window.location.origin}/join?groupId=${groupId}`}
+									size={128}
+									bgColor="#F5F5E6"
+									fgColor="#1C495E"
+								/>
+								<small className="qr-helper-text">
+									Click to enlarge/download<br />and share QR code
 								</small>
-								<button
-									type="button"
-									className="btn btn-outline-primary mt-4"
-									onClick={downloadQR}
-								>
-									Download QR as Image
-								</button>
-								<button
-									type="button"
-									className="btn btn-outline-secondary btn-sm mt-2"
-									onClick={() => {
-										const shareUrl = `${window.location.origin}/join?groupId=${groupId}`;
-										if (navigator.share) {
-											// Use the Web Share API if available (on most modern mobile browsers)
-											navigator.share({
-												title: "Join Memory Wall Group",
-												text: `Join our Memory Wall group for ${person.name}!`,
-												url: shareUrl,
-											});
-										} else {
-											// Fallback: copy to clipboard
-											navigator.clipboard.writeText(shareUrl);
-											alert("Link copied to clipboard!");
-										}
-									}}
-								>
-									Share Link
-								</button>
-								<button
-									type="button"
-									className="btn btn-secondary mt-2"
-									onClick={() => setIsQRLightboxOpen(false)}
-								>
-									Close
-								</button>
+							</div>
+
+							{/* Right: Group ID + Settings */}
+							<div className="qr-right-content">
+								<CopyableGroupId groupId={groupId} />
+								{isAdmin && (
+									<div className="dropdown">
+										<button
+											className="btn btn-primary btn-sm settings-btn"
+											type="button"
+											onClick={() => setDropdownOpen(!dropdownOpen)}
+										>
+											Settings
+										</button>
+										<ul className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+											<li>
+												<button
+													className="dropdown-item"
+													onClick={() => {
+														setShowConfirmPublish(true);
+														setDropdownOpen(false);
+													}}
+												>
+													Publish Memories to FamilySearch
+												</button>
+											</li>
+											<li>
+												<button
+													className="dropdown-item"
+													onClick={async () => {
+														await exportMemoriesAsPDF(person.name, memoryList);
+														setDropdownOpen(false);
+													}}
+												>
+													Export Memories
+												</button>
+											</li>
+											<li>
+												<button
+													className="dropdown-item"
+													onClick={() => setShowConfirmDelete(true)}
+												>
+													Delete Group
+												</button>
+											</li>
+										</ul>
+									</div>
+								)}
 							</div>
 						</div>
-					)}
 
-					<div className="d-flex align-items-center justify-content-center gap-2">
-						<CopyableGroupId groupId={groupId} />
-
-						{isAdmin && (
-							<div className="dropdown">
-								<button
-									className="btn btn-light btn-sm"
-									type="button"
-									id="adminDropdown"
-									data-bs-toggle="dropdown"
-									aria-expanded="false"
+						{/* QR Lightbox */}
+						{isQRLightboxOpen && (
+							<div
+								className="popup-overlay qr-lightbox-overlay"
+								onClick={() => setIsQRLightboxOpen(false)}
+							>
+								<div
+									className="qr-lightbox-popup"
+									onClick={(e) => e.stopPropagation()}
 								>
-									<i className="bi bi-three-dots-vertical"></i>
-								</button>
-								<ul className="dropdown-menu" aria-labelledby="adminDropdown">
-									<li>
-										<button
-											className="dropdown-item"
-											onClick={() => setShowConfirmPublish(true)}
-										>
-											Publish Memories to FamilySearch
-										</button>
-									</li>
-									<li>
-										<button
-											className="dropdown-item"
-											onClick={async () => {
-												await exportMemoriesAsPDF(person.name, memoryList);
-											}}
-										>
-											Export Memories
-										</button>
-									</li>
-									<li>
-										<button
-											className="dropdown-item"
-											onClick={() => setShowConfirmDelete(true)}
-										>
-											Delete Group
-										</button>
-									</li>
-								</ul>
+									<div ref={qrWrapperRef}>
+										<QRCode
+											value={`${window.location.origin}/join?groupId=${groupId}`}
+											size={320}
+											bgColor="white"
+											fgColor="black"
+										/>
+									</div>
+									<small className="qr-lightbox-text">
+										Scan to join this group
+									</small>
+									<button
+										type="button"
+										className="btn btn-outline-primary mt-4"
+										onClick={downloadQR}
+									>
+										Download QR as Image
+									</button>
+									<button
+										type="button"
+										className="btn btn-outline-secondary btn-sm mt-2"
+										onClick={() => {
+											const shareUrl = `${window.location.origin}/join?groupId=${groupId}`;
+											if (navigator.share) {
+												navigator.share({
+													title: "Join Memory Wall Group",
+													text: `Join our Memory Wall group for ${person.name}!`,
+													url: shareUrl,
+												});
+											} else {
+												navigator.clipboard.writeText(shareUrl);
+												alert("Link copied to clipboard!");
+											}
+										}}
+									>
+										Share Link
+									</button>
+									<button
+										type="button"
+										className="btn btn-secondary mt-2"
+										onClick={() => setIsQRLightboxOpen(false)}
+									>
+										Close
+									</button>
+								</div>
 							</div>
 						)}
 					</div>
@@ -685,13 +654,15 @@ export default function Wall() {
 				Add Memory
 			</button>
 
-			<TabbedMemoryWall
-				myMemories={myMemories}
-				otherMemories={memoryList}
-				setSelectedMemory={setSelectedMemory}
-				setShowDetail={setShowDetail}
-				isAdmin={isAdmin}
-			/>
+			<div className="wall-memory-section">
+				<TabbedMemoryWall
+					myMemories={myMemories}
+					otherMemories={memoryList}
+					setSelectedMemory={setSelectedMemory}
+					setShowDetail={setShowDetail}
+					isAdmin={isAdmin}
+				/>
+			</div>
 
 			{showPopup && (
 				<div className="popup-overlay">
@@ -762,17 +733,15 @@ export default function Wall() {
 									}}
 								/>
 								{imagePreview && (
-									<div className="position-relative mt-2">
+									<div className="image-preview-container">
 										<img
 											src={imagePreview}
 											alt="Preview"
-											className="img-fluid"
-											style={{ maxHeight: "150px", borderRadius: "8px" }}
+											className="image-preview"
 										/>
 										<button
 											type="button"
-											className="btn btn-sm btn-danger position-absolute top-0 end-0"
-											style={{ transform: "translate(50%, -50%)" }}
+											className="btn btn-sm btn-danger remove-image-btn"
 											onClick={() => {
 												setImagePreview(null);
 												setImageFile(null);
@@ -870,10 +839,10 @@ export default function Wall() {
 								/>
 							</div>
 
-							<div className="d-flex justify-content-between mt-4">
+							<div className="form-actions">
 								<button
 									type="button"
-									className="btn btn-outline-secondary me-2"
+									className="btn btn-outline-secondary"
 									onClick={() => resetFormFields()}
 								>
 									Cancel
@@ -886,7 +855,7 @@ export default function Wall() {
 									{isSubmitting ? (
 										<>
 											<span
-												className="spinner-border spinner-border-sm me-2"
+												className="spinner"
 												role="status"
 												aria-hidden="true"
 											></span>
@@ -911,7 +880,7 @@ export default function Wall() {
 						onClick={(e) => e.stopPropagation()}
 					>
 						{/* Buttons at top */}
-						<div className="d-flex justify-content-end align-items-start gap-2 mb-3">
+						<div className="detail-buttons">
 							<button
 								className="btn btn-secondary"
 								onClick={() => setShowDetail(false)}
@@ -931,25 +900,11 @@ export default function Wall() {
 								</button>
 							)}
 						</div>
-						<div
-							style={{
-								maxHeight: "200px",
-								overflowX: "auto",
-								whiteSpace: "pre-wrap",
-								paddingRight: "0.5rem",
-							}}
-						>
+						<div className="detail-content">
 							<h4 className="fw-bold">{selectedMemory.title}</h4>
 						</div>
 						{selectedMemory.author && (
-							<div
-								style={{
-									maxHeight: "200px",
-									overflowX: "auto",
-									whiteSpace: "pre-wrap",
-									paddingRight: "0.5rem",
-								}}
-							>
+							<div className="detail-content">
 								<p className="fst-italic text-secondary">
 									Shared by: {selectedMemory.author}
 								</p>
@@ -960,12 +915,7 @@ export default function Wall() {
 								<img
 									src={selectedMemory.image}
 									alt="Memory"
-									className="img-fluid mb-3"
-									style={{
-										maxHeight: "200px",
-										borderRadius: "8px",
-										cursor: "zoom-in",
-									}}
+									className="detail-image"
 									onClick={() => setIsLightboxOpen(true)}
 								/>
 								{isLightboxOpen && (
@@ -983,47 +933,21 @@ export default function Wall() {
 							</>
 						)}
 
-						<div
-							style={{
-								maxHeight: "200px",
-								overflowY: "auto",
-								whiteSpace: "pre-wrap",
-								paddingRight: "0.5rem",
-							}}
-						>
+						<div className="detail-content">
 							{selectedMemory.memory}
 						</div>
-						<small className="text-muted d-block mt-2">
+						<small className="detail-meta">
 							{selectedMemory.place && (
-								<div
-									style={{
-										maxHeight: "200px",
-										overflowX: "auto",
-										whiteSpace: "pre-wrap",
-										paddingRight: "0.5rem",
-									}}
-								>
-									<span
-										style={{
-											display: "inline-flex",
-											alignItems: "center",
-											verticalAlign: "middle",
-											whiteSpace: "nowrap",
-											lineHeight: "1.2",
-										}}
-									>
+								<div className="detail-content">
+									<span className="place-pin">
 										<span
 											aria-label="place pin"
 											role="img"
-											style={{
-												marginRight: 4,
-												lineHeight: 1,
-												verticalAlign: "middle",
-											}}
+											className="place-pin-icon"
 										>
 											📍
 										</span>
-										<span style={{ overflowWrap: "break-word" }}>
+										<span className="place-pin-text">
 											{selectedMemory.place}
 										</span>
 									</span>
@@ -1042,8 +966,8 @@ export default function Wall() {
 				</div>
 			)}
 			{showConfirmPublish && (
-				<div className="popup-overlay" style={overlayStyle}>
-					<div className="popup text-center" style={publishPopupStyle}>
+				<div className="popup-overlay">
+					<div className="popup publish-popup text-center">
 						<h5>Are you sure you want to publish?</h5>
 						<p className="text-danger">
 							After publishing, this group will be deleted with all associated
@@ -1053,7 +977,7 @@ export default function Wall() {
 						<p className="text-muted">
 							You’ll be redirected to sign in with FamilySearch.
 						</p>
-						<div className="d-flex justify-content-center gap-3 mt-3">
+						<div className="confirm-actions">
 							<button
 								className="btn btn-outline-secondary"
 								onClick={() => setShowConfirmPublish(false)}
@@ -1071,8 +995,8 @@ export default function Wall() {
 						</div>
 					</div>
 					{showSecondConfirm && (
-						<div className="popup-overlay" style={overlayStyle}>
-							<div className="popup text-center" style={publishPopupStyle}>
+						<div className="popup-overlay">
+							<div className="popup publish-popup text-center">
 								<h5 className="text-danger">
 									After publishing, this group and all associated memories will
 									be permanently deleted. This is your last chance to export the
@@ -1085,7 +1009,7 @@ export default function Wall() {
 								<p className="text-muted">
 									You’ll be redirected to sign in with FamilySearch.
 								</p>
-								<div className="d-flex justify-content-center gap-3 mt-3">
+								<div className="confirm-actions">
 									<button
 										className="btn btn-outline-secondary"
 										onClick={() => {
@@ -1115,15 +1039,15 @@ export default function Wall() {
 				</div>
 			)}
 			{showConfirmDelete && (
-				<div className="popup-overlay" style={overlayStyle}>
-					<div className="popup text-center" style={publishPopupStyle}>
+				<div className="popup-overlay">
+					<div className="popup publish-popup text-center">
 						<h5>Are you sure you want to delete?</h5>
 						<p className="text-danger">
 							This group will be deleted with all associated memories. If you
 							would like to publish the memories to Family Search or export them
 							to a PDF, exit and do so now.
 						</p>
-						<div className="d-flex justify-content-center gap-3 mt-3">
+						<div className="confirm-actions">
 							<button
 								className="btn btn-outline-secondary"
 								onClick={() => setShowConfirmDelete(false)}
@@ -1141,8 +1065,8 @@ export default function Wall() {
 						</div>
 					</div>
 					{showSecondConfirm && (
-						<div className="popup-overlay" style={overlayStyle}>
-							<div className="popup text-center" style={publishPopupStyle}>
+						<div className="popup-overlay">
+							<div className="popup publish-popup text-center">
 								<h5 className="text-danger">
 									This group and all associated memories will be permanently
 									deleted. This is your last chance to publish them to Family
@@ -1153,7 +1077,7 @@ export default function Wall() {
 									Are you <strong>really</strong> sure you want to delete the
 									group?
 								</p>
-								<div className="d-flex justify-content-center gap-3 mt-3">
+								<div className="confirm-actions">
 									<button
 										className="btn btn-outline-secondary"
 										onClick={() => {
@@ -1196,49 +1120,19 @@ export default function Wall() {
 				showConfirmPublish ||
 				isQRLightboxOpen ||
 				showHelp
-			) && (
-				<button
-					className="help-button"
-					style={{
-						position: "fixed",
-						top: 44,
-						right: 24,
-						zIndex: 10010,
-						width: 48,
-						height: 48,
-						borderRadius: "50%",
-						background: "#3574d5",
-						color: "white",
-						fontWeight: "bold",
-						fontSize: 26,
-						border: "none",
-						boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
-						cursor: "pointer",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-					aria-label="Help"
-					title="Show instructions"
-					onClick={() => setShowHelp(true)}
-				>
-					<i className="bi bi-question-circle"></i>
-				</button>
 			)}
 
 			{showHelp && (
 				<div
 					className="popup-overlay"
-					style={overlayStyle}
 					onClick={() => setShowHelp(false)}
 				>
 					<div
 						className="popup text-start"
-						style={popupStyle}
 						onClick={(e) => e.stopPropagation()}
 					>
 						<Instructions isPopup />
-						<div style={{ textAlign: "right" }}>
+						<div className="text-end">
 							<button
 								type="button"
 								className="btn btn-secondary mt-2"
@@ -1253,40 +1147,3 @@ export default function Wall() {
 		</div>
 	);
 }
-
-const overlayStyle: React.CSSProperties = {
-	position: "fixed",
-	top: 0,
-	left: 0,
-	height: "100vh",
-	width: "100vw",
-	backgroundColor: "rgba(0, 0, 0, 0.5)",
-	display: "flex",
-	justifyContent: "center",
-	alignItems: "center",
-	zIndex: 9999,
-};
-
-const popupStyle: React.CSSProperties = {
-	backgroundColor: "#fff",
-	padding: "0rem 2rem 2rem 2rem",
-	borderRadius: "8px",
-	boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-	maxWidth: "400px",
-	width: "90%",
-};
-
-const messageBoxStyle: React.CSSProperties = {
-	backgroundColor: "#fff",
-	padding: "2rem",
-	borderRadius: "8px",
-	boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-	maxWidth: "400px",
-	width: "90%",
-	textAlign: "center",
-};
-
-const publishPopupStyle: React.CSSProperties = {
-	...popupStyle,
-	paddingTop: "3rem", // increase as desired for extra top padding
-};

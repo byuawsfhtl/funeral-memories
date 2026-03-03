@@ -1,34 +1,46 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Join from "./Join";
+import AdminLogin from "./adminLogin";
+import "../styles/roleSelect.css";
+
+type OverlayMode = "none" | "guest" | "admin";
 
 export default function RoleSelect() {
-	const navigate = useNavigate();
+  const [mode, setMode] = useState<OverlayMode>("none");
 
-	return (
-		<main
-			className="d-flex justify-content-center align-items-center flex-column container my-5"
-			style={{ flexGrow: 1 }}
-		>
-			<div className="w-100" style={{ maxWidth: "400px" }}>
-				<h1
-					className="text-center mb-4"
-					style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-				>
-					Choose Your Role
-				</h1>
+  return (
+    <main className="role-select-main">
+      {/* LEFT HALF */}
+      <section className="leftPanel">
+        <h1 className="roleTitle">Choose Your Role</h1>
 
-				<div className="d-grid gap-3 mt-4">
-					<button className="btn btn-primary" onClick={() => navigate("/join")}>
-						Join as Guest
-					</button>
-					<button
-						className="btn btn-outline-primary"
-						onClick={() => navigate("/admin")}
-					>
-						Join as Admin
-					</button>
-				</div>
-			</div>
-		</main>
-	);
+        <div className="button-container">
+          <button className="join-guest-button" onClick={() => setMode("guest")}>
+            <h5>Join as Guest</h5>
+            <p>View &amp; Share Memories</p>
+          </button>
+
+          <button className="join-admin-button" onClick={() => setMode("admin")}>
+            <h5>Join as Admin</h5>
+          </button>
+
+          {mode !== "none" && (
+            <button className="close-overlay-button" onClick={() => setMode("none")}>
+              Close
+            </button>
+          )}
+        </div>
+      </section>
+
+	  <div className="verticalLine"></div>
+
+      {/* RIGHT HALF */}
+      <aside className={`rightPanel ${mode !== "none" ? "open" : ""}`}>
+        <div className="overlayInner">
+          {mode === "guest" && <Join embedded />}
+          {mode === "admin" && <AdminLogin embedded />}
+        </div>
+      </aside>
+    </main>
+  );
 }

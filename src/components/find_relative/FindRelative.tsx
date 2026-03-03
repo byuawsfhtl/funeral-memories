@@ -15,6 +15,7 @@ export default function FindRelative() {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [selectedPerson, setSelectedPerson] = useState<any>(null);
 	const resultsRef = useRef<HTMLDivElement>(null);
+	const [joinHover, setJoinHover] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const expirationDateTime = location.state?.expirationDateTime || {};
 	const percentage = 75;
@@ -278,167 +279,152 @@ export default function FindRelative() {
 
 	return (
 		<div
+			className="find-relative-main"
 			style={{
 				display: "flex",
-				flexDirection: "column", // keep label above bar
-				alignItems: "center", // horizontal center
-				justifyContent: "center", // vertical center
-				minHeight: "100vh", // center horizontally
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
 			}}
 		>
 			<div className={`container ${isLoading ? "loading" : ""}`}>
 				{isLoading}
 
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column", // keep label above bar
-						alignItems: "center", // horizontal center
-						justifyContent: "center", // vertical center
-					}}
-				>
-					{/* Progress bar above title */}
-					<div
-						style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}
-					>
-						<small
-							className="text-muted align-items-center"
-							style={{
-								display: "block",
-								textAlign: "center",
-								marginBottom: "8px",
-							}}
-						>
-							Progress toward creating your memory wall
-						</small>
-						<ProgressBar
-							percent={percentage}
-							filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-							text={`${percentage}%`}
-						/>
-					</div>
-
+				<div className="role-select-box">
 					{/* Title */}
-					<h1
-						style={{
-							textAlign: "center",
-							maxWidth: "600px", // same max as bar
-							width: "100%",
-						}}
-					>
-						Search and Select a Relative for the Memory Wall
+					<h1 className="form-title">
+							Search and Select a Relative for the Memory Wall
 					</h1>
-				</div>
-
-				<p className="text-danger text-center mb-1">
-					<strong>
-						Note: Please ensure that the relative has been marked as deceased on
-						Family Search.
-					</strong>
-				</p>
-				<p className="text-muted text-center mb-4">
-					It might take around an hour for the relative to be searchable after
-					initially being marked as deceased
-				</p>
-				<form onSubmit={handleSubmit}>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Ancestor's First Name
-								<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="firstName"
-								value={formData.firstName}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.firstName ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Ancestor's Last Name
-								<span className="form-required"> (Required)</span>
-							</label>
-							<input
-								type="text"
-								name="lastName"
-								value={formData.lastName}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.lastName ? "black-text" : "gray-text"}
-								required
-							/>
-						</div>
-					</div>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Birth Place<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="birthPlace"
-								value={formData.birthPlace}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.birthPlace ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Birth Year<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="birthYear"
-								value={formData.birthYear}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.birthYear ? "black-text" : "gray-text"}
-							/>
-						</div>
-					</div>
-					<div className="form-row">
-						<div className="form-col">
-							<label className="form-label">
-								Death Place<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="deathPlace"
-								value={formData.deathPlace}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.deathPlace ? "black-text" : "gray-text"}
-							/>
-						</div>
-						<div className="form-col">
-							<label className="form-label">
-								Death Year<span className="form-optional"> (Optional)</span>
-							</label>
-							<input
-								type="text"
-								name="deathYear"
-								value={formData.deathYear}
-								onChange={handleChange}
-								placeholder="Enter text here"
-								className={formData.deathYear ? "black-text" : "gray-text"}
-							/>
-						</div>
-					</div>
-					<div className="form-col">
-						<button
-							type="submit"
-							className="form-search button button-green"
-							style={{ width: "150px" }}
+						<p className="text-danger text-center mb-1">
+							<strong>
+								Note: Please ensure that the relative has been marked as deceased on
+								Family Search.
+							</strong>
+						</p>
+						<br />
+						<p className="text-muted text-center mb-4">
+							It might take around an hour for the relative to be searchable after
+							initially being marked as deceased.
+						</p>
+						<br />
+						<div
+							className="find-relative-form"
+							style={{width: "100% !important"}}
 						>
-							Search
-						</button>
+						<form onSubmit={handleSubmit}>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Ancestor's First Name
+										<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="firstName"
+										value={formData.firstName}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.firstName ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Ancestor's Last Name
+										<span className="form-required"> (Required)</span>
+									</label>
+									<input
+										type="text"
+										name="lastName"
+										value={formData.lastName}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.lastName ? "black-text" : "gray-text"}
+										required
+									/>
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Birth Place<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="birthPlace"
+										value={formData.birthPlace}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.birthPlace ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Birth Year<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="birthYear"
+										value={formData.birthYear}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.birthYear ? "black-text" : "gray-text"}
+									/>
+								</div>
+							</div>
+							<div className="form-row">
+								<div className="form-col">
+									<label className="form-label">
+										Death Place<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="deathPlace"
+										value={formData.deathPlace}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.deathPlace ? "black-text" : "gray-text"}
+									/>
+								</div>
+								<div className="form-col">
+									<label className="form-label">
+										Death Year<span className="form-optional"> (Optional)</span>
+									</label>
+									<input
+										type="text"
+										name="deathYear"
+										value={formData.deathYear}
+										onChange={handleChange}
+										placeholder="Enter text here"
+										className={formData.deathYear ? "black-text" : "gray-text"}
+									/>
+								</div>
+							</div>
+							<div className="form-col">
+								<button
+									type="submit"
+									className="form-search button button-green"
+									style={{
+										width: "150px",
+										backgroundColor: joinHover
+                        					? "#153443"
+                        					: "#1C495E",
+                    					color: "#FFFFF0",
+										transition: "background 0.2s, border-color 0.2s"
+									}}
+										onMouseEnter={() => setJoinHover(true)}
+        									onMouseLeave={() => setJoinHover(false)}
+                    							disabled={isLoading}
+								>
+									Search
+								</button>
+							</div>
+						</form>
+						</div>
+						<br />
 					</div>
-				</form>
-				<br />
+
+				<br /><br /><br /><br />
+
 				{/*This div is for the ancestors results*/}
 				{ancestors.length > 0 && (
 					<p className="results-hint">
@@ -446,6 +432,7 @@ export default function FindRelative() {
 						and search again.
 					</p>
 				)}
+				<br />
 				{ancestors.length > 0 ? (
 					<div className="results" ref={resultsRef} tabIndex={-1}>
 						{ancestors.map((ancestor: any, index: any) => (
@@ -456,6 +443,8 @@ export default function FindRelative() {
 					<p></p>
 				)}
 			</div>
+
+
 			{showConfirmation && selectedPerson && (
 				<Confirmation
 					person={selectedPerson}

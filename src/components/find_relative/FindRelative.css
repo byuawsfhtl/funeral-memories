@@ -1,23 +1,14 @@
-.title {
-	text-align: center;
-	/* padding: 75px; */
-	padding-top: 75px;
-	padding-bottom: 0px;
-	padding-left: 75px;
-	padding-right: 75px;
-}
+
 
 .gray-text {
 	font-size: 16px;
 	padding: 8px;
-	width: 50%;
 	color: gray;
 }
 
 .black-text {
 	font-size: 16px;
 	padding: 8px;
-	width: 50%;
 	color: black;
 }
 
@@ -32,8 +23,6 @@
 	flex: 0 0 48%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	text-align: center;
 }
 
 .form-label {
@@ -42,27 +31,29 @@
 
 .form-required {
 	font-size: smaller;
-	color: red;
+	color: rgb(126, 33, 33);
 }
 
 .form-optional {
 	font-size: smaller;
-	color: gray;
+	color: #1C495E;
 }
 
 .form-search {
-	background-color: rgb(0, 102, 255);
 	color: white;
+	font-family: "DMSans";
 }
 
 .person-name {
 	text-align: center;
 	font-weight: bold;
 	font-size: 16px;
+	color: #FFFFF0;
 }
 
 .lifespan {
 	text-align: center;
+	color: #FFFFF0;
 }
 
 .portrait {
@@ -86,7 +77,10 @@
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
 	gap: 15px;
+	color: #FFFFF0;
 }
 
 .results-hint {
@@ -95,7 +89,7 @@
 
 .search-result {
 	cursor: pointer;
-	background-color: #ececec;
+	background-color: #B08459;
 	box-shadow: rgb(0 0 0 / 14%) 0px 1px 1px, rgb(0 0 0 / 12%) 0px 2px 1px,
 		rgb(0 0 0 / 20%) 0px 1px 3px;
 	border-radius: 5px;
@@ -123,7 +117,24 @@
 }
 
 .search-result:hover {
-	background-color: #f2f2f2;
+	background-color: #9C6F45;
+}
+
+
+
+
+
+/* NEW STYLES FOR FORM BOX */
+.role-select-box {
+    background-color: #B08459;
+    color: #FFFFF0;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+	padding-left: 6vw;
+	padding-right: 6vw;
+    border-radius: 15px;
+    max-width: 1200px;
 }
 
 

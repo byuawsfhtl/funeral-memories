@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+nav{
+    display: flex;
+    align-items: center;
+    background-color: #FFFFF0;
+}
+
+nav h1{
+    margin-left: .3rem;
+    color: #1C495E;
+    font-family: 'InstrumentSerif';
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.nav-links{
+    display: flex;
+    gap: 1.5rem;
+    margin-left: auto;
+    padding-right: 2vw;
+}
+
+nav img{
+    height: 13vmin;
+}

@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import { Memory } from "../model/Memory";
+import { MongoAPIError } from "mongodb";
 
 export async function exportMemoriesAsPDF(name: string, memories: Memory[]) {
 	const doc = new jsPDF();

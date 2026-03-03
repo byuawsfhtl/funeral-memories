@@ -1,0 +1,49 @@
+.form-title {
+    color: #FFFFF0;
+    font-family: "InstrumentSerif";
+    font-weight: lighter;
+    font-size: 3rem;
+}
+
+.form-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    animation: slideIn 0.7s forwards;
+}
+
+.login-box {
+    background-color: #B08459;
+    color: #FFFFF0;
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+    border-radius: 15px;
+    max-width: 450px;
+}
+
+.form-label {
+    color:#FFFFF0;
+}
+
+.form-main input {
+    background-color: #FFFFF0;
+    border: none;
+    width: 100%;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 5px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

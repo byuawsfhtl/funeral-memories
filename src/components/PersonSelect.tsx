@@ -1,11 +1,12 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { ProgressBar } from "react-step-progress-bar";
+import "../styles/forms.css";
 
 export default function PersonSelect() {
 	const navigate = useNavigate();
-	const [hostHover, setHostHover] = useState(false);
+	const [findRelativeHover, setFindRelativeHover] = useState(false);
+	const [addPersonHover, setAddPersonHover] = useState(false);
 	const location = useLocation();
 	const expirationDateTime = location.state?.expirationDateTime || {};
 	const username = location.state?.username || {};
@@ -20,82 +21,99 @@ export default function PersonSelect() {
 	);
 
 	return (
-		<main className="container my-4 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-			<div style={{ width: "100%", maxWidth: "500px", marginBottom: "15px" }}>
-				<small
-					className="text-muted align-items-center"
-					style={{
-						display: "block",
-						textAlign: "center",
-						marginBottom: "8px",
-					}}
-				>
-					Progress toward creating your memory wall
-				</small>
-				<ProgressBar
-					percent={percentage}
-					filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-					text={`${percentage}%`}
-				/>
-			</div>
-			<h1
-				className="mb-5 text-center"
-				style={{ fontFamily: "Merriweather, serif", fontWeight: 500 }}
-			>
-				Select A Relative
-			</h1>
+		<main className="form-main">
+			<div className="login-box">
+				<h1 className="form-title">Select A Relative</h1>
+				<br />
+				<div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
+					<div className="">
+						<button
+							className="person-select-btn"
+							style={{
+								width: "100%",
+								backgroundColor: findRelativeHover
+									? "#153443"
+									: "#1C495E",
+								color: "#FFFFF0",
+								fontFamily: "DMSans",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								gap: "6px",
+								fontSize: "1.1rem",
 
-			<div className="row w-100" style={{ maxWidth: "800px" }}>
-				<div className="col-12 col-md-6 mb-3 mb-md-0">
-					<button
-						className="btn btn-primary w-100"
-						style={{ height: "200px", fontSize: "1.5rem" }}
-						onClick={() =>
-							navigate("/find-relative", {
-								state: {
-									username,
-									password,
-									expirationDateTime: new Date(
-										expirationDateTime
-									).toISOString(),
-								},
-							})
-						}
-					>
-						🔍 Find through FamilySearch
-					</button>
-				</div>
-				<div className="col-12 col-md-6">
-					<button
-						className="btn btn-secondary w-100 custom-host-btn"
-						style={{
-							height: "200px",
-							fontSize: "1.5rem",
-							backgroundColor: hostHover
-								? "rgb(8, 82, 75)"
-								: "rgb(13, 106, 95)",
-							borderColor: hostHover ? "rgb(8, 82, 75)" : "rgb(13, 106, 95)",
-							color: "#fff",
-							transition: "background 0.2s, border-color 0.2s",
-						}}
-						onClick={() =>
-							navigate("/addPerson", {
-								state: {
-									username,
-									password,
-									expirationDateTime: new Date(
-										expirationDateTime
-									).toISOString(),
-								},
-							})
-						}
-						onMouseEnter={() => setHostHover(true)}
-						onMouseLeave={() => setHostHover(false)}
-					>
-						✍️ Add Person Manually
-					</button>
+							}}
+							onMouseEnter={() => setFindRelativeHover(true)}
+							onMouseLeave={() => setFindRelativeHover(false)}
+							onClick={() =>
+								navigate("/find-relative", {
+									state: {
+										username,
+										password,
+										expirationDateTime: new Date(
+											expirationDateTime
+										).toISOString(),
+									},
+								})
+							}
+						>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"><path fill="#FFFFF0" d="M232.49 215.51L185 168a92.12 92.12 0 1 0-17 17l47.53 47.54a12 12 0 0 0 17-17ZM44 112a68 68 0 1 1 68 68a68.07 68.07 0 0 1-68-68"/></svg>
+						Find through FamilySearch
+						</button>
+					</div>
+
+					<p style={{ textAlign: "center" }}>or</p>
+
+					<div className="col-12 col-md-6">
+						<button
+							className="person-select-btn"
+							style={{
+								width: "100%",
+								backgroundColor: addPersonHover
+									? "#153443"
+									: "#1C495E",
+								color: "#FFFFF0",
+								fontFamily: "DMSans",
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+								gap: "6px",
+								fontSize: "1.1rem"
+
+							}}
+							onMouseEnter={() => setAddPersonHover(true)}
+							onMouseLeave={() => setAddPersonHover(false)}
+							onClick={() =>
+								navigate("/addPerson", {
+									state: {
+										username,
+										password,
+										expirationDateTime: new Date(
+											expirationDateTime
+										).toISOString(),
+									},
+								})
+							}
+						>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-2 -2 24 24"><path fill="#fffff0" d="m5.72 14.456l1.761-.508l10.603-10.73a.456.456 0 0 0-.003-.64l-.635-.642a.443.443 0 0 0-.632-.003L6.239 12.635zM18.703.664l.635.643c.876.887.884 2.318.016 3.196L8.428 15.561l-3.764 1.084a.9.9 0 0 1-1.11-.623a.9.9 0 0 1-.002-.506l1.095-3.84L15.544.647a2.215 2.215 0 0 1 3.159.016zM7.184 1.817c.496 0 .898.407.898.909a.903.903 0 0 1-.898.909H3.592c-.992 0-1.796.814-1.796 1.817v10.906c0 1.004.804 1.818 1.796 1.818h10.776c.992 0 1.797-.814 1.797-1.818v-3.635c0-.502.402-.909.898-.909s.898.407.898.91v3.634c0 2.008-1.609 3.636-3.593 3.636H3.592C1.608 19.994 0 18.366 0 16.358V5.452c0-2.007 1.608-3.635 3.592-3.635z" stroke-width="0.5" stroke="#fffff0" /></svg>
+							Add Person Manually
+						</button>
+					</div>
 				</div>
 			</div>
+				{/* Progress bar */}
+				<div style={{ display: "flex", justifyContent: "center", marginTop: "20px", width: "100%", marginBottom: "100px" }}>
+
+					<div style={{ marginBottom: "100px", width: 500, height: 20 }}>
+						<p style={{ textAlign: "center", marginBottom: "8px", color: "#1C495E"}}>Progress toward creating your memory wall</p>
+						{" "}
+						<ProgressBar
+							percent={percentage}
+							filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
+							text={`${percentage}%`} // This shows the percent text inside the progress bar
+						/>
+					</div>
+				</div>
 		</main>
 	);
 }
