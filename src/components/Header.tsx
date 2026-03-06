@@ -1,4 +1,4 @@
-import logo from "../../placeholder_img/NewFuneralMemoriesLogo.png";
+import logo from "../assets/navylogo.png";
 import { Link } from "react-router-dom";
 import "../styles/header.css";
 
