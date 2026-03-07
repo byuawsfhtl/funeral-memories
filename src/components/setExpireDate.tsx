@@ -124,17 +124,7 @@ export default function SetExpireDate() {
         </form>
         </div>
 
-        {/* Progress bar */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", width: "100%" }}>
-          <div style={{ marginBottom: "100px", width: 500, height: 20 }}>
-            <p style={{ textAlign: "center", marginBottom: "8px", color: "#1C495E" }}>Progress toward creating your memory wall</p>
-            <ProgressBar
-              percent={percentage}
-              filledBackground="linear-gradient(to right, #2D5F76, #1C495E)"
-              text={`${percentage}%`}
-            />
-        </div>
-      </div>
+        <br /><br /><br /><br /><br /><br /><br /><br />
 
       </div>
     </main>

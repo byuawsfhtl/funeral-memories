@@ -667,11 +667,12 @@ export default function Wall() {
 			{showPopup && (
 				<div className="popup-overlay">
 					<div className="popup text-start">
-						<h5>Write a Memory</h5>
+						<h5 className="popup-form-title">Write a Memory</h5>
 						<form onSubmit={handleSubmit}>
 							{/* Image Upload */}
 							<div className="mb-3">
-								<label className="form-label">
+
+								<label className="form-label-wall">
 									Image <span className="text-muted small">(optional)</span>
 								</label>
 								<input
@@ -757,7 +758,7 @@ export default function Wall() {
 
 							{/* Form Fields */}
 							<div className="mb-3">
-								<label className="form-label">
+								<label className="form-label-wall">
 									Your Name
 									<span className="text-danger small">* (required)</span>
 								</label>
@@ -776,7 +777,7 @@ export default function Wall() {
 							</div>
 
 							<div className="mb-3">
-								<label className="form-label">
+								<label className="form-label-wall">
 									Title<span className="text-danger small">* (required)</span>
 								</label>
 								<input
@@ -794,7 +795,7 @@ export default function Wall() {
 							</div>
 
 							<div className="mb-3">
-								<label className="form-label">
+								<label className="form-label-wall">
 									Story<span className="text-danger small">* (required)</span>
 								</label>
 								<textarea
@@ -812,7 +813,7 @@ export default function Wall() {
 							</div>
 
 							<div className="mb-3">
-								<label className="form-label">Place</label>
+								<label className="form-label-wall">Place</label>
 								<input
 									type="text"
 									className="form-control"
@@ -823,8 +824,8 @@ export default function Wall() {
 							</div>
 
 							<div className="mb-3">
-								<label className="form-label">Date</label>
-								<br></br>
+								<label className="form-label-wall">Date</label>
+
 								<DatePicker
 									selected={date}
 									onChange={(d: Date | null) => {
@@ -1103,15 +1104,6 @@ export default function Wall() {
 						</div>
 					)}
 				</div>
-			)}
-			{showButton && (
-				<button
-					className="btn btn-secondary fixed-return-top"
-					onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-					aria-label="Return to top"
-				>
-					<i className="bi bi-arrow-up"></i> {/* Bootstrap icon if you want */}
-				</button>
 			)}
 
 			{!(
