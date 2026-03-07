@@ -378,22 +378,8 @@ export default function AddPerson() {
 			style={{ padding: "2rem" }}
 		>
 			<div style={{ width: "100%", maxWidth: "500px" }}>
-				<small
-					className="text-muted align-items-center"
-					style={{ display: "block", textAlign: "center", marginBottom: "8px" }}
-				>
-					Progress toward creating your memory wall
-				</small>
-				<div style={{ display: "flex", justifyContent: "center" }}>
-					<div style={{ marginBottom: "10px", width: 500, height: 20 }}>
-						{" "}
-						<ProgressBar
-							percent={percentage}
-							filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
-							text={`${percentage}%`} // This shows the percent text inside the progress bar
-						/>
-					</div>
-				</div>
+				
+
 				<h1 className="text-center mb-4">Add a Person</h1>
 				<small className="text-muted text-center d-block">
 					For some reason you are not redirected to a memory wall after
