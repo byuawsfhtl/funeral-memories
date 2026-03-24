@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressBar } from "react-step-progress-bar";
+import PasswordField from "./PasswordField";
 import "../styles/forms.css";
 
 export default function Host() {
@@ -88,10 +89,10 @@ export default function Host() {
 							<label htmlFor="password" className="form-label">
 								Password <span className="text-danger">*<br /></span>
 							</label>
-							<input
-								type="password"
+							<PasswordField
 								id="password"
-								className="form-control"
+								name="password"
+								autoComplete="new-password"
 								placeholder="Create a password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}

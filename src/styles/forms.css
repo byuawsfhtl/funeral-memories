@@ -37,6 +37,42 @@
     border-radius: 5px;
 }
 
+.password-field-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.password-field-wrap input {
+    padding-right: 2.75rem;
+    box-sizing: border-box;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 0.35rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border: none;
+    background: transparent;
+    color: #1C495E;
+    cursor: pointer;
+    line-height: 0;
+    border-radius: 4px;
+}
+
+.password-toggle-btn:hover {
+    background-color: rgba(28, 73, 94, 0.12);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid #1C495E;
+    outline-offset: 2px;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
