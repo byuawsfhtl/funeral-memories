@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FuneralMemoryService } from "../service/FuneralMemoryService";
+import PasswordField from "./PasswordField";
 import "../styles/forms.css";
 
 export default function AdminLogin({ embedded = false }: { embedded?: boolean }) {
@@ -92,15 +93,25 @@ export default function AdminLogin({ embedded = false }: { embedded?: boolean })
           </div>
 	  	  < br />
           <div className="mb-3">
-            <label className="form-label">Password</label>
+            <label htmlFor="admin-login-password" className="form-label">Password</label>
 			<br />
-            <input style={{ fontFamily: "DMSans", width:"100%", paddingTop:"8px", paddingBottom:"8px", paddingLeft:"12px", borderRadius:"5px", border:"1px solid #ccc" }}
-              type="password"
-              className="form-control"
+            <PasswordField
+              id="admin-login-password"
+              name="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
               required
+              inputStyle={{
+                fontFamily: "DMSans",
+                width: "100%",
+                paddingTop: "8px",
+                paddingBottom: "8px",
+                paddingLeft: "12px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
             />
           </div>
 
