@@ -218,24 +218,46 @@ export class FuneralMemoryService {
 		});
 		console.log("✅ Group created successfully");
 
-		// 4️⃣ Send credentials email
-		await this.communicator.doPost("/admin/send-credentials", {
-			email: admin.admin, // assuming admin.admin is the email
-			username: admin.admin,
-			password: admin.password,
-			groupId: newGroupId,
-			ancestorName: group.ancestor?.name || "Unknown",
-			expirationDate: group.expirationDate,
-			pid: group.ancestor?.id || "Unknown",
-		});
-		console.log("📨 Credentials email sent successfully");
+		// Credentials email is sent from the UI only after login succeeds (see sendCredentialsEmail).
 
-		// 5️⃣ Return created group info (you can fetch fresh copy if needed)
+		// 4️⃣ Return created group info (you can fetch fresh copy if needed)
 		const finalGroup = await this.communicator.doGet<Group>("/group", {
 			groupId: newGroupId,
 		});
 
 		return finalGroup;
+	}
+
+	async sendCredentialsEmail(params: {
+		email: string;
+		username: string;
+		password: string;
+		groupId: string;
+		ancestorName: string;
+		expirationDate: string;
+		pid: string;
+	}): Promise<void> {
+		await this.communicator.doPost("/admin/send-credentials", params);
+		console.log("📨 Credentials email sent successfully");
+	}
+
+	/** Best-effort cleanup when group creation succeeded but login or email failed. */
+	async rollbackCreatedGroup(groupId: string): Promise<void> {
+		try {
+			await this.deleteGroup(groupId);
+		} catch (err) {
+			console.error("Rollback: deleteGroup failed:", err);
+			try {
+				await this.deleteAdmin(groupId);
+			} catch (e2) {
+				console.error("Rollback: deleteAdmin failed:", e2);
+			}
+			try {
+				await this.deleteGroup(groupId);
+			} catch (e3) {
+				console.error("Rollback: second deleteGroup failed:", e3);
+			}
+		}
 	}
 
 	private generateGroupId(): string {
