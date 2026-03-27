@@ -198,7 +198,15 @@ export default function Confirmation({
 							This information was found using FamilySearch records. If this is
 							the correct person, click "Yes" to continue or "No" to cancel.
 						</p>
-						<div className="d-flex justify-content-center gap-2 mt-3">
+						<br></br>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								gap: "1rem",
+								marginTop: "1rem",
+							}}
+						>
 							<button
 								className="btn btn-primary"
 								onClick={handleConfirm}
