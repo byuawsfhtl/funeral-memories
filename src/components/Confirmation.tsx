@@ -102,10 +102,32 @@ export default function Confirmation({
 
 			if (!loginRes || !loginRes.sessionId) {
 				console.error("Failed to record session as admin");
-				alert("Group made, but admin session failed.");
+				await service.rollbackCreatedGroup(madeGroup.groupId);
+				alert(
+					"Could not complete sign-in for your new wall. The setup was cancelled. Please try again."
+				);
+				return;
 			}
 
-			// After confirming, navigate to wall page
+			try {
+				await service.sendCredentialsEmail({
+					email: username,
+					username,
+					password,
+					groupId: madeGroup.groupId,
+					ancestorName: person?.name || "Unknown",
+					expirationDate,
+					pid: person?.id || "Unknown",
+				});
+			} catch (emailErr) {
+				console.error("Failed to send credentials email:", emailErr);
+				await service.rollbackCreatedGroup(madeGroup.groupId);
+				alert(
+					"Your wall was created but we could not send your login details by email. The setup was cancelled. Please try again."
+				);
+				return;
+			}
+
 			navigate("/wall", { state: { madeGroup } });
 			localStorage.setItem("madeGroup", JSON.stringify(madeGroup));
 		} catch (err) {
