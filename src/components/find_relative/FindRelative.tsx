@@ -302,7 +302,7 @@ export default function FindRelative() {
 							</strong>
 						</p>
 						<br />
-						<p className="text-muted text-center mb-4">
+						<p className="text-center mb-4">
 							It might take around an hour for the relative to be searchable after
 							initially being marked as deceased.
 						</p>
