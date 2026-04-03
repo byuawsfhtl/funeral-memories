@@ -667,7 +667,19 @@ export default function Wall() {
 			{showPopup && (
 				<div className="popup-overlay">
 					<div className="popup text-start">
-						<h5 className="popup-form-title">Write a Memory</h5>
+						<div className="memory-popup-header">
+							<h5 className="popup-form-title memory-popup-title">
+								Write a Memory
+							</h5>
+							<button
+								type="button"
+								className="memory-popup-close"
+								aria-label="Close"
+								onClick={() => resetFormFields()}
+							>
+								×
+							</button>
+						</div>
 						<form onSubmit={handleSubmit}>
 							{/* Image Upload */}
 							<div className="mb-3">
