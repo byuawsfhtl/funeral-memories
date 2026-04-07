@@ -1,6 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import "../styles/main.css";
 import Header from "./Header";
 import Home from "./Home.js";
@@ -17,27 +22,38 @@ import SetExpireDate from "./setExpireDate";
 import AddPerson from "./AddPerson";
 import PersonSelect from "./PersonSelect";
 
+function AppContent() {
+  const location = useLocation();
+  const hideFooter = location.pathname === "/wall";
+
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" Component={Home} />
+        <Route path="/instructions" Component={Instructions} />
+        <Route path="/wall" Component={Wall} />
+        <Route path="/find-relative" Component={FindRelative} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/host" element={<Host />} />
+        <Route path="/roleSelect" Component={RoleSelect}></Route>
+        <Route path="/admin" Component={AdminLogin}></Route>
+        <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
+        <Route path="/addPerson" Component={AddPerson} />
+        <Route path="/personSelect" Component={PersonSelect} />
+        <Route path="*" Component={Home} />
+      </Routes>
+      {!hideFooter && <Footer />}
+    </>
+  );
+}
+
 const rootElement = document.getElementById("root");
 if (rootElement) {
   createRoot(rootElement).render(
     <React.StrictMode>
       <Router>
-        <Header />
-        <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="/instructions" Component={Instructions} />
-          <Route path="/wall" Component={Wall} />
-          <Route path="/find-relative" Component={FindRelative} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/host" element={<Host />} />
-          <Route path="/roleSelect" Component={RoleSelect}></Route>
-          <Route path="/admin" Component={AdminLogin}></Route>
-          <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
-          <Route path="/addPerson" Component={AddPerson} />
-          <Route path="/personSelect" Component={PersonSelect} />
-          <Route path="*" Component={Home} />
-        </Routes>
-        <Footer />
+        <AppContent />
       </Router>
     </React.StrictMode>
   );

@@ -7,9 +7,17 @@ type InstructionsProps = {
 
 export default function Instructions({ isPopup }: InstructionsProps) {
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate("/");
+  };
+
   return (
     <div className="instructions-container">
-
       <div className="instructions-header">
         <h1 style={{fontFamily: "InstrumentSerif", fontWeight: "lighter", fontSize: "2.8rem"}}>How to Use Funeral Memories</h1>
         <br />
@@ -19,17 +27,15 @@ export default function Instructions({ isPopup }: InstructionsProps) {
       </div>
 
       <div className="instructions-text">
-
-      {/* {!isPopup && (
-        <button
-          className="btn btn-primary mb-3"
-          style={{ fontSize: "1.2rem" }}
-          onClick={() => navigate("/")}
-        >
-          ← Back to Home
-        </button>
-      )} */}
-
+        {!isPopup && (
+          <button
+            className="btn btn-outline-secondary mb-3"
+            style={{ fontSize: "1rem" }}
+            onClick={handleBack}
+          >
+            ← Back
+          </button>
+        )}
         <h2>For All Users</h2>
 
         <h4>Join a Memory Wall</h4>
