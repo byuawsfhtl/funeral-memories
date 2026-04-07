@@ -24,6 +24,24 @@
     max-width: 450px;
 }
 
+.login-box .form-note-warning {
+    padding: 0.65rem 0.75rem;
+    text-align: center;
+    background-color: rgba(255, 255, 240, 0.96);
+    color: #5c1010;
+    border-radius: 8px;
+    border-left: 4px solid #a10404;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+.login-box .form-note-warning strong {
+    font-weight: 700;
+    color: #450a0a;
+}
+
+/* Softer than .form-title (#FFFFF0) — slightly grayer on brown */
+
+
 .form-label {
     color:#FFFFF0;
 }
@@ -35,6 +53,42 @@
     padding-top: 7px;
     padding-bottom: 7px;
     border-radius: 5px;
+}
+
+.password-field-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.password-field-wrap input {
+    padding-right: 2.75rem;
+    box-sizing: border-box;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 0.35rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    border: none;
+    background: transparent;
+    color: #1C495E;
+    cursor: pointer;
+    line-height: 0;
+    border-radius: 4px;
+}
+
+.password-toggle-btn:hover {
+    background-color: rgba(28, 73, 94, 0.12);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid #1C495E;
+    outline-offset: 2px;
 }
 
 @keyframes slideIn {
