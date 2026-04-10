@@ -104,50 +104,76 @@ async function renderTitlePage(
 	const pageHeight = doc.internal.pageSize.getHeight();
 	const cx = pageWidth / 2;
 
-	let y = 35;
+	const life = formatLifeDates(person);
+
+	type ImgBox = {
+		dataUrl: string;
+		format: "PNG" | "JPEG";
+		w: number;
+		h: number;
+	};
+	let imgBox: ImgBox | null = null;
+	if (portraitUrl?.trim()) {
+		try {
+			const dataUrl = await loadImageAsDataUrl(portraitUrl);
+			const imgProps = await loadImageDimensions(dataUrl);
+			const maxW = 75;
+			const maxH = 85;
+			const aspect = imgProps.width / imgProps.height;
+			let w = maxW;
+			let h = w / aspect;
+			if (h > maxH) {
+				h = maxH;
+				w = h * aspect;
+			}
+			imgBox = { dataUrl, format: imgProps.format, w, h };
+		} catch {
+			// CORS or network: text-only cover
+		}
+	}
+
+	const lineTitle = 12;
+	const lineSub = 8;
+	const lineLife = life ? 8 : 0;
+	const gapBeforePortrait = imgBox ? 6 : 0;
+	const portraitH = imgBox ? imgBox.h : 0;
+	const totalBlock =
+		lineTitle + lineSub + lineLife + gapBeforePortrait + portraitH;
+
+	const margin = 15;
+	let y = (pageHeight - totalBlock) / 2;
+	if (y < margin) {
+		y = margin;
+	}
+
 	doc.setFontSize(22);
 	doc.setFont("helvetica", "bold");
 	doc.text(`Memories for ${name}`, cx, y, { align: "center" });
-	y += 12;
+	y += lineTitle;
 
 	doc.setFont("helvetica", "normal");
 	doc.setFontSize(12);
 	doc.text("Memory Wall", cx, y, { align: "center" });
-	y += 8;
+	y += lineSub;
 
-	const life = formatLifeDates(person);
 	if (life) {
 		doc.setFontSize(11);
 		doc.text(life, cx, y, { align: "center" });
-		y += 8;
+		y += lineLife;
 	}
 
-	y += 6;
-
-	if (!portraitUrl?.trim()) {
-		return;
-	}
-
-	try {
-		const dataUrl = await loadImageAsDataUrl(portraitUrl);
-		const imgProps = await loadImageDimensions(dataUrl);
-
-		const maxW = 75;
-		const maxH = 85;
-		const aspect = imgProps.width / imgProps.height;
-		let w = maxW;
-		let h = w / aspect;
-		if (h > maxH) {
-			h = maxH;
-			w = h * aspect;
-		}
-
-		const x = (pageWidth - w) / 2;
-		const imgY = Math.min(y, pageHeight - h - 20);
-
-		doc.addImage(dataUrl, imgProps.format, x, imgY, w, h);
-	} catch {
-		// CORS or network: title page still shows text only
+	if (imgBox) {
+		y += gapBeforePortrait;
+		const x = (pageWidth - imgBox.w) / 2;
+		const imgY = Math.min(y, pageHeight - imgBox.h - margin);
+		doc.addImage(
+			imgBox.dataUrl,
+			imgBox.format,
+			x,
+			imgY,
+			imgBox.w,
+			imgBox.h
+		);
 	}
 }
 
