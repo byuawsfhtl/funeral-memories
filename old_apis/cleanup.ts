@@ -4,13 +4,23 @@ import PDFDocument from "pdfkit";
 import nodemailer from "nodemailer";
 import { PassThrough } from "stream";
 
+/** Memories worth attaching as a PDF (skip empty DB stubs). */
+export function memoriesWithContent(memories: any[]): any[] {
+  return memories.filter((m) => {
+    const body = String(m?.memory ?? m?.story ?? "").trim();
+    const title = String(m?.title ?? "").trim();
+    const hasImage =
+      typeof m?.image === "string" && m.image.startsWith("data:image/");
+    return body.length > 0 || title.length > 0 || hasImage;
+  });
+}
+
 export async function generateMemoriesPDF(
   name: string,
   memories: any[]
 ): Promise<Buffer> {
   const doc = new PDFDocument({ autoFirstPage: false });
   const stream = new PassThrough();
-  const chunks: Buffer[] = [];
 
   doc.pipe(stream);
 
@@ -31,8 +41,9 @@ export async function generateMemoriesPDF(
     if (memory.place) doc.text(`Place: ${memory.place}`);
     doc.moveDown(0.5);
 
-    // Memory body
-    doc.fontSize(11).text(memory.memory ?? "(No content)", {
+    // Memory body (support legacy `story` field)
+    const bodyText = memory.memory ?? memory.story ?? "(No content)";
+    doc.fontSize(11).text(bodyText, {
       width: 460,
       align: "left",
     });
@@ -43,11 +54,9 @@ export async function generateMemoriesPDF(
       try {
         const matches = memory.image.match(/^data:(image\/\w+);base64,(.+)$/);
         if (matches) {
-          const format = matches[1]; // e.g., "image/jpeg"
           const data = matches[2];
           const buffer = Buffer.from(data, "base64");
 
-          // Fit image width to page
           doc.image(buffer, {
             fit: [460, 300],
             align: "center",
@@ -59,20 +68,21 @@ export async function generateMemoriesPDF(
     }
   }
 
-  doc.end();
-
-  return new Promise((resolve, reject) => {
-    stream.on("data", (chunk) => chunks.push(chunk));
+  // Listeners MUST be registered before doc.end() or chunks may never fire (empty PDF).
+  return new Promise<Buffer>((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on("data", (chunk: Buffer) => chunks.push(chunk));
     stream.on("end", () => resolve(Buffer.concat(chunks)));
     stream.on("error", reject);
+    doc.end();
   });
 }
 
-// ✉️ Send PDF via email
+// ✉️ Send expiry email (PDF only when there were memories)
 async function sendMemoryEmail(
   toEmail: string,
-  pdfBuffer: Buffer,
-  personName: string
+  personName: string,
+  pdfBuffer: Buffer | null
 ) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -82,17 +92,26 @@ async function sendMemoryEmail(
     },
   });
 
+  const firstLine =
+    "Your group for Funeral Memories (funeral-memories.fhtl.org) has expired.";
+  const text =
+    pdfBuffer === null
+      ? `${firstLine}\n\nIt appears there were no memories on the wall. Thank you for using our service.`
+      : `${firstLine} Attached is a PDF archive of your group's memories.`;
+
   await transporter.sendMail({
     from: `"Funeral Memories" <${process.env.EMAIL_USER}>`,
     to: toEmail,
     subject: `Memories for ${personName}`,
-    text: `Your group for Funeral Memories (funeral-memories.fhtl.org) has expired. Attached is a PDF archive of your group's memories.`,
-    attachments: [
-      {
-        filename: `Memories-${personName}.pdf`,
-        content: pdfBuffer,
-      },
-    ],
+    text,
+    ...(pdfBuffer !== null && {
+      attachments: [
+        {
+          filename: `Memories-${personName}.pdf`,
+          content: pdfBuffer,
+        },
+      ],
+    }),
   });
 }
 
@@ -189,9 +208,24 @@ export default async function handler(
 
         if (adminDoc?.admin) {
           try {
-            const pdf = await generateMemoriesPDF(personName, memories);
-            await sendMemoryEmail(adminDoc.admin, pdf, personName);
-            console.log(`📧 Sent PDF to ${adminDoc.admin}`);
+            const toArchive = memoriesWithContent(memories);
+            let pdf: Buffer | null = null;
+            if (toArchive.length > 0) {
+              const buf = await generateMemoriesPDF(personName, toArchive);
+              // Defensive: broken stream race used to yield near-empty buffers
+              if (buf.length >= 64) {
+                pdf = buf;
+              } else {
+                console.warn(
+                  `⚠️ PDF buffer too small for group ${groupId} (${buf.length} bytes); omitting attachment`
+                );
+              }
+            }
+            await sendMemoryEmail(adminDoc.admin, personName, pdf);
+            console.log(
+              `📧 Sent expiry email to ${adminDoc.admin}` +
+                (pdf ? " (with PDF)" : " (no memories, no PDF)")
+            );
           } catch (err) {
             console.warn(
               `⚠️ Failed to email memories to ${adminDoc.admin}:`,

@@ -565,7 +565,12 @@ export default function Wall() {
 												<button
 													className="dropdown-item"
 													onClick={async () => {
-														await exportMemoriesAsPDF(person.name, memoryList);
+														await exportMemoriesAsPDF(
+															person.name,
+															memoryList,
+															madeGroup?.portrait,
+															person
+														);
 														setDropdownOpen(false);
 													}}
 												>
