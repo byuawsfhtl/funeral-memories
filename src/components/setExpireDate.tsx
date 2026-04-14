@@ -66,7 +66,9 @@ export default function SetExpireDate() {
     <main className="form-main">
       <div>
         <div className="login-box">
-          <h2 className="form-title">Set Group Expiration Date</h2>
+          <h2 className="form-title" style={{ textAlign: "center" }}>
+            Set Group Expiration Date
+          </h2>
 
           <p className=" text-center mb-2">
             Please enter a date and time for when you want this group to expire.
@@ -83,7 +85,7 @@ export default function SetExpireDate() {
           )}
 
           <form onSubmit={handleSetExpiration}>
-            <div>
+            <div style={{ textAlign: "center" }}>
               <label className="form-label">Group Expiration Date & Time</label>
               <br />
               <input
@@ -94,11 +96,17 @@ export default function SetExpireDate() {
                 required
                 min={minDateStr}
                 max={maxDateStr}
-                style={{ width: "50%" }}
+                style={{ width: "50%", margin: "0 auto" }}
               />
             </div>
             <br />
-            <div className="d-grid">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+              }}
+            >
               <button
                 type="submit"
                 className="btn btn-secondary btn-lg"
