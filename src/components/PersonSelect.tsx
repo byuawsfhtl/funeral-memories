@@ -1,12 +1,9 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
 import { ProgressBar } from "react-step-progress-bar";
 import "../styles/forms.css";
 
 export default function PersonSelect() {
 	const navigate = useNavigate();
-	const [findRelativeHover, setFindRelativeHover] = useState(false);
-	const [addPersonHover, setAddPersonHover] = useState(false);
 	const location = useLocation();
 	const expirationDateTime = location.state?.expirationDateTime || {};
 	const username = location.state?.username || {};
@@ -28,12 +25,11 @@ export default function PersonSelect() {
 				<div style={{ display: "flex", gap: "20px", flexDirection: "column" }}>
 					<div className="">
 						<button
-							className="person-select-btn"
+							className="btn btn-secondary btn-lg"
 							style={{
 								width: "100%",
-								backgroundColor: findRelativeHover
-									? "#153443"
-									: "#1C495E",
+								backgroundColor: "#1C495E",
+								borderColor: "#1C495E",
 								color: "#FFFFF0",
 								fontFamily: "DMSans",
 								display: "flex",
@@ -41,10 +37,7 @@ export default function PersonSelect() {
 								justifyContent: "center",
 								gap: "6px",
 								fontSize: "1.1rem",
-
 							}}
-							onMouseEnter={() => setFindRelativeHover(true)}
-							onMouseLeave={() => setFindRelativeHover(false)}
 							onClick={() =>
 								navigate("/find-relative", {
 									state: {
@@ -66,12 +59,11 @@ export default function PersonSelect() {
 
 					<div className="col-12 col-md-6">
 						<button
-							className="person-select-btn"
+							className="btn btn-secondary btn-lg"
 							style={{
 								width: "100%",
-								backgroundColor: addPersonHover
-									? "#153443"
-									: "#1C495E",
+								backgroundColor: "#1C495E",
+								borderColor: "#1C495E",
 								color: "#FFFFF0",
 								fontFamily: "DMSans",
 								display: "flex",
@@ -79,10 +71,7 @@ export default function PersonSelect() {
 								justifyContent: "center",
 								gap: "6px",
 								fontSize: "1.1rem"
-
 							}}
-							onMouseEnter={() => setAddPersonHover(true)}
-							onMouseLeave={() => setAddPersonHover(false)}
 							onClick={() =>
 								navigate("/addPerson", {
 									state: {

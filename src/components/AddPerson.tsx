@@ -398,9 +398,17 @@ export default function AddPerson() {
 	return (
 		<main
 			className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
-			style={{ padding: "2rem" }}
+			style={{
+				padding: "2rem",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				width: "100%",
+				boxSizing: "border-box",
+			}}
 		>
-			<div style={{ width: "100%", maxWidth: "500px" }}>
+			<div style={{ width: "100%", maxWidth: "500px" }} className="add-person-form">
 				
 
 				<h1 className="text-center mb-4">Add a Person</h1>
@@ -410,7 +418,7 @@ export default function AddPerson() {
 				</small>
 				<form onSubmit={handleSubmit}>
 					<div className="mb-3">
-						<label htmlFor="personName" className="form-label">
+						<label htmlFor="personName" className="form-label add-person-label">
 							Name<span className="text-danger">*</span>
 						</label>
 						<input
@@ -425,7 +433,7 @@ export default function AddPerson() {
 					</div>
 
 					<div className="mb-3">
-						<label htmlFor="birthDate" className="form-label">
+						<label htmlFor="birthDate" className="form-label add-person-label">
 							Birth Date <span className="text-muted small">(optional)</span>
 						</label>
 						<input
@@ -438,7 +446,7 @@ export default function AddPerson() {
 					</div>
 
 					<div className="mb-3">
-						<label htmlFor="birthPlace" className="form-label">
+						<label htmlFor="birthPlace" className="form-label add-person-label">
 							Birth Place <span className="text-muted small">(optional)</span>
 						</label>
 						<input
@@ -451,7 +459,7 @@ export default function AddPerson() {
 					</div>
 
 					<div className="mb-3">
-						<label htmlFor="deathDate" className="form-label">
+						<label htmlFor="deathDate" className="form-label add-person-label">
 							Death Date <span className="text-muted small">(optional)</span>
 						</label>
 						<input
@@ -464,7 +472,7 @@ export default function AddPerson() {
 					</div>
 
 					<div className="mb-3">
-						<label htmlFor="personPhoto" className="form-label">
+						<label htmlFor="personPhoto" className="form-label add-person-label">
 							Add Portrait
 						</label>
 						<input
@@ -516,11 +524,11 @@ export default function AddPerson() {
 					)}
 
 					<div className="mb-3">
-						<label htmlFor="sex" className="form-label">
+						<label htmlFor="sex" className="form-label add-person-label">
 							Sex<span className="text-danger">*</span>
 						</label>
 						<div
-							className="btn-group w-100"
+							className="w-100 add-person-sex-group"
 							role="group"
 							aria-label="Select sex"
 						>
@@ -535,7 +543,10 @@ export default function AddPerson() {
 								onChange={() => setSex("Male")}
 								required
 							/>
-							<label className="btn btn-outline-primary" htmlFor="sexMale">
+							<label
+								className="btn btn-outline-primary add-person-sex-option"
+								htmlFor="sexMale"
+							>
 								Male
 							</label>
 
@@ -550,13 +561,19 @@ export default function AddPerson() {
 								onChange={() => setSex("Female")}
 								required
 							/>
-							<label className="btn btn-outline-primary" htmlFor="sexFemale">
+							<label
+								className="btn btn-outline-primary add-person-sex-option"
+								htmlFor="sexFemale"
+							>
 								Female
 							</label>
 						</div>
 					</div>
 
-					<div className="d-grid mt-4">
+					<div
+						className="mt-4"
+						style={{ display: "flex", justifyContent: "center", width: "100%" }}
+					>
 						<button type="submit" className="btn btn-primary btn-lg">
 							Add Person and Create Memory Wall
 						</button>

@@ -41,7 +41,7 @@ export default function Host() {
 		<main className="form-main">
 			<div>
 
-				<div className="login-box">
+				<div className="login-box host-login-box">
 					<h1 className="form-title">Host a Group</h1>
 					<p>Enter your email and password to create a group.</p>
 					<p className="">

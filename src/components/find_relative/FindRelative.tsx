@@ -287,7 +287,7 @@ export default function FindRelative() {
 				justifyContent: "center",
 			}}
 		>
-			<div className={`container ${isLoading ? "loading" : ""}`}>
+			<div className={`find-relative-container ${isLoading ? "loading" : ""}`}>
 				{isLoading}
 
 				<div className="role-select-box">
@@ -309,7 +309,7 @@ export default function FindRelative() {
 						<br />
 						<div
 							className="find-relative-form"
-							style={{width: "100% !important"}}
+							style={{ width: "100%" }}
 						>
 						<form onSubmit={handleSubmit}>
 							<div className="form-row">
@@ -402,9 +402,8 @@ export default function FindRelative() {
 							<div className="form-col">
 								<button
 									type="submit"
-									className="form-search button button-green"
+									className="btn btn-secondary form-search"
 									style={{
-										width: "150px",
 										backgroundColor: joinHover
                         					? "#153443"
                         					: "#1C495E",

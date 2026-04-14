@@ -42,6 +42,9 @@
 .form-search {
 	color: white;
 	font-family: "DMSans";
+	min-width: 170px;
+	padding: 0.55rem 1.25rem;
+	border-radius: 8px;
 }
 
 .person-name {
@@ -137,4 +140,61 @@
     max-width: 1200px;
 }
 
+.find-relative-main {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 1rem;
+}
+
+.find-relative-container {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.find-relative-main {
+		padding: 0.75rem;
+	}
+
+	.find-relative-container {
+		padding: 0;
+	}
+
+	.role-select-box {
+		border-radius: 12px;
+		max-width: 100%;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 1.25rem 0.75rem;
+	}
+
+	.role-select-box .form-title {
+		font-size: 2.3rem;
+		line-height: 1.15;
+		text-align: left;
+	}
+
+	.form-row {
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.form-col {
+		flex: 1 1 auto;
+		width: 100%;
+	}
+
+	.form-col input {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.form-search {
+		width: 100% !important;
+		min-width: 0;
+	}
+}
 
