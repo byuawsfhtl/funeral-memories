@@ -39,36 +39,92 @@
 }
 
 .join-guest-button {
-    background-color: #1C495E;
-    color: #FFFFF0;
     font-family: 'DMSans';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    width: 100%;
+    min-height: 72px;
+    padding: 0.7rem 1.25rem;
+    border-radius: 10px;
+    border: 1.5px solid #1C495E;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .join-guest-button h5 {
-    font-size: 22px;
-    font-weight: normal;
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.join-guest-button p {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.2;
 }
 
 .join-admin-button {
     font-family: 'DMSans';
-    border: #1C495E 2px solid;
-    color: #1C495E;
+    border: 1.5px solid #1C495E;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 56px;
+    padding: 0.55rem 1.25rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.role-active {
+    background-color: #1C495E;
+    border-color: #1C495E;
+    color: #FFFFF0;
+}
+
+.role-inactive {
     background-color: #FFFFF0;
+    border-color: #1C495E;
+    color: #1C495E;
+}
+
+.role-inactive p {
+    color: #1C495E;
 }
 
 .join-admin-button h5 {
-    font-size: 22px;
-    font-weight: normal;
+    font-size: 1.12rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
 }
 
 
 
 .join-guest-button:hover {
     background-color: #163949;
+    border-color: #163949;
 }
 
 .join-admin-button:hover {
     background-color: #ede0d5;
+}
+
+.role-active:hover {
+    background-color: #163949;
+    border-color: #163949;
+    color: #FFFFF0;
+}
+
+.role-inactive:hover {
+    background-color: #ede0d5;
+    border-color: #1C495E;
+    color: #1C495E;
 }
 
 
@@ -110,12 +166,57 @@
     padding-top: 80px;
   }
 
+  .button-container {
+    width: min(92vw, 460px);
+    max-width: 460px;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0 auto;
+  }
+
+  .join-guest-button,
+  .join-admin-button {
+    flex: 1 1 0;
+    min-height: 62px;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .join-guest-button h5,
+  .join-admin-button h5 {
+    font-size: 1.02rem;
+  }
+
+  .join-guest-button p {
+    font-size: 0.84rem;
+  }
+
   .verticalLine {
     display: none; /* hide vertical line on small screens */
   }
 
   .leftPanel, .rightPanel {
     padding: 0;
+  }
+
+  .rightPanel {
+    width: 100%;
+    padding: 0 0.9rem;
+    margin-top: 1.35rem;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  .overlayInner {
+    width: min(92vw, 460px);
+    margin: 0 auto;
+  }
+
+  .overlayInner .login-box {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.2rem 1rem 1.35rem;
   }
 
   .verticalLine {

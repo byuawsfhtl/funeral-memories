@@ -6,7 +6,7 @@ import "../styles/roleSelect.css";
 type OverlayMode = "none" | "guest" | "admin";
 
 export default function RoleSelect() {
-  const [mode, setMode] = useState<OverlayMode>("none");
+  const [mode, setMode] = useState<OverlayMode>("guest");
 
   return (
     <main className="role-select-main">
@@ -15,20 +15,21 @@ export default function RoleSelect() {
         <h1 className="roleTitle">Choose Your Role</h1>
 
         <div className="button-container">
-          <button className="join-guest-button" onClick={() => setMode("guest")}>
+          <button
+            className={`join-guest-button ${mode === "guest" ? "role-active" : "role-inactive"}`}
+            onClick={() => setMode("guest")}
+          >
             <h5>Join as Guest</h5>
             <p>View &amp; Share Memories</p>
           </button>
 
-          <button className="join-admin-button" onClick={() => setMode("admin")}>
+          <button
+            className={`join-admin-button ${mode === "admin" ? "role-active" : "role-inactive"}`}
+            onClick={() => setMode("admin")}
+          >
             <h5>Join as Admin</h5>
           </button>
 
-          {mode !== "none" && (
-            <button className="close-overlay-button" onClick={() => setMode("none")}>
-              Close
-            </button>
-          )}
         </div>
       </section>
 
