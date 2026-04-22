@@ -16,6 +16,12 @@
     margin: 5vw 15vw 5vw 15vw;
 }
 
+@media (min-width: 769px) {
+    .instructions-text {
+        margin-top: 2rem;
+    }
+}
+
 .instructions-container h2 {
     font-family: "InstrumentSerif";
     font-weight: lighter;
