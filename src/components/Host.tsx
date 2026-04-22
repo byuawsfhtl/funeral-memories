@@ -40,20 +40,22 @@ export default function Host() {
 	return (
 		<main className="form-main">
 			<div>
-
-				<div className="login-box">
+				<div className="login-box host-login-box text-center">
 					<h1 className="form-title">Host a Group</h1>
 					<p>Enter your email and password to create a group.</p>
-					<p className="">
+					<p className="text-danger text-center mb-2">
 						<strong>
 							Note: Remember your information to access the group later.
 						</strong>
 					</p>
-					< br />
-					<form onSubmit={handleHost}>
+					<br />
+					<form onSubmit={handleHost} className="text-start">
 						<div className="mb-3">
 							<label htmlFor="username" className="form-label">
-								Email <span className="text-danger">*<br /></span>
+								Email{" "}
+								<span className="text-danger">
+									*<br />
+								</span>
 							</label>
 							<input
 								type="email"
@@ -67,10 +69,13 @@ export default function Host() {
 								required
 							/>
 						</div>
-						< br />
+						<br />
 						<div className="mb-3">
 							<label htmlFor="confirmUsername" className="form-label">
-								Confirm Email <span className="text-danger">*<br /></span>
+								Confirm Email{" "}
+								<span className="text-danger">
+									*<br />
+								</span>
 							</label>
 							<input
 								type="email"
@@ -84,10 +89,13 @@ export default function Host() {
 								required
 							/>
 						</div>
-						< br />
+						<br />
 						<div className="mb-4">
 							<label htmlFor="password" className="form-label">
-								Password <span className="text-danger">*<br /></span>
+								Password{" "}
+								<span className="text-danger">
+									*<br />
+								</span>
 							</label>
 							<PasswordField
 								id="password"
@@ -99,18 +107,16 @@ export default function Host() {
 								required
 							/>
 						</div>
-						< br />
-						<div className="d-grid">
+						<br />
+						<div style={{ display: "flex", justifyContent: "flex-end" }}>
 							<button
 								type="submit"
 								className="btn btn-secondary btn-lg"
 								style={{
-									backgroundColor: hostHover
-										? "#153443"
-										: "#1C495E",
+									backgroundColor: hostHover ? "#153443" : "#1C495E",
 									color: "#fff",
 									transition: "background 0.2s, border-color 0.2s",
-									fontFamily: "DMSans"
+									fontFamily: "DMSans",
 								}}
 								onMouseEnter={() => setHostHover(true)}
 								onMouseLeave={() => setHostHover(false)}
@@ -121,8 +127,9 @@ export default function Host() {
 					</form>
 				</div>
 
-				<br /><br /><br />
-
+				<br />
+				<br />
+				<br />
 			</div>
 		</main>
 	);

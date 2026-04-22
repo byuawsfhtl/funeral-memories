@@ -196,7 +196,7 @@ export default function FindRelative() {
 						parent1 == ""
 					) {
 						parent1 = getName(
-							ancestor.content.gedcomx.relationships[j].person1.resourceId
+							ancestor.content.gedcomx.relationships[j].person1.resourceId,
 						);
 						continue;
 					}
@@ -212,7 +212,7 @@ export default function FindRelative() {
 						parent2 == ""
 					) {
 						parent2 = getName(
-							ancestor.content.gedcomx.relationships[j].person1.resourceId
+							ancestor.content.gedcomx.relationships[j].person1.resourceId,
 						);
 						break;
 					}
@@ -287,30 +287,27 @@ export default function FindRelative() {
 				justifyContent: "center",
 			}}
 		>
-			<div className={`container ${isLoading ? "loading" : ""}`}>
+			<div className={`find-relative-container ${isLoading ? "loading" : ""}`}>
 				{isLoading}
 
 				<div className="role-select-box">
 					{/* Title */}
-					<h1 className="form-title">
-							Search and Select a Relative for the Memory Wall
+					<h1 className="form-title text-center">
+						Search and Select a Relative for the Memory Wall
 					</h1>
-						<p className="text-danger text-center mb-1">
-							<strong>
-								Note: Please ensure that the relative has been marked as deceased on
-								Family Search.
-							</strong>
-						</p>
-						<br />
-						<p className="text-center mb-4">
-							It might take around an hour for the relative to be searchable after
-							initially being marked as deceased.
-						</p>
-						<br />
-						<div
-							className="find-relative-form"
-							style={{width: "100% !important"}}
-						>
+					<p className="text-danger text-center mb-1">
+						<strong>
+							Note: Please ensure that the relative has been marked as deceased
+							on Family Search.
+						</strong>
+					</p>
+					<br />
+					<p className="text-center mb-4">
+						It might take around an hour for the relative to be searchable after
+						initially being marked as deceased.
+					</p>
+					<br />
+					<div className="find-relative-form" style={{ width: "100%" }}>
 						<form onSubmit={handleSubmit}>
 							<div className="form-row">
 								<div className="form-col">
@@ -346,7 +343,8 @@ export default function FindRelative() {
 							<div className="form-row">
 								<div className="form-col">
 									<label className="form-label">
-										Birth Place<span className="form-optional"> (Optional)</span>
+										Birth Place
+										<span className="form-optional"> (Optional)</span>
 									</label>
 									<input
 										type="text"
@@ -374,7 +372,8 @@ export default function FindRelative() {
 							<div className="form-row">
 								<div className="form-col">
 									<label className="form-label">
-										Death Place<span className="form-optional"> (Optional)</span>
+										Death Place
+										<span className="form-optional"> (Optional)</span>
 									</label>
 									<input
 										type="text"
@@ -402,28 +401,28 @@ export default function FindRelative() {
 							<div className="form-col">
 								<button
 									type="submit"
-									className="form-search button button-green"
+									className="btn btn-secondary form-search"
 									style={{
-										width: "150px",
-										backgroundColor: joinHover
-                        					? "#153443"
-                        					: "#1C495E",
-                    					color: "#FFFFF0",
-										transition: "background 0.2s, border-color 0.2s"
+										backgroundColor: joinHover ? "#153443" : "#1C495E",
+										color: "#FFFFF0",
+										transition: "background 0.2s, border-color 0.2s",
 									}}
-										onMouseEnter={() => setJoinHover(true)}
-        									onMouseLeave={() => setJoinHover(false)}
-                    							disabled={isLoading}
+									onMouseEnter={() => setJoinHover(true)}
+									onMouseLeave={() => setJoinHover(false)}
+									disabled={isLoading}
 								>
 									Search
 								</button>
 							</div>
 						</form>
-						</div>
-						<br />
 					</div>
+					<br />
+				</div>
 
-				<br /><br /><br /><br />
+				<br />
+				<br />
+				<br />
+				<br />
 
 				{/*This div is for the ancestors results*/}
 				{ancestors.length > 0 && (
@@ -443,7 +442,6 @@ export default function FindRelative() {
 					<p></p>
 				)}
 			</div>
-
 
 			{showConfirmation && selectedPerson && (
 				<Confirmation

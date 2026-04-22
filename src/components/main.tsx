@@ -27,24 +27,26 @@ function AppContent() {
   const hideFooter = location.pathname === "/wall";
 
   return (
-    <>
+    <div className="app-shell">
       <Header />
-      <Routes>
-        <Route path="/" Component={Home} />
-        <Route path="/instructions" Component={Instructions} />
-        <Route path="/wall" Component={Wall} />
-        <Route path="/find-relative" Component={FindRelative} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/host" element={<Host />} />
-        <Route path="/roleSelect" Component={RoleSelect}></Route>
-        <Route path="/admin" Component={AdminLogin}></Route>
-        <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
-        <Route path="/addPerson" Component={AddPerson} />
-        <Route path="/personSelect" Component={PersonSelect} />
-        <Route path="*" Component={Home} />
-      </Routes>
+      <main className="app-route-content">
+        <Routes>
+          <Route path="/" Component={Home} />
+          <Route path="/instructions" Component={Instructions} />
+          <Route path="/wall" Component={Wall} />
+          <Route path="/find-relative" Component={FindRelative} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/host" element={<Host />} />
+          <Route path="/roleSelect" Component={RoleSelect}></Route>
+          <Route path="/admin" Component={AdminLogin}></Route>
+          <Route path="/setExpirationDate" Component={SetExpireDate}></Route>
+          <Route path="/addPerson" Component={AddPerson} />
+          <Route path="/personSelect" Component={PersonSelect} />
+          <Route path="*" Component={Home} />
+        </Routes>
+      </main>
       {!hideFooter && <Footer />}
-    </>
+    </div>
   );
 }
 

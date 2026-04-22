@@ -55,3 +55,9 @@ footer {
     display: flex;
     justify-content: space-between;
 }
+
+@media (max-width: 768px) {
+    .universal-footer {
+        display: none;
+    }
+}
