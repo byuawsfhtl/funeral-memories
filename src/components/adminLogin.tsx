@@ -59,7 +59,7 @@ export default function AdminLogin({ embedded = false }: { embedded?: boolean })
       }
     >
       <div className="login-box">
-        <h2 className="form-title">
+        <h2 className="form-title text-center" style={{ marginBottom: "0.9rem" }}>
           Admin Login
         </h2>
 
@@ -78,7 +78,7 @@ export default function AdminLogin({ embedded = false }: { embedded?: boolean })
               required
             />
           </div>
-	  	  <br />
+
           <div className="mb-3">
             <label className="form-label">Admin Email</label>
 			<br />
@@ -91,7 +91,7 @@ export default function AdminLogin({ embedded = false }: { embedded?: boolean })
               required
             />
           </div>
-	  	  < br />
+
           <div className="mb-3">
             <label htmlFor="admin-login-password" className="form-label">Password</label>
 			<br />
@@ -115,8 +115,7 @@ export default function AdminLogin({ embedded = false }: { embedded?: boolean })
             />
           </div>
 
-          <div className="d-grid mt-4">
-			<br />
+          <div className="mt-4" style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.5rem" }}>
             <button
 				type="submit"
 				className="btn btn-secondary btn-lg"

@@ -56,12 +56,10 @@ export default function Join({ embedded = false }: { embedded?: boolean }) {
         <Wrapper className={embedded ? "" : "form-main"}>
             <div>
                 <div className="login-box">
-                    <h1 className="form-title">Join Group</h1>
-                    <p>Enter the Group ID to join and view memories.</p>
-                    <br />
-
+                    <h1 className="form-title text-center">Join Group</h1>
+                    <p className="text-center">Enter the Group ID to join and view memories.</p>
                     <form onSubmit={handleJoin}>
-                        <div className="mb-3">
+                        <div className="mb-3" style={{ marginTop: "0.8rem" }}>
                             <label htmlFor="group-id" className="form-label">
                                 Group ID <span className="text-danger">*<br /></span>
                             </label>
@@ -75,8 +73,7 @@ export default function Join({ embedded = false }: { embedded?: boolean }) {
                                 required
                             />
                         </div>
-                        <br />
-                        <div className="d-grid">
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.5rem" }}>
                             <button
                                 type="submit"
                                 className="btn btn-secondary btn-lg"
