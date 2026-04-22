@@ -6,6 +6,7 @@
 	text-decoration: none;
 	max-width: 100%;
 	overflow-x: hidden;
+	min-height: 100vh;
 }
 
 body {
@@ -20,6 +21,16 @@ html {
 	max-width: 100%;
 	overflow-x: hidden;
 	overscroll-behavior-x: none;
+}
+
+.app-shell {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.app-route-content {
+	flex: 1 0 auto;
 }
 
 /* Prevent scroll when popup is open */

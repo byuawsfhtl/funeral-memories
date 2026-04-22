@@ -38,7 +38,7 @@ export default function AddPerson() {
 		"expireDate username and Pass: ",
 		username,
 		password,
-		expirationDateTime
+		expirationDateTime,
 	);
 
 	useEffect(() => {
@@ -78,7 +78,7 @@ export default function AddPerson() {
 	}
 
 	function dateToPartialDate(
-		date: Date | null | undefined
+		date: Date | null | undefined,
 	): { year?: string; month?: string; day?: string } | null {
 		if (!date) return null;
 		const year = date.getUTCFullYear().toString();
@@ -144,7 +144,7 @@ export default function AddPerson() {
 			const birthDateObj = dateToPartialDate(toDateOrNull(storedBirthDate));
 			const deathDateObj = dateToPartialDate(toDateOrNull(storedDeathDate));
 			const marriageDateObj = dateToPartialDate(
-				toDateOrNull(storedMarriageDate)
+				toDateOrNull(storedMarriageDate),
 			);
 
 			const { pid } = await uploadPersonAndPortrait({
@@ -169,7 +169,7 @@ export default function AddPerson() {
 						Accept: "application/x-gedcomx-v1+json",
 						Authorization: `Bearer ${token}`,
 					},
-				}
+				},
 			);
 			const personData = await personResponse.json();
 
@@ -211,7 +211,7 @@ export default function AddPerson() {
 					" password: ",
 					storedPassword,
 					" sessionId: ",
-					sessionId
+					sessionId,
 				);
 
 				// const loginRes = await fetch("/api/login", {
@@ -235,7 +235,7 @@ export default function AddPerson() {
 					console.error("Failed to record session as admin");
 					await service.rollbackCreatedGroup(madeGroup.groupId);
 					alert(
-						"Could not complete sign-in for your new wall. The setup was cancelled. Please try again."
+						"Could not complete sign-in for your new wall. The setup was cancelled. Please try again.",
 					);
 					return;
 				}
@@ -254,7 +254,7 @@ export default function AddPerson() {
 					console.error("Failed to send credentials email:", emailErr);
 					await service.rollbackCreatedGroup(madeGroup.groupId);
 					alert(
-						"Your wall was created but we could not send your login details by email. The setup was cancelled. Please try again."
+						"Your wall was created but we could not send your login details by email. The setup was cancelled. Please try again.",
 					);
 					return;
 				}
@@ -396,27 +396,14 @@ export default function AddPerson() {
 	};
 
 	return (
-		<main
-			className="d-flex flex-grow-1 justify-content-center align-items-center flex-column"
-			style={{
-				padding: "2rem",
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "center",
-				width: "100%",
-				boxSizing: "border-box",
-			}}
-		>
-			<div style={{ width: "100%", maxWidth: "500px" }} className="add-person-form">
-				
-
-				<h1 className="text-center mb-4">Add a Person</h1>
-				<small className="text-muted text-center d-block">
-					For some reason you are not redirected to a memory wall after
+		<main className="form-main" style={{ width: "100%", marginBottom: "5rem" }}>
+			<div className="login-box host-login-box text-center">
+				<h1 className="form-title">Add a Person</h1>
+				<strong className="text-danger text-center d-block">
+					If for some reason you are not redirected to a memory wall after
 					submitting, please try submitting again.
-				</small>
-				<form onSubmit={handleSubmit}>
+				</strong>
+				<form onSubmit={handleSubmit} className="text-start">
 					<div className="mb-3">
 						<label htmlFor="personName" className="form-label add-person-label">
 							Name<span className="text-danger">*</span>
@@ -472,7 +459,10 @@ export default function AddPerson() {
 					</div>
 
 					<div className="mb-3">
-						<label htmlFor="personPhoto" className="form-label add-person-label">
+						<label
+							htmlFor="personPhoto"
+							className="form-label add-person-label"
+						>
 							Add Portrait
 						</label>
 						<input
@@ -572,7 +562,11 @@ export default function AddPerson() {
 
 					<div
 						className="mt-4"
-						style={{ display: "flex", justifyContent: "center", width: "100%" }}
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							width: "100%",
+						}}
 					>
 						<button type="submit" className="btn btn-primary btn-lg">
 							Add Person and Create Memory Wall

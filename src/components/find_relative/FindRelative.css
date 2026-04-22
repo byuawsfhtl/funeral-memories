@@ -133,17 +133,20 @@
     color: #FFFFF0;
     display: flex;
     flex-direction: column;
+    width: min(95vw, 1200px);
     padding: 2vw;
 	padding-left: 6vw;
 	padding-right: 6vw;
     border-radius: 15px;
     max-width: 1200px;
+    margin: 0 auto;
 }
 
 .find-relative-main {
 	width: 100%;
 	box-sizing: border-box;
 	padding: 1rem;
+	margin-top: 5vh;
 }
 
 .find-relative-container {
@@ -157,6 +160,7 @@
 @media (max-width: 768px) {
 	.find-relative-main {
 		padding: 0.75rem;
+		margin-top: 0;
 	}
 
 	.find-relative-container {

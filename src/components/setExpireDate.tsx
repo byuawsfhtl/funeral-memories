@@ -84,7 +84,7 @@ export default function SetExpireDate() {
             <div className="alert alert-danger text-center py-2">{error}</div>
           )}
 
-          <form onSubmit={handleSetExpiration}>
+          <form onSubmit={handleSetExpiration} className="set-expire-form">
             <div style={{ textAlign: "center" }}>
               <label className="form-label">Group Expiration Date & Time</label>
               <br />
@@ -100,16 +100,10 @@ export default function SetExpireDate() {
               />
             </div>
             <br />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
+            <div className="form-cta-row">
               <button
                 type="submit"
-                className="btn btn-secondary btn-lg"
+                className="btn btn-secondary btn-lg form-cta-button"
                 style={{
                   backgroundColor: hostHover ? "#153443" : "#1C495E",
                   color: "#fff",
